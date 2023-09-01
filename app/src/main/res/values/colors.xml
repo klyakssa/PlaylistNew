@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="YP_white">#FFFFFFFF</color>
+    <color name="blue">#2196F3</color>
+    <color name="blue_dark">#1A74BC</color>
+    <color name="YP_black">#1A1B22</color>
+    <color name="YP_light_gray">#E6E8EB</color>
+    <color name="YP_text_gray">#AEAFB4</color>
+
 </resources>

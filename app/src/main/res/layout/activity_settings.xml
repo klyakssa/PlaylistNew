@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:paddingEnd="52dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingEnd="86dp">
+
+
+            <TextView
+                android:id="@+id/back"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="#ffffff"
+                android:drawableLeft="@drawable/ic_arrow_back"
+                android:padding="12dp"
+                android:textColor="#1A1B22" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:text="Настройки"
+                android:textColor="@color/YP_black"
+                android:textStyle="bold"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:textSize="@dimen/title" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="80dp" >
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="15"
+            android:text="Темная тема"
+            android:textColor="@color/black"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginBottom="21dp"
+            android:textSize="@dimen/ys_regular"
+            android:gravity="top" />
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/YP_text_gray"
+            android:layout_marginEnd="4dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="19dp"
+        android:paddingBottom="18dp"
+        android:paddingEnd="12dp">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="32"
+            android:text="Поделиться приложением"
+            android:textColor="@color/black"
+            android:textSize="@dimen/ys_regular"
+            android:gravity="top" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/YP_text_gray"
+            android:drawableLeft="@drawable/ic_share"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="19dp"
+        android:paddingBottom="18dp"
+        android:paddingEnd="12dp">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="32"
+            android:text="Написать в поддержку"
+            android:textColor="@color/black"
+            android:textSize="@dimen/ys_regular"
+            android:gravity="top" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/YP_text_gray"
+            android:drawableLeft="@drawable/ic_group"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="19dp"
+        android:paddingBottom="18dp"
+        android:paddingEnd="12dp">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="32"
+            android:text="Пользовательское соглашение"
+            android:textColor="@color/black"
+            android:textSize="@dimen/ys_regular"
+            android:gravity="top" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/YP_text_gray"
+            android:drawableLeft="@drawable/ic_arrow_forward"
+            />
+
+
+    </LinearLayout>
+
+</LinearLayout>

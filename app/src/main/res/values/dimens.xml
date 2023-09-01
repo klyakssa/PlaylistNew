@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="ys_regular">16sp</dimen>
+    <dimen name="title">22sp</dimen>
+    <dimen name="some_id">22sp</dimen>
+</resources>
