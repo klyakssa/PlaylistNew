@@ -2,7 +2,7 @@
 <resources>
     <dimen name="ys_regular">16sp</dimen>
     <dimen name="title">22sp</dimen>
-    <dimen name="some_id">22sp</dimen>
+    <dimen name="main_text">22sp</dimen>
     <dimen name="corner">16dp</dimen>
     <dimen name="margin_main">16dp</dimen>
     <dimen name="padding_end">12dp</dimen>
