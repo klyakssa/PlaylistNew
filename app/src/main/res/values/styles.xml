@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ButtonSearch">
+        <item name="android:background">@drawable/button_main_shape</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:icon">@drawable/ic_search</item>
+        <item name="icon">@drawable/ic_search</item>
+        <item name="iconTint">@color/YP_black</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+    <style name="ButtonLibrary">
+        <item name="android:background">@drawable/button_main</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:icon">@drawable/ic_library</item>
+        <item name="icon">@drawable/ic_library</item>
+        <item name="iconTint">@color/YP_black</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+    <style name="ButtonSettings">
+        <item name="android:background">@drawable/button_main</item>
+        <item name="android:icon">@drawable/ic_settings</item>
+        <item name="icon">@drawable/ic_settings</item>
+        <item name="iconTint">@color/YP_black</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+</resources> 

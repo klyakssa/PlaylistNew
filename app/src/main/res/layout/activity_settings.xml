@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
-        android:padding="4dp"
+        android:padding="@dimen/margin_4dp"
         android:paddingEnd="52dp">
 
         <LinearLayout
@@ -19,92 +19,86 @@
             android:orientation="horizontal"
             android:paddingEnd="86dp">
 
-
             <TextView
                 android:id="@+id/back"
-                android:layout_width="24dp"
+                android:layout_width="@dimen/margin_24dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:backgroundTint="#ffffff"
+                android:backgroundTint="@color/YP_black"
                 android:drawableLeft="@drawable/ic_arrow_back"
-                android:padding="12dp"
-                android:textColor="#1A1B22" />
+                android:padding="@dimen/padding"
+                android:textColor="@color/YP_black" />
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="@dimen/layout_width"
                 android:layout_height="match_parent"
                 android:layout_weight="7"
-                android:text="Настройки"
-                android:textColor="@color/YP_black"
+                android:text="@string/settings"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:gravity="center_vertical"
-                android:paddingLeft="12dp"
+                android:paddingLeft="@dimen/padding_left"
                 android:textSize="@dimen/title" />
 
         </LinearLayout>
 
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="61dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="80dp" >
-
+        android:layout_marginTop="@dimen/margin_24dp"
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/layout_width"
             android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginTop="@dimen/margin_21dp"
+            android:layout_marginBottom="@dimen/margin_21dp"
             android:layout_weight="15"
-            android:text="Темная тема"
+            android:gravity="top"
+            android:text="@string/theme"
             android:textColor="@color/black"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="21dp"
-            android:layout_marginBottom="21dp"
-            android:textSize="@dimen/ys_regular"
-            android:gravity="top" />
+            android:textSize="@dimen/ys_regular" />
 
         <Switch
             android:id="@+id/switch1"
-            android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_width="@dimen/layout_width"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginEnd="@dimen/margin_4dp"
+            android:layout_marginBottom="@dimen/margin_10dp"
+            android:layout_weight="2"
             android:backgroundTint="@color/YP_text_gray"
-            android:layout_marginEnd="4dp"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="61dp"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingTop="19dp"
-        android:paddingBottom="18dp"
-        android:paddingEnd="12dp">
-
+        android:paddingStart="@dimen/margin_main"
+        android:paddingTop="@dimen/padding_19dp"
+        android:paddingEnd="@dimen/padding_end"
+        android:paddingBottom="@dimen/padding_18dp">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/layout_width"
             android:layout_height="match_parent"
             android:layout_weight="32"
-            android:text="Поделиться приложением"
+            android:gravity="top"
+            android:text="@string/share"
             android:textColor="@color/black"
-            android:textSize="@dimen/ys_regular"
-            android:gravity="top" />
+            android:textSize="@dimen/ys_regular" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/layout_width"
+            android:layout_height="match_parent"
             android:layout_weight="2"
-            android:layout_height="match_parent"
             android:backgroundTint="@color/YP_text_gray"
-            android:drawableLeft="@drawable/ic_share"
-            />
+            android:drawableLeft="@drawable/ic_share" />
 
     </LinearLayout>
 
@@ -112,23 +106,22 @@
         android:layout_width="match_parent"
         android:layout_height="61dp"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingTop="19dp"
-        android:paddingBottom="18dp"
-        android:paddingEnd="12dp">
-
+        android:paddingStart="@dimen/margin_main"
+        android:paddingTop="@dimen/padding_19dp"
+        android:paddingBottom="@dimen/padding_18dp"
+        android:paddingEnd="@dimen/padding_end">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/layout_width"
             android:layout_height="match_parent"
             android:layout_weight="32"
-            android:text="Написать в поддержку"
+            android:text="@string/support"
             android:textColor="@color/black"
             android:textSize="@dimen/ys_regular"
             android:gravity="top" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/layout_width"
             android:layout_weight="2"
             android:layout_height="match_parent"
             android:backgroundTint="@color/YP_text_gray"
@@ -141,29 +134,27 @@
         android:layout_width="match_parent"
         android:layout_height="61dp"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingTop="19dp"
-        android:paddingBottom="18dp"
-        android:paddingEnd="12dp">
-
+        android:paddingStart="@dimen/margin_main"
+        android:paddingTop="@dimen/padding_19dp"
+        android:paddingBottom="@dimen/padding_18dp"
+        android:paddingEnd="@dimen/padding_end">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/layout_width"
             android:layout_height="match_parent"
             android:layout_weight="32"
-            android:text="Пользовательское соглашение"
+            android:text="@string/terms"
             android:textColor="@color/black"
             android:textSize="@dimen/ys_regular"
             android:gravity="top" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/layout_width"
             android:layout_weight="2"
             android:layout_height="match_parent"
             android:backgroundTint="@color/YP_text_gray"
             android:drawableLeft="@drawable/ic_arrow_forward"
             />
-
 
     </LinearLayout>
 

@@ -12,10 +12,10 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        val btnBack = findViewById<TextView>(R.id.back)
 
+        val btnBack = findViewById<TextView>(R.id.back)
         btnBack.setOnClickListener {
-            this.finish()
+            finish()
         }
     }
 }
