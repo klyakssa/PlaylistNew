@@ -5,8 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/blue_back"
+    android:theme="@style/Theme.Playlist"
+    android:background="?attr/colorPrimary"
     tools:context=".MainActivity"
+
     android:padding="@dimen/padding_20dp">
 
     <FrameLayout
@@ -35,12 +37,7 @@
             android:layout_height="@dimen/layout_width"
             android:layout_weight="1"
             style="@style/ButtonSearch"
-            app:backgroundTint="@color/white"
-            android:text="@string/search"
-            android:textAllCaps="false"
-            android:textColor="@color/YP_black"
-            android:textSize="@dimen/main_text"
-             />
+            android:text="@string/search" />
 
         <Button
             android:id="@+id/library"
@@ -49,11 +46,7 @@
             android:layout_weight="1"
             android:layout_marginTop="@dimen/margin_main"
             style="@style/ButtonLibrary"
-            app:backgroundTint="@color/white"
-            android:text="@string/library"
-            android:textColor="@color/YP_black"
-            android:textAllCaps="false"
-            android:textSize="@dimen/main_text"/>
+            android:text="@string/library"/>
 
         <Button
             android:id="@+id/settings"
@@ -61,12 +54,8 @@
             android:layout_height="@dimen/layout_width"
             android:layout_weight="1"
             style="@style/ButtonSettings"
-            app:backgroundTint="@color/white"
             android:layout_marginTop="@dimen/margin_main"
-            android:text="@string/settings"
-            android:textColor="@color/YP_black"
-            android:textAllCaps="false"
-            android:textSize="@dimen/main_text"/>
+            android:text="@string/settings"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -2,25 +2,43 @@
 <resources>
     <style name="ButtonSearch">
         <item name="android:background">@drawable/button_main_shape</item>
-        <item name="android:color">@color/white</item>
-        <item name="android:icon">@drawable/ic_search</item>
         <item name="icon">@drawable/ic_search</item>
         <item name="iconTint">@color/YP_black</item>
         <item name="iconGravity">textStart</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/YP_black</item>
+        <item name="android:textSize">@dimen/main_text</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
     </style>
     <style name="ButtonLibrary">
         <item name="android:background">@drawable/button_main</item>
-        <item name="android:color">@color/white</item>
-        <item name="android:icon">@drawable/ic_library</item>
         <item name="icon">@drawable/ic_library</item>
         <item name="iconTint">@color/YP_black</item>
         <item name="iconGravity">textStart</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/YP_black</item>
+        <item name="android:textSize">@dimen/main_text</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
     </style>
     <style name="ButtonSettings">
         <item name="android:background">@drawable/button_main</item>
-        <item name="android:icon">@drawable/ic_settings</item>
         <item name="icon">@drawable/ic_settings</item>
         <item name="iconTint">@color/YP_black</item>
         <item name="iconGravity">textStart</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/YP_black</item>
+        <item name="android:textSize">@dimen/main_text</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+    <style name="Settings">
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
+        <item name="android:textSize">@dimen/ys_regular</item>
+        <item name="android:gravity">top</item>
     </style>
 </resources> 
