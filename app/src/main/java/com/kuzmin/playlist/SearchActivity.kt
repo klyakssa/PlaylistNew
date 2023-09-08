@@ -16,7 +16,6 @@ import android.widget.TextView
 import com.kuzmin.playlist.R
 
 class SearchActivity : AppCompatActivity() {
-    var countValue : String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +45,10 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
-                countValue = s.toString()
+                //countValue = s.toString()
+                if (!s.isNullOrEmpty()) {
+                    savedInstanceState?.putString(PRODUCT_AMOUNT,s.toString())
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -62,14 +64,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(PRODUCT_AMOUNT,countValue)
+        val inputEditText = findViewById<EditText>(R.id.inputEditText)
+        outState.putString(PRODUCT_AMOUNT,inputEditText.text.toString())
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
 
         // Вторым параметром мы передаём значение по умолчанию
-        countValue = savedInstanceState.getString(PRODUCT_AMOUNT,"")
+        val countValue = savedInstanceState.getString(PRODUCT_AMOUNT,"")
         val inputEditText = findViewById<EditText>(R.id.inputEditText)
         inputEditText.setText(countValue)
         super.onRestoreInstanceState(savedInstanceState)
