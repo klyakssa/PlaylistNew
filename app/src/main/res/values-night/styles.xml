@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SearchEditText">
+        <item name="android:background">@drawable/edit_text_shape</item>
+        <item name="android:textSize">@dimen/ys_regular</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textColor">@color/YP_black</item>
+        <item name="android:textColorHint">@color/YP_black</item>
+        <item name="android:drawableStart">@drawable/ic__search_24_night</item>
+    </style>
+</resources>
