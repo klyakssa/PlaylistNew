@@ -7,6 +7,7 @@
     <dimen name="corner">16dp</dimen>
     <dimen name="cornerText">8dp</dimen>
     <dimen name="margin_main">16dp</dimen>
+    <dimen name="margin_end_clear">28dp</dimen>
     <dimen name="margin_14dp">14dp</dimen>
     <dimen name="padding_end">12dp</dimen>
     <dimen name="padding_left">12dp</dimen>
@@ -20,6 +21,7 @@
     <dimen name="margin_4dp">4dp</dimen>
     <dimen name="padding_19dp">19dp</dimen>
     <dimen name="padding_18dp">18dp</dimen>
+    <dimen name="height_set_61dp">61dp</dimen>
     <!--<dimen name="weight32">32dp</dimen>-->
     <!--<dimen name="weight2">2</dimen>-->
 </resources>

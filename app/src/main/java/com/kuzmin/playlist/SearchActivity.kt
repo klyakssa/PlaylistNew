@@ -17,15 +17,16 @@ import com.kuzmin.playlist.R
 
 class SearchActivity : AppCompatActivity() {
 
+    private lateinit var inputEditText: EditText
+    private lateinit var clearButton: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
 
-        val linearLayout = findViewById<LinearLayout>(R.id.container)
-        val inputEditText = findViewById<EditText>(R.id.inputEditText)
-        val clearButton = findViewById<ImageView>(R.id.clearIcon)
+        inputEditText = findViewById<EditText>(R.id.inputEditText)
+        clearButton = findViewById<ImageView>(R.id.clearIcon)
 
 
         clearButton.setOnClickListener {
@@ -45,10 +46,6 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
-                //countValue = s.toString()
-                if (!s.isNullOrEmpty()) {
-                    savedInstanceState?.putString(PRODUCT_AMOUNT,s.toString())
-                }
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -59,21 +56,14 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    companion object {
-        const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
-        val inputEditText = findViewById<EditText>(R.id.inputEditText)
         outState.putString(PRODUCT_AMOUNT,inputEditText.text.toString())
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-
         // Вторым параметром мы передаём значение по умолчанию
         val countValue = savedInstanceState.getString(PRODUCT_AMOUNT,"")
-        val inputEditText = findViewById<EditText>(R.id.inputEditText)
         inputEditText.setText(countValue)
         super.onRestoreInstanceState(savedInstanceState)
     }
@@ -89,5 +79,9 @@ class SearchActivity : AppCompatActivity() {
     private fun closeKeyboard(){
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(window.decorView.windowToken, 0)
+    }
+
+    private companion object {
+        const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
     }
 }
