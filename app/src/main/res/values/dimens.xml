@@ -8,6 +8,7 @@
     <dimen name="cornerText">8dp</dimen>
     <dimen name="margin_main">16dp</dimen>
     <dimen name="margin_end_clear">28dp</dimen>
+    <dimen name="margin_end_head">52dp</dimen>
     <dimen name="margin_14dp">14dp</dimen>
     <dimen name="padding_end">12dp</dimen>
     <dimen name="padding_left">12dp</dimen>
