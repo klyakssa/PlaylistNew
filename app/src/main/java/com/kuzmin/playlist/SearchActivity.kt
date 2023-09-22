@@ -20,17 +20,17 @@ import com.kuzmin.playlist.trackList.Track
 import com.kuzmin.playlist.trackList.TracksListAdapter
 
 class SearchActivity : AppCompatActivity() {
-    var countValue : String = ""
 
+    private lateinit var inputEditText: EditText
+    private lateinit var clearButton: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
 
-        val linearLayout = findViewById<LinearLayout>(R.id.container)
-        val inputEditText = findViewById<EditText>(R.id.inputEditText)
-        val clearButton = findViewById<ImageView>(R.id.clearIcon)
+        inputEditText = findViewById<EditText>(R.id.inputEditText)
+        clearButton = findViewById<ImageView>(R.id.clearIcon)
 
         val tracksList = listOf(
                 Track("Smells Like Teen Spirit", "Nirvana", "5:01", "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"),
@@ -64,7 +64,6 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
-                countValue = s.toString()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -75,20 +74,14 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    companion object {
-        const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(PRODUCT_AMOUNT,countValue)
+        outState.putString(PRODUCT_AMOUNT,inputEditText.text.toString())
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-
         // Вторым параметром мы передаём значение по умолчанию
-        countValue = savedInstanceState.getString(PRODUCT_AMOUNT,"")
-        val inputEditText = findViewById<EditText>(R.id.inputEditText)
+        val countValue = savedInstanceState.getString(PRODUCT_AMOUNT,"")
         inputEditText.setText(countValue)
         super.onRestoreInstanceState(savedInstanceState)
     }
@@ -104,5 +97,9 @@ class SearchActivity : AppCompatActivity() {
     private fun closeKeyboard(){
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(window.decorView.windowToken, 0)
+    }
+
+    private companion object {
+        const val PRODUCT_AMOUNT = "PRODUCT_AMOUNT"
     }
 }

@@ -1,5 +1,6 @@
 package com.kuzmin.playlist
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -12,44 +13,48 @@ import com.kuzmin.playlist.LibraryActivity
 import com.kuzmin.playlist.R
 
 class SettingsActivity : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+
 
         val btnBack = findViewById<TextView>(R.id.back)
         btnBack.setOnClickListener {
             finish()
         }
-        val message = "https://practicum.yandex.ru/profile/android-developer/"
-        val sharing = findViewById<LinearLayout>(R.id.sharing)
+        val message = getString(R.string.messageProfile)
+        val sharing = findViewById<LinearLayout>(R.id.sharingProgram)
         sharing.setOnClickListener{
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, message)
-                type = "text/plain"
+                type = getString(R.string.type)
             }
 
             val shareIntent = Intent.createChooser(sendIntent, null)
             startActivity(shareIntent)
         }
-        val helping = findViewById<LinearLayout>(R.id.helping)
+        val helping = findViewById<LinearLayout>(R.id.supportButton)
         helping.setOnClickListener{
-            val sendIntent: Intent = Intent().apply {
+            Intent().apply {
                 action = Intent.ACTION_SEND
-                data = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf("denis.spb.2004@gmail.com"))
-                putExtra(Intent.EXTRA_SUBJECT, "Сообщение разработчикам и разработчицам приложения Playlist Maker")
-                putExtra(Intent.EXTRA_TEXT, "Спасибо разработчикам и разработчицам за крутое приложение!")
-                type = "text/plain"
+                data = Uri.parse(getString(R.string.mailto))
+                putExtra(Intent.EXTRA_EMAIL, getString(R.string.emailMy))
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subjectEmail))
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.textEmail))
+                type = getString(R.string.type)
+                startActivity(this)
             }
 
-            startActivity(sendIntent)
+
         }
 
 
-        val terms = findViewById<LinearLayout>(R.id.terms)
+        val terms = findViewById<LinearLayout>(R.id.termsButton)
         terms.setOnClickListener{
-            val webIntent: Intent = Uri.parse("https://yandex.ru/legal/practicum_offer/").let { webpage ->
+            val webIntent: Intent = Uri.parse(getString(R.string.termsLink)).let { webpage ->
                 Intent(Intent.ACTION_VIEW, webpage)
             }
             startActivity(webIntent)

@@ -8,22 +8,16 @@
     android:theme="@style/Theme.Playlist"
     android:background="?attr/colorPrimary"
     tools:context=".MainActivity"
-
     android:padding="@dimen/padding_20dp">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title"
-            android:layout_gravity="start"
-            android:textColor="@color/white"
-            android:textSize="@dimen/title" />
-
-    </FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:layout_gravity="start"
+        android:textColor="@color/white"
+        android:textSize="@dimen/title" />
 
     <LinearLayout
         android:layout_width="match_parent"
