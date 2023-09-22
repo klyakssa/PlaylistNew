@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -15,7 +16,7 @@
             android:layout_height="45dp"
             android:layout_marginTop="@dimen/margin_8dp"
             android:layout_marginBottom="@dimen/margin_8dp"
-            android:layout_marginStart="@dimen/margin_main"
+            android:layout_marginStart="@dimen/margin_main16"
             android:layout_marginEnd="@dimen/margin_8dp"
             android:background="?attr/selectableItemBackgroundBorderless" />
 
@@ -34,17 +35,48 @@
                 android:layout_height="19dp"
                 android:fontFamily="@font/ys_display_regular"
                 android:textSize="@dimen/title_19sp"
+                android:maxLines="1"
                 android:layout_marginEnd="@dimen/padding_1dp"
                 android:textColor="?attr/colorTitleTrack"
             />
-            <TextView
-                android:id="@+id/artistName"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="13dp"
-                android:fontFamily="@font/ys_display_regular"
-                android:textSize="@dimen/artist_13sp"
-                android:textColor="?attr/colorArtistTrack"
-            />
+                android:layout_height="13dp">
+
+                <TextView
+                    android:id="@+id/artistName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textSize="@dimen/artist_13sp"
+                    android:textColor="?attr/colorArtistTrack"
+                    tools:text="The Beatles"
+                    />
+
+                <ImageView
+                    android:id="@+id/dotImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_dot"
+                    android:layout_gravity="center"
+                    android:paddingTop="3dp"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/timeSong"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textSize="@dimen/artist_13sp"
+                    android:textColor="?attr/colorArtistTrack"
+                    tools:text="5:02"
+                    />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <TextView

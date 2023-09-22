@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="ys_regular">16sp</dimen>
-    <dimen name="title">22sp</dimen>
+    <dimen name="title22">22sp</dimen>
     <dimen name="title_19sp">19sp</dimen>
     <dimen name="artist_13sp">13sp</dimen>
-    <dimen name="main_text">22sp</dimen>
-    <dimen name="corner">16dp</dimen>
-    <dimen name="cornerText">8dp</dimen>
-    <dimen name="margin_main">16dp</dimen>
+    <dimen name="main_text22">22sp</dimen>
+    <dimen name="corner16">16dp</dimen>
+    <dimen name="cornerText8">8dp</dimen>
+    <dimen name="margin_main16">16dp</dimen>
     <dimen name="margin_14dp">14dp</dimen>
-    <dimen name="padding_end">12dp</dimen>
-    <dimen name="padding_left">12dp</dimen>
+    <dimen name="padding_end12">12dp</dimen>
+    <dimen name="padding_left12">12dp</dimen>
     <dimen name="padding">12dp</dimen>
     <dimen name="padding_20dp">20dp</dimen>
     <dimen name="layout_width">0dp</dimen>
@@ -21,10 +21,14 @@
     <dimen name="margin_19dp">19dp</dimen>
     <dimen name="margin_21dp">21dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="margin_end_head52">52dp</dimen>
+    <dimen name="margin_end_clear16">16dp</dimen>
+    <dimen name="height_set_61dp">61dp</dimen>
     <dimen name="margin_4dp">4dp</dimen>
     <dimen name="padding_19dp">19dp</dimen>
     <dimen name="padding_18dp">18dp</dimen>
     <dimen name="padding_1dp">1dp</dimen>
+    <dimen name="padding_2dp">2dp</dimen>
     <!--<dimen name="weight32">32dp</dimen>-->
     <!--<dimen name="weight2">2</dimen>-->
 </resources>

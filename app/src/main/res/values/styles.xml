@@ -7,7 +7,7 @@
         <item name="iconGravity">textStart</item>
         <item name="textAllCaps">false</item>
         <item name="android:textColor">@color/YP_black</item>
-        <item name="android:textSize">@dimen/main_text</item>
+        <item name="android:textSize">@dimen/main_text22</item>
         <item name="backgroundTint">@color/white</item>
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
@@ -19,7 +19,7 @@
         <item name="iconGravity">textStart</item>
         <item name="textAllCaps">false</item>
         <item name="android:textColor">@color/YP_black</item>
-        <item name="android:textSize">@dimen/main_text</item>
+        <item name="android:textSize">@dimen/main_text22</item>
         <item name="backgroundTint">@color/white</item>
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
@@ -31,7 +31,7 @@
         <item name="iconGravity">textStart</item>
         <item name="textAllCaps">false</item>
         <item name="android:textColor">@color/YP_black</item>
-        <item name="android:textSize">@dimen/main_text</item>
+        <item name="android:textSize">@dimen/main_text22</item>
         <item name="backgroundTint">@color/white</item>
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
