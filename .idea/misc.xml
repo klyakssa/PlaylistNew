@@ -7,12 +7,15 @@
         <entry key="..\:/Users/denis/AndroidStudioProjects/Playlist/app/src/main/res/drawable/button_main_shape.xml" value="0.137" />
         <entry key="..\:/Users/denis/AndroidStudioProjects/Playlist/app/src/main/res/drawable/edit_text_shape.xml" value="0.123" />
         <entry key="..\:/Users/denis/AndroidStudioProjects/Playlist/app/src/main/res/drawable/ic__search_24_night.xml" value="0.137" />
+        <entry key="..\:/Users/denis/AndroidStudioProjects/Playlist/app/src/main/res/drawable/ic_arrow_forward.xml" value="0.17" />
+        <entry key="..\:/Users/denis/AndroidStudioProjects/Playlist/app/src/main/res/drawable/ic_light_mode.xml" value="0.17" />
         <entry key="..\:/Users/denis/AndroidStudioProjects/Playlist/app/src/main/res/drawable/ic_search.xml" value="0.137" />
         <entry key="..\:/Users/denis/AndroidStudioProjects/Playlist/app/src/main/res/drawable/ic_search_24.xml" value="0.137" />
         <entry key="..\:/Users/denis/AndroidStudioProjects/Playlist/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/denis/AndroidStudioProjects/Playlist/app/src/main/res/layout/activity_search.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/denis/AndroidStudioProjects/Playlist/app/src/main/res/layout/activity_settings.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/denis/AndroidStudioProjects/Playlist/app/src/main/res/layout/hjghj.xml" value="0.2076923076923077" />
+        <entry key="..\:/Users/denis/AndroidStudioProjects/Playlist/app/src/main/res/layout/track_item.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
