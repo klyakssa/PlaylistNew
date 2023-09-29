@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kuzmin.playlist.R
 import java.util.*
 
-class TracksListAdapter(
-    private val data: List<Track>
-) : RecyclerView.Adapter<TracksViewHolder> () {
+class TracksListAdapter() : RecyclerView.Adapter<TracksViewHolder> () {
+
+    var data = ArrayList<Track>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TracksViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_item, parent, false)

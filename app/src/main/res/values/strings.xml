@@ -14,4 +14,7 @@
     <string name="termsLink">https://yandex.ru/legal/practicum_offer/</string>
     <string name="mailto">mailto:</string>
     <string name="type">text/plain</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="something_went_wrong">Проблемы со связью \n Загрузка не удалась. Проверьте подключение к интеренету</string>
+    <string name="update">Обновить</string>
 </resources>

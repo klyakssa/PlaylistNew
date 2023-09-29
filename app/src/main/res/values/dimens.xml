@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="ys_regular">16sp</dimen>
+    <dimen name="ys_regular_14sp">14sp</dimen>
     <dimen name="title22">22sp</dimen>
     <dimen name="title_19sp">19sp</dimen>
     <dimen name="artist_13sp">13sp</dimen>
@@ -21,8 +22,9 @@
     <dimen name="margin_19dp">19dp</dimen>
     <dimen name="margin_21dp">21dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="margin_120dp">120dp</dimen>
     <dimen name="margin_end_head52">52dp</dimen>
-    <dimen name="margin_end_clear16">16dp</dimen>
+    <dimen name="margin_end_clear24">24dp</dimen>
     <dimen name="height_set_61dp">61dp</dimen>
     <dimen name="margin_4dp">4dp</dimen>
     <dimen name="padding_19dp">19dp</dimen>
