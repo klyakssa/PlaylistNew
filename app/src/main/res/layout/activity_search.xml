@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/margin_4dp"
         android:paddingEnd="52dp">
@@ -27,7 +27,7 @@
 
         <TextView
             android:layout_width="@dimen/layout_width"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="7"
             android:text="@string/search"
             android:textColor="?attr/colorOnSecondary"
@@ -94,10 +94,11 @@
             <LinearLayout
                 android:id="@+id/containerPlaceholderNothing"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:orientation="vertical"
-                android:layout_marginBottom="108dp">
+                android:layout_marginTop="51dp"
+                >
 
                 <TextView
                     android:id="@+id/placeholderImage"
@@ -109,7 +110,7 @@
 
                 <TextView
                     android:id="@+id/textPlaceholderMessage"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textAlignment="center"
