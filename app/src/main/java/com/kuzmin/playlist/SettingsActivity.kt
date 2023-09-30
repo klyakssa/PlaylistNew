@@ -2,6 +2,7 @@ package com.kuzmin.playlist
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -61,15 +62,25 @@ class SettingsActivity : AppCompatActivity() {
         val sharedPrefs = getSharedPreferences(DARK_THEME, MODE_PRIVATE)
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.switch1)
-        val theme = sharedPrefs.getBoolean(DARK_THEME_KEY, false)
+        var theme = sharedPrefs.getBoolean(DARK_THEME_KEY, false)
+
         if(theme){
             themeSwitcher.isChecked = true
         }
+
+        var listener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
+                theme = sharedPrefs.getBoolean(DARK_THEME_KEY, false)
+                (applicationContext as App).switchTheme(theme)
+        }
+
+        sharedPrefs.registerOnSharedPreferenceChangeListener(listener)
+
+
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
             sharedPrefs.edit()
                 .putBoolean(DARK_THEME_KEY, checked)
                 .apply()
-            (applicationContext as App).switchTheme(checked)
+            //(applicationContext as App).switchTheme(checked)
         }
     }
 

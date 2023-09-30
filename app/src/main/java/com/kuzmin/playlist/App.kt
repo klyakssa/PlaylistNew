@@ -2,6 +2,7 @@ package com.kuzmin.playlist
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 
 class App : Application() {
@@ -17,6 +18,7 @@ class App : Application() {
         }else if(!theme){
             switchTheme(false)
         }
+
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
