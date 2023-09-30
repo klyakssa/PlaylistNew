@@ -39,7 +39,7 @@
     <style name="Settings">
         <item name="android:textColor">?attr/colorPrimaryVariant</item>
         <item name="android:textSize">@dimen/ys_regular</item>
-        <item name="android:gravity">top</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
     <style name="SearchEditText">
         <item name="android:background">@drawable/edit_text_shape</item>

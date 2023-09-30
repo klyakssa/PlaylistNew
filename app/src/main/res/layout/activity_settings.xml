@@ -49,15 +49,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_set_61dp"
         android:layout_marginTop="@dimen/margin_24dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/margin_main16">
 
         <TextView
             android:id="@+id/nightDayText"
             android:layout_width="@dimen/layout_width"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_main16"
-            android:layout_marginTop="@dimen/margin_21dp"
-            android:layout_marginBottom="@dimen/margin_21dp"
+            android:layout_height="match_parent"
             android:layout_weight="15"
             android:text="@string/theme"
             style="@style/Settings" />
@@ -66,9 +64,6 @@
             android:id="@+id/switch1"
             android:layout_width="@dimen/layout_width"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_10dp"
-            android:layout_marginEnd="@dimen/margin_4dp"
-            android:layout_marginBottom="@dimen/margin_10dp"
             android:layout_weight="2"
             android:backgroundTint="?attr/colorSecondaryVariant"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
@@ -81,14 +76,12 @@
         android:layout_height="@dimen/height_set_61dp"
         android:orientation="horizontal"
         android:paddingStart="@dimen/margin_main16"
-        android:paddingTop="@dimen/padding_19dp"
-        android:paddingEnd="@dimen/padding_end12"
-        android:paddingBottom="@dimen/padding_18dp">
+        android:paddingEnd="@dimen/padding_end12">
 
         <TextView
             android:id="@+id/shareText"
             android:layout_width="@dimen/layout_width"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="32"
             android:text="@string/share"
             style="@style/Settings"/>
@@ -108,14 +101,12 @@
         android:layout_height="@dimen/height_set_61dp"
         android:orientation="horizontal"
         android:paddingStart="@dimen/margin_main16"
-        android:paddingTop="@dimen/padding_19dp"
-        android:paddingBottom="@dimen/padding_18dp"
         android:paddingEnd="@dimen/padding_end12">
 
         <TextView
             android:id="@+id/supportText"
             android:layout_width="@dimen/layout_width"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="32"
             android:text="@string/support"
             style="@style/Settings"/>
@@ -136,14 +127,12 @@
         android:layout_height="@dimen/height_set_61dp"
         android:orientation="horizontal"
         android:paddingStart="@dimen/margin_main16"
-        android:paddingTop="@dimen/padding_19dp"
-        android:paddingBottom="@dimen/padding_18dp"
         android:paddingEnd="@dimen/padding_end12">
 
         <TextView
             android:id="@+id/termsText"
             android:layout_width="@dimen/layout_width"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="32"
             android:text="@string/terms"
             style="@style/Settings"/>
