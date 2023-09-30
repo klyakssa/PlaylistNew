@@ -5,20 +5,19 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.kuzmin.playlist.LibraryActivity
 import com.kuzmin.playlist.R
 
 class SettingsActivity : AppCompatActivity() {
+
+
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-
-
 
         val btnBack = findViewById<TextView>(R.id.back)
         btnBack.setOnClickListener {
@@ -59,9 +58,23 @@ class SettingsActivity : AppCompatActivity() {
             }
             startActivity(webIntent)
         }
+        val sharedPrefs = getSharedPreferences(DARK_THEME, MODE_PRIVATE)
 
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.switch1)
+        val theme = sharedPrefs.getBoolean(DARK_THEME_KEY, false)
+        if(theme){
+            themeSwitcher.isChecked = true
+        }
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            sharedPrefs.edit()
+                .putBoolean(DARK_THEME_KEY, checked)
+                .apply()
+            (applicationContext as App).switchTheme(checked)
+        }
+    }
 
-
-
+    companion object {
+        const val DARK_THEME = "playlist_preferences"
+        const val DARK_THEME_KEY = "dark_theme"
     }
 }

@@ -60,11 +60,11 @@
             android:text="@string/theme"
             style="@style/Settings" />
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switch1"
             android:layout_width="@dimen/layout_width"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:backgroundTint="?attr/colorSecondaryVariant"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
