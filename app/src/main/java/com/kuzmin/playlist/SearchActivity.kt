@@ -26,6 +26,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -57,6 +58,8 @@ class SearchActivity : AppCompatActivity() {
     private val tracksAdapter = TracksListAdapter{_,it ->
         if(!tracksListHistory.contains(it)){
             tracksListHistory.add(0, it)
+            if(tracksListHistory.size > 10)
+                tracksListHistory.subList(10,tracksListHistory.size).clear()
 //            ecs.notifyItemInserted(0)
         }
     }
@@ -71,6 +74,7 @@ class SearchActivity : AppCompatActivity() {
 //        adapter.notifyItemRemoved(index)
         tracksListHistory.remove(it)
         tracksListHistory.add(0, it)
+
 //        ecs.notifyItemInserted(0)
         adapter.notifyDataSetChanged()
 
