@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kuzmin.playlist.R
 import java.util.*
 
-class TracksListAdapter() : RecyclerView.Adapter<TracksViewHolder> () {
+class TracksListAdapter(val clickListener: TrackClickListener) : RecyclerView.Adapter<TracksViewHolder> () {
 
     var data = ArrayList<Track>()
 
@@ -17,10 +17,17 @@ class TracksListAdapter() : RecyclerView.Adapter<TracksViewHolder> () {
 
     override fun onBindViewHolder(holder: TracksViewHolder, position: Int) {
         holder.bind(data[position])
+        holder.itemView.setOnClickListener {
+            clickListener.onLocationClick(this, data[position])
+        }
     }
 
     override fun getItemCount(): Int {
         return data.size
+    }
+
+    fun interface TrackClickListener {
+        fun onLocationClick(adapter: TracksListAdapter,track: Track)
     }
 
 }

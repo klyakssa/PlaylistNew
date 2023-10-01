@@ -12,9 +12,12 @@
     <string name="subjectEmail">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="textEmail">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="termsLink">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="itunesLink">https://itunes.apple.com</string>
     <string name="mailto">mailto:</string>
     <string name="type">text/plain</string>
     <string name="nothing_found">Ничего не нашлось</string>
     <string name="something_went_wrong">Проблемы со связью \n \n Загрузка не удалась. Проверьте подключение к интеренету</string>
     <string name="update">Обновить</string>
+    <string name="clearHistory">Очистить историю</string>
+    <string name="searchMessage">Вы искали</string>
 </resources>

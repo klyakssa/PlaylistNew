@@ -86,6 +86,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:id="@+id/containerHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="@dimen/title_19sp"
+                android:layout_marginTop="@dimen/margin_24dp"
+                android:gravity="center_horizontal|top"
+                android:textColor="?attr/colorPlaceholderImage"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tracksListHistory"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/margin_20dp"/>
+            <!--                android:layout_height="0dp"-->
+            <!--                android:layout_weight="1"-->
+            <Button
+                android:id="@+id/clearHistoryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:layout_marginBottom="@dimen/margin_8dp"
+                android:text="@string/clearHistory"
+                android:textAllCaps="false"
+                style="@style/UpdateButton" />
+            <!--                android:layout_marginBottom="@dimen/margin_8dp"-->
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tracksList"
             android:layout_width="match_parent"
@@ -97,8 +136,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:orientation="vertical"
-                android:layout_marginTop="51dp"
-                >
+                android:layout_marginTop="51dp">
 
                 <TextView
                     android:id="@+id/placeholderImage"
@@ -116,7 +154,8 @@
                     android:textAlignment="center"
                     android:textSize="@dimen/title_19sp"
                     android:layout_marginTop="@dimen/margin_main16"
-                    android:gravity="center_horizontal|top" />
+                    android:gravity="center_horizontal|top"
+                    android:textColor="?attr/colorPlaceholderImage"/>
 
                 <Button
                     android:id="@+id/updateButton"

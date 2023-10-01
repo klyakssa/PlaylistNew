@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.kuzmin.playlist.Const.CONST
 import com.kuzmin.playlist.LibraryActivity
 import com.kuzmin.playlist.R
 
@@ -59,17 +60,17 @@ class SettingsActivity : AppCompatActivity() {
             }
             startActivity(webIntent)
         }
-        val sharedPrefs = getSharedPreferences(DARK_THEME, MODE_PRIVATE)
+        val sharedPrefs = getSharedPreferences(CONST.PLAYLIST_PREFERENCES.const, MODE_PRIVATE)
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.switch1)
-        var theme = sharedPrefs.getBoolean(DARK_THEME_KEY, false)
+        var theme = sharedPrefs.getBoolean(CONST.DARK_THEME_KEY.const, false)
 
         if(theme){
             themeSwitcher.isChecked = true
         }
 
-        var listener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
-                theme = sharedPrefs.getBoolean(DARK_THEME_KEY, false)
+        var listener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
+                theme = sharedPrefs.getBoolean(CONST.DARK_THEME_KEY.const, false)
                 (applicationContext as App).switchTheme(theme)
         }
 
@@ -78,14 +79,11 @@ class SettingsActivity : AppCompatActivity() {
 
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
             sharedPrefs.edit()
-                .putBoolean(DARK_THEME_KEY, checked)
+                .putBoolean(CONST.DARK_THEME_KEY.const, checked)
                 .apply()
             //(applicationContext as App).switchTheme(checked)
         }
     }
 
-    companion object {
-        const val DARK_THEME = "playlist_preferences"
-        const val DARK_THEME_KEY = "dark_theme"
-    }
+
 }

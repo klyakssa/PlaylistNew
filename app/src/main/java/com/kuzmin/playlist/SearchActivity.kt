@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kuzmin.playlist.Const.CONST
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.iTunesAPI.TracksResponse
 import com.kuzmin.playlist.iTunesAPI.itunesApi
@@ -25,6 +26,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SearchActivity : AppCompatActivity() {
 
@@ -33,7 +36,12 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var placeholderImage: TextView
     private lateinit var placeholderMessage: TextView
     private lateinit var updateButton: Button
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerViewTracks: RecyclerView
+    private lateinit var textHistory: TextView
+    private lateinit var clearHistoryButton: Button
+    private lateinit var recyclerViewTracksHistory: RecyclerView
+    private lateinit var searchHistory: SearchHistory
+
 
     private val itunesBaseUrl = "https://itunes.apple.com"
 
@@ -46,22 +54,53 @@ class SearchActivity : AppCompatActivity() {
     private val itunesService = retrofit.create(itunesApi::class.java)
 
     private val tracksList = ArrayList<Track>()
-    private val tracksAdapter = TracksListAdapter()
+    private val tracksAdapter = TracksListAdapter{_,it ->
+        if(!tracksListHistory.contains(it)){
+            tracksListHistory.add(0, it)
+//            ecs.notifyItemInserted(0)
+        }
+    }
+
+    private val tracksListHistory = ArrayList<Track>()
+    private val tracksAdapterHistory = TracksListAdapter{ adapter,it ->
+//        val index = tracksListHistory.indexOfFirst{ track ->
+//            it.trackId == track.trackId
+//        }
+//        val index = tracksListHistory.indexOf(it)
+//        Collections.swap(tracksListHistory, index, 0)
+//        adapter.notifyItemRemoved(index)
+        tracksListHistory.remove(it)
+        tracksListHistory.add(0, it)
+//        ecs.notifyItemInserted(0)
+        adapter.notifyDataSetChanged()
+
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        val sharedPrefs = getSharedPreferences(CONST.PLAYLIST_PREFERENCES.const, MODE_PRIVATE)
+        searchHistory = SearchHistory(sharedPrefs)
 
         inputEditText = findViewById<EditText>(R.id.inputEditText)
+
         clearButton = findViewById<ImageView>(R.id.clearIcon)
         placeholderImage = findViewById<TextView>(R.id.placeholderImage)
         placeholderMessage = findViewById<TextView>(R.id.textPlaceholderMessage)
         updateButton = findViewById<Button>(R.id.updateButton)
+
         placeholderImage.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
         updateButton.visibility = View.GONE
+
+        recyclerViewTracks = findViewById<RecyclerView>(R.id.tracksList)
+
+        recyclerViewTracksHistory = findViewById<RecyclerView>(R.id.tracksListHistory)
+        textHistory = findViewById<TextView>(R.id.textHistory)
+        clearHistoryButton = findViewById<Button>(R.id.clearHistoryButton)
 
 //        val tracksList = listOf(
 //                Track("Smells Like Teen Spirit", "Nirvana", "5:01", "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"),
@@ -71,24 +110,47 @@ class SearchActivity : AppCompatActivity() {
 //                Track("Sweet Child O'Mine", "Guns N' Roses", "5:03", "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"),
 //                Track("No Reply", "The Beatles", "5:12", "https://image/thumb/c4/fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"),
 //        )
+        recyclerViewTracksHistory.visibility =  View.GONE
+        textHistory.visibility =  View.GONE
+        clearHistoryButton.visibility =  View.GONE
 
-        recyclerView = findViewById<RecyclerView>(R.id.tracksList)
+        textHistory.text = getString(R.string.searchMessage)
 
         tracksAdapter.data = tracksList
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = tracksAdapter
+        recyclerViewTracks.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerViewTracks.adapter = tracksAdapter
 
+        tracksListHistory.addAll(searchHistory.readPreferences())
+        tracksAdapterHistory.data = tracksListHistory
+        recyclerViewTracksHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerViewTracksHistory.adapter = tracksAdapterHistory
 
         updateButton.setOnClickListener {
             getTracks()
         }
 
+        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+            recyclerViewTracksHistory.visibility = if (hasFocus && inputEditText.text.isEmpty()) View.VISIBLE  else { View.GONE }
+            recyclerViewTracks.visibility = if (hasFocus && inputEditText.text.isEmpty()) View.GONE else View.VISIBLE
+            textHistory.visibility = if (hasFocus && inputEditText.text.isEmpty()) View.VISIBLE else View.GONE
+            clearHistoryButton.visibility = if (hasFocus && inputEditText.text.isEmpty()) View.VISIBLE else View.GONE
+            if(hasFocus && inputEditText.text.isEmpty())
+                tracksAdapterHistory.notifyDataSetChanged()
+
+        }
+
+        clearHistoryButton.setOnClickListener {
+            tracksListHistory.clear()
+            tracksAdapterHistory.notifyDataSetChanged()
+            searchHistory.clearHistory()
+        }
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
             tracksList.clear()
             tracksAdapter.notifyDataSetChanged()
             closeKeyboard()
+            showPlaceholder(true,"")
         }
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -110,6 +172,10 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
+                recyclerViewTracksHistory.visibility = if (inputEditText.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                recyclerViewTracks.visibility = if (inputEditText.hasFocus() && s?.isEmpty() == true) View.GONE  else View.VISIBLE
+                textHistory.visibility = if (inputEditText.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                clearHistoryButton.visibility = if (inputEditText.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -119,6 +185,7 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
     }
+
 
     private fun showPlaceholder(isEthernet: Boolean, text: String) {
         if(text.isNotEmpty()) {
@@ -178,14 +245,11 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-
-    override fun onProvideKeyboardShortcuts(
-        data: MutableList<KeyboardShortcutGroup>?,
-        menu: Menu?,
-        deviceId: Int
-    ) {
-        super.onProvideKeyboardShortcuts(data, menu, deviceId)
+    override fun onStop() {
+        searchHistory.savePreferences(tracksListHistory)
+        super.onStop()
     }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString(SEARCH,inputEditText.text.toString())

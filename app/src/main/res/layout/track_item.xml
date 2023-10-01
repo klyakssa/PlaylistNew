@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/track_item"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -17,8 +18,7 @@
             android:layout_marginTop="@dimen/margin_8dp"
             android:layout_marginBottom="@dimen/margin_8dp"
             android:layout_marginStart="@dimen/margin_main16"
-            android:layout_marginEnd="@dimen/margin_8dp"
-            android:background="?attr/selectableItemBackgroundBorderless" />
+            android:layout_marginEnd="@dimen/margin_8dp" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -36,29 +36,33 @@
                 android:fontFamily="@font/ys_text_regular"
                 android:textSize="@dimen/title_19sp"
                 android:maxLines="1"
+                android:ellipsize="end"
+                android:singleLine="false"
                 android:layout_marginEnd="@dimen/padding_1dp"
                 android:textColor="?attr/colorTitleTrack"
             />
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/artistName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="4"
                     android:fontFamily="@font/ys_display_regular"
                     android:textSize="@dimen/artist_13sp"
                     android:textColor="?attr/colorArtistTrack"
-                    tools:text="The Beatles"
-                    />
+                    tools:text="The Beatles dsaddddddadddddddddddddddddddhggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggddddddddddddddddddddddddddsdsd"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:singleLine="false" />
 
                 <ImageView
                     android:id="@+id/dotImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_dot"
                     android:layout_gravity="center"
                     android:paddingTop="3dp"
@@ -66,13 +70,12 @@
 
                 <TextView
                     android:id="@+id/timeSong"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:fontFamily="@font/ys_display_regular"
                     android:textSize="@dimen/artist_13sp"
                     android:textColor="?attr/colorArtistTrack"
-                    tools:text="5:02"
+                    tools:text="03:59"
                     />
 
             </LinearLayout>
@@ -87,7 +90,7 @@
             android:layout_marginBottom="@dimen/margin_19dp"
             android:layout_marginEnd="@dimen/margin_12dp"
             android:drawableLeft="@drawable/ic_arrow_forward"
-        />
+            android:background="?attr/selectableItemBackgroundBorderless"/>
 
     </LinearLayout>
 

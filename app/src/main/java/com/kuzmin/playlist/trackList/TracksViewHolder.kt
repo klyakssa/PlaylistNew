@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,20 +15,23 @@ import java.util.*
 
 class TracksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    private val trackItem: LinearLayout = itemView.findViewById(R.id.track_item)
     private val titleTrack: TextView = itemView.findViewById(R.id.titleTrack)
     private val artistName: TextView = itemView.findViewById(R.id.artistName)
     private val timeSong: TextView = itemView.findViewById(R.id.timeSong)
     private val buttonArrowTrack: TextView = itemView.findViewById(R.id.buttonArrowTrack)
     private val sourceImage: ImageView = itemView.findViewById(R.id.sourceImage)
+    private val dotImage: ImageView = itemView.findViewById(R.id.dotImage)
 
     fun bind(track: Track) {
         val sb = StringBuilder()
         titleTrack.text = track.trackName
         artistName.text = track.artistName
         timeSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime.toLong())
-        buttonArrowTrack.setOnClickListener{
 
-        }
+//        trackItem.isClickable = true
+//        sourceImage.isClickable = false
+//        dotImage.isClickable = false
 
         Glide.with(itemView)
             .load(track.artworkUrl100)
