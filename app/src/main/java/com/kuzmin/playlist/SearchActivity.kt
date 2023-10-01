@@ -58,8 +58,9 @@ class SearchActivity : AppCompatActivity() {
     private val tracksAdapter = TracksListAdapter{_,it ->
         if(!tracksListHistory.contains(it)){
             tracksListHistory.add(0, it)
-            if(tracksListHistory.size > 10)
-                tracksListHistory.subList(10,tracksListHistory.size).clear()
+            if(tracksListHistory.size > 10) {
+                tracksListHistory.subList(10, tracksListHistory.size).clear()
+            }
 //            ecs.notifyItemInserted(0)
         }
     }
@@ -152,7 +153,7 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             inputEditText.setText("")
             tracksList.clear()
-            tracksAdapter.notifyDataSetChanged()
+            tracksAdapterHistory.notifyDataSetChanged()
             closeKeyboard()
             showPlaceholder(true,"")
         }
