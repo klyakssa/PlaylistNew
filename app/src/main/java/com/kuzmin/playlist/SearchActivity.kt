@@ -115,9 +115,7 @@ class SearchActivity : AppCompatActivity() {
 //                Track("Sweet Child O'Mine", "Guns N' Roses", "5:03", "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"),
 //                Track("No Reply", "The Beatles", "5:12", "https://image/thumb/c4/fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"),
 //        )
-        recyclerViewTracksHistory.visibility =  View.GONE
-        textHistory.visibility =  View.GONE
-        clearHistoryButton.visibility =  View.GONE
+        showSearchHistory(inputEditText.text.toString())
 
         textHistory.text = getString(R.string.searchMessage)
 
@@ -135,11 +133,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         inputEditText.setOnFocusChangeListener { view, hasFocus ->
-            recyclerViewTracksHistory.visibility = if (hasFocus && inputEditText.text.isEmpty()) View.VISIBLE  else { View.GONE }
-            recyclerViewTracks.visibility = if (hasFocus && inputEditText.text.isEmpty()) View.GONE else View.VISIBLE
-            textHistory.visibility = if (hasFocus && inputEditText.text.isEmpty()) View.VISIBLE else View.GONE
-            clearHistoryButton.visibility = if (hasFocus && inputEditText.text.isEmpty()) View.VISIBLE else View.GONE
-            if(hasFocus && inputEditText.text.isEmpty())
+                showSearchHistory(inputEditText.text.toString())
                 tracksAdapterHistory.notifyDataSetChanged()
 
         }
@@ -148,6 +142,7 @@ class SearchActivity : AppCompatActivity() {
             tracksListHistory.clear()
             tracksAdapterHistory.notifyDataSetChanged()
             searchHistory.clearHistory()
+            showSearchHistory(inputEditText.text.toString())
         }
 
         clearButton.setOnClickListener {
@@ -156,6 +151,7 @@ class SearchActivity : AppCompatActivity() {
             tracksAdapterHistory.notifyDataSetChanged()
             closeKeyboard()
             showPlaceholder(true,"")
+            showSearchHistory(inputEditText.text.toString())
         }
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -177,10 +173,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
-                recyclerViewTracksHistory.visibility = if (inputEditText.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
-                recyclerViewTracks.visibility = if (inputEditText.hasFocus() && s?.isEmpty() == true) View.GONE  else View.VISIBLE
-                textHistory.visibility = if (inputEditText.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
-                clearHistoryButton.visibility = if (inputEditText.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                showSearchHistory(s.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -189,6 +182,20 @@ class SearchActivity : AppCompatActivity() {
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
+    }
+
+    private fun showSearchHistory(text: String) {
+        recyclerViewTracksHistory.visibility = if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
+        recyclerViewTracks.visibility = if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) View.GONE  else View.VISIBLE
+        textHistory.visibility = if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
+        clearHistoryButton.visibility = if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
+        if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) {
+            recyclerViewTracks.getRecycledViewPool().clear();
+            tracksAdapter.notifyDataSetChanged();
+        }else{
+            recyclerViewTracksHistory.getRecycledViewPool().clear();
+            tracksAdapterHistory.notifyDataSetChanged();
+        }
     }
 
 
