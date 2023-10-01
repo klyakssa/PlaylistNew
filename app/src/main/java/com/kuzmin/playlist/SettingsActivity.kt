@@ -4,13 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.kuzmin.playlist.Const.CONST
-import com.kuzmin.playlist.LibraryActivity
-import com.kuzmin.playlist.R
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -60,17 +58,17 @@ class SettingsActivity : AppCompatActivity() {
             }
             startActivity(webIntent)
         }
-        val sharedPrefs = getSharedPreferences(CONST.PLAYLIST_PREFERENCES.const, MODE_PRIVATE)
+        val sharedPrefs = getSharedPreferences(Const.PLAYLIST_PREFERENCES.const, MODE_PRIVATE)
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.switch1)
-        var theme = sharedPrefs.getBoolean(CONST.DARK_THEME_KEY.const, false)
+        var theme = sharedPrefs.getBoolean(Const.DARK_THEME_KEY.const, false)
 
         if(theme){
             themeSwitcher.isChecked = true
         }
 
         var listener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
-                theme = sharedPrefs.getBoolean(CONST.DARK_THEME_KEY.const, false)
+                theme = sharedPrefs.getBoolean(Const.DARK_THEME_KEY.const, false)
                 (applicationContext as App).switchTheme(theme)
         }
 
@@ -79,9 +77,8 @@ class SettingsActivity : AppCompatActivity() {
 
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
             sharedPrefs.edit()
-                .putBoolean(CONST.DARK_THEME_KEY.const, checked)
+                .putBoolean(Const.DARK_THEME_KEY.const, checked)
                 .apply()
-            //(applicationContext as App).switchTheme(checked)
         }
     }
 

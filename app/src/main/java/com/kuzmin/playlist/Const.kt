@@ -1,6 +1,6 @@
-package com.kuzmin.playlist.Const
+package com.kuzmin.playlist
 
-enum class CONST(val const: String) {
+enum class Const(val const: String) {
     PLAYLIST_PREFERENCES("playlist_preferences"),
     DARK_THEME_KEY("dark_theme"),
     SEARCH_HISTORY_KEY("search_history_key")
