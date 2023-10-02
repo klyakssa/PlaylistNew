@@ -48,11 +48,10 @@ class SearchActivity : AppCompatActivity() {
 
     private val tracksList = ArrayList<Track>()
     private val tracksAdapter = TracksListAdapter{_,it ->
-        if(!tracksListHistory.contains(it)){
-            tracksListHistory.add(0, it)
-            if(tracksListHistory.size > 10) {
-                tracksListHistory.subList(10, tracksListHistory.size).clear()
-            }
+        tracksListHistory.remove(it)
+        tracksListHistory.add(0, it)
+        if(tracksListHistory.size > 10) {
+            tracksListHistory.subList(10, tracksListHistory.size).clear()
         }
     }
 
