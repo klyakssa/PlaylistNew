@@ -1,6 +1,8 @@
 package com.kuzmin.playlist
 
 import android.content.Context
+import android.content.Intent
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -11,6 +13,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.kuzmin.playlist.iTunesAPI.TracksResponse
 import com.kuzmin.playlist.iTunesAPI.itunesApi
 import com.kuzmin.playlist.trackList.Track
@@ -41,7 +45,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(itunesBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setDateFormat("YYYY-MM-DD'T'hh:mm:ss").create()))
         .build()
 
     private val itunesService = retrofit.create(itunesApi::class.java)
@@ -53,6 +57,9 @@ class SearchActivity : AppCompatActivity() {
         if(tracksListHistory.size > 10) {
             tracksListHistory.subList(10, tracksListHistory.size).clear()
         }
+        val playerIntent = Intent(this, PlayerActivity::class.java)
+        playerIntent.putExtra( Const.TRACK_TO_ARRIVE.const, Gson().toJson(it));
+        startActivity(playerIntent)
     }
 
     private val tracksListHistory = ArrayList<Track>()
@@ -60,7 +67,9 @@ class SearchActivity : AppCompatActivity() {
         tracksListHistory.remove(it)
         tracksListHistory.add(0, it)
         adapter.notifyDataSetChanged()
-
+        val playerIntent = Intent(this, PlayerActivity::class.java)
+        playerIntent.putExtra( Const.TRACK_TO_ARRIVE.const, Gson().toJson(it));
+        startActivity(playerIntent)
     }
 
 
@@ -122,7 +131,7 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             inputEditText.setText("")
             tracksList.clear()
-            tracksAdapterHistory.notifyDataSetChanged()
+            tracksAdapter.notifyDataSetChanged()
             closeKeyboard()
             showPlaceholder(true,"")
             showSearchHistory(inputEditText.text.toString())

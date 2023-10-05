@@ -23,6 +23,7 @@ class SettingsActivity : AppCompatActivity() {
         btnBack.setOnClickListener {
             finish()
         }
+
         val message = getString(R.string.messageProfile)
         val sharing = findViewById<LinearLayout>(R.id.sharingProgram)
         sharing.setOnClickListener{
@@ -35,6 +36,7 @@ class SettingsActivity : AppCompatActivity() {
             val shareIntent = Intent.createChooser(sendIntent, null)
             startActivity(shareIntent)
         }
+
         val helping = findViewById<LinearLayout>(R.id.supportButton)
         helping.setOnClickListener{
             Intent().apply {
