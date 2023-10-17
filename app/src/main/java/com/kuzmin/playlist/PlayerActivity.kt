@@ -70,7 +70,7 @@ class PlayerActivity : AppCompatActivity() {
 
         runnable = object : Runnable {
             override fun run() {
-                binding.timeNow.text = SimpleDateFormat("m:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+                binding.timeNow.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
                 handler.postDelayed(this, TIME_DEBOUNCE_DELAY)
             }
         }

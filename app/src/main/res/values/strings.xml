@@ -23,7 +23,7 @@
     <string name="title_activity_player">PlayerActivity</string>
     <string name="testAlbum">Yesterday (Remastered 2009)</string>
     <string name="testArtist">The Beatles</string>
-    <string name="testTimeNow">0:00</string>
+    <string name="testTimeNow">00:00</string>
     <string name="testDuration">5:35</string>
     <string name="testYear">1965</string>
     <string name="testGenre">Rock</string>
