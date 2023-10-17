@@ -5,6 +5,8 @@ import android.content.Intent
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -39,13 +41,17 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var recyclerViewTracksHistory: RecyclerView
     private lateinit var searchHistory: SearchHistory
 
+    private val handler = Handler(Looper.getMainLooper())
+
+    private val searchRunnable = Runnable { getTracks()}
+
 
     private val itunesBaseUrl = "https://itunes.apple.com"
 
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(itunesBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setDateFormat("YYYY-MM-DD'T'hh:mm:ss").create()))
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setDateFormat("YYYY-MM-dd'T'hh:mm:ss").create()))
         .build()
 
     private val itunesService = retrofit.create(itunesApi::class.java)
@@ -71,6 +77,7 @@ class SearchActivity : AppCompatActivity() {
         playerIntent.putExtra( Const.TRACK_TO_ARRIVE.const, Gson().toJson(it));
         startActivity(playerIntent)
     }
+
 
 
 
@@ -139,7 +146,7 @@ class SearchActivity : AppCompatActivity() {
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                getTracks()
+                searchDebounce()
                 true
             }
             false
@@ -157,6 +164,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 showSearchHistory(s.toString())
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -165,6 +173,11 @@ class SearchActivity : AppCompatActivity() {
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     private fun showSearchHistory(text: String) {
@@ -272,5 +285,6 @@ class SearchActivity : AppCompatActivity() {
 
     private companion object {
         const val SEARCH = "SEARCH"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
