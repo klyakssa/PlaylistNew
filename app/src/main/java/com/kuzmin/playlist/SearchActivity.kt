@@ -46,6 +46,8 @@ class SearchActivity : AppCompatActivity() {
 
     private val searchRunnable = Runnable { getTracks()}
 
+    private var isClickAllowed = true
+
 
     private val itunesBaseUrl = "https://itunes.apple.com"
 
@@ -59,24 +61,28 @@ class SearchActivity : AppCompatActivity() {
 
     private val tracksList = ArrayList<Track>()
     private val tracksAdapter = TracksListAdapter{_,it ->
-        tracksListHistory.remove(it)
-        tracksListHistory.add(0, it)
-        if(tracksListHistory.size > 10) {
-            tracksListHistory.subList(10, tracksListHistory.size).clear()
+        if (clickDebounce()) {
+            tracksListHistory.remove(it)
+            tracksListHistory.add(0, it)
+            if (tracksListHistory.size > 10) {
+                tracksListHistory.subList(10, tracksListHistory.size).clear()
+            }
+            val playerIntent = Intent(this, PlayerActivity::class.java)
+            playerIntent.putExtra(Const.TRACK_TO_ARRIVE.const, Gson().toJson(it));
+            startActivity(playerIntent)
         }
-        val playerIntent = Intent(this, PlayerActivity::class.java)
-        playerIntent.putExtra( Const.TRACK_TO_ARRIVE.const, Gson().toJson(it));
-        startActivity(playerIntent)
     }
 
     private val tracksListHistory = ArrayList<Track>()
     private val tracksAdapterHistory = TracksListAdapter{ adapter,it ->
-        tracksListHistory.remove(it)
-        tracksListHistory.add(0, it)
-        adapter.notifyDataSetChanged()
-        val playerIntent = Intent(this, PlayerActivity::class.java)
-        playerIntent.putExtra( Const.TRACK_TO_ARRIVE.const, Gson().toJson(it));
-        startActivity(playerIntent)
+        if (clickDebounce()) {
+            tracksListHistory.remove(it)
+            tracksListHistory.add(0, it)
+            adapter.notifyDataSetChanged()
+            val playerIntent = Intent(this, PlayerActivity::class.java)
+            playerIntent.putExtra(Const.TRACK_TO_ARRIVE.const, Gson().toJson(it));
+            startActivity(playerIntent)
+        }
     }
 
 
@@ -175,6 +181,15 @@ class SearchActivity : AppCompatActivity() {
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
+    }
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 
     private fun searchDebounce() {
@@ -298,5 +313,6 @@ class SearchActivity : AppCompatActivity() {
     private companion object {
         const val SEARCH = "SEARCH"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
