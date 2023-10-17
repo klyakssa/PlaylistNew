@@ -40,6 +40,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var clearHistoryButton: Button
     private lateinit var recyclerViewTracksHistory: RecyclerView
     private lateinit var searchHistory: SearchHistory
+    private lateinit var progressBar: ProgressBar
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -94,6 +95,7 @@ class SearchActivity : AppCompatActivity() {
         placeholderImage = findViewById<TextView>(R.id.placeholderImage)
         placeholderMessage = findViewById<TextView>(R.id.textPlaceholderMessage)
         updateButton = findViewById<Button>(R.id.updateButton)
+        progressBar = findViewById<ProgressBar>(R.id.progressBar)
 
         placeholderImage.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
@@ -224,14 +226,23 @@ class SearchActivity : AppCompatActivity() {
 
     private fun getTracks() {
         if (inputEditText.text.isNotEmpty()) {
+
+            placeholderImage.visibility = View.GONE
+            placeholderMessage.visibility = View.GONE
+            recyclerViewTracks.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
+            updateButton.visibility = View.GONE
+
             itunesService.search(inputEditText.text.toString()).enqueue(object :
                 Callback<TracksResponse> {
                 override fun onResponse(call: Call<TracksResponse>,
                                         response: Response<TracksResponse>
                 ) {
+                    progressBar.visibility = View.GONE
                     if (response.code() == 200) {
                         tracksList.clear()
                         if (response.body()?.results?.isNotEmpty() == true) {
+                            recyclerViewTracks.visibility = View.VISIBLE
                             tracksList.addAll(response.body()?.results!!)
                             tracksAdapter.notifyDataSetChanged()
                         }
@@ -246,6 +257,7 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                    progressBar.visibility = View.GONE
                     showPlaceholder(false, getString(R.string.something_went_wrong))
                 }
 
