@@ -202,6 +202,9 @@ class SearchActivity : AppCompatActivity() {
         recyclerViewTracks.visibility = if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) View.GONE  else View.VISIBLE
         textHistory.visibility = if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
         clearHistoryButton.visibility = if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
+        updateButton.visibility = View.GONE
+        placeholderMessage.visibility = View.GONE
+        placeholderImage.visibility = View.GONE
         if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) {
             recyclerViewTracks.recycledViewPool.clear();
             tracksAdapter.notifyDataSetChanged();
