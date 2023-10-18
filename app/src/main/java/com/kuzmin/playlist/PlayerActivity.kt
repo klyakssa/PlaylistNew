@@ -17,6 +17,7 @@ import kotlinx.coroutines.handleCoroutineException
 import java.text.DateFormat
 import java.text.DateFormat.Field.YEAR
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
@@ -29,19 +30,24 @@ class PlayerActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
 
     private lateinit var runnable: Runnable
+
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
-        private const val TIME_DEBOUNCE_DELAY = 2000L
+        private const val TIME_DEBOUNCE_DELAY_MILLIS = 2000L
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        track = Gson().fromJson<Track>(intent.getStringExtra(Const.TRACK_TO_ARRIVE.const), Track::class.java)
+        track = Gson().fromJson<Track>(
+            intent.getStringExtra(Const.TRACK_TO_ARRIVE.const),
+            Track::class.java
+        )
 
         binding.back.setOnClickListener {
             finish()
@@ -50,15 +56,15 @@ class PlayerActivity : AppCompatActivity() {
         Glide.with(applicationContext)
             .load(track.getCoverArtwork())
             .fitCenter()
-            .transform(RoundedCorners(dpToPx(8f,applicationContext)))
+            .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_8dp)))//dpToPx(8f, applicationContext)
             .placeholder(R.drawable.ic_placeholder_player)
             .into(binding.cover)
 
         binding.album.text = track.collectionName
         binding.artist.text = track.artistName
-        binding.time.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime.toLong())
+        binding.time.text = DateTimeUtil.formatTime(track.trackTime.toLong())
         binding.albumToo.text = track.collectionName
-        binding.year.text = SimpleDateFormat("yyyy", Locale.getDefault()).format(track.releaseDate)
+        binding.year.text = DateTimeUtil.formatDate(track.releaseDate)
         binding.genre.text = track.primaryGenreName
         binding.country.text = track.country
 
@@ -70,30 +76,42 @@ class PlayerActivity : AppCompatActivity() {
 
         runnable = object : Runnable {
             override fun run() {
-                binding.timeNow.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
-                handler.postDelayed(this, TIME_DEBOUNCE_DELAY)
+                binding.timeNow.text = DateTimeUtil.formatTime(mediaPlayer.currentPosition)
+                handler.postDelayed(this, TIME_DEBOUNCE_DELAY_MILLIS)
             }
         }
-        handler.postDelayed(runnable,0)
     }
 
     private fun startPlayer() {
         mediaPlayer.start()
-        binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_pause_button, 0, 0, 0);
+        binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(
+            R.drawable.ic_pause_button,
+            0,
+            0,
+            0
+        );
         playerState = STATE_PLAYING
+        handler.postDelayed(runnable,TIME_DEBOUNCE_DELAY_MILLIS)
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
-        binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_play_button, 0, 0, 0);
+        binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(
+            R.drawable.ic_play_button,
+            0,
+            0,
+            0
+        );
         playerState = STATE_PAUSED
+        handler.removeCallbacks(runnable)
     }
 
     private fun playbackControl() {
-        when(playerState) {
+        when (playerState) {
             STATE_PLAYING -> {
                 pausePlayer()
             }
+
             STATE_PREPARED, STATE_PAUSED -> {
                 startPlayer()
             }
@@ -110,16 +128,31 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.setOnCompletionListener {
             handler.removeCallbacks(runnable)
             binding.timeNow.text = getString(R.string.testTimeNow)
-            binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_play_button, 0, 0, 0);
+            binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.ic_play_button,
+                0,
+                0,
+                0
+            );
             playerState = STATE_PREPARED
         }
     }
 
-    fun dpToPx(dp: Float, context: Context): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp,
-            context.resources.displayMetrics).toInt()
+    object DateTimeUtil {
+        private val dateFormat = SimpleDateFormat("yyyy", Locale.getDefault())
+        private val timeFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
+
+        fun formatDate(date: Date): String {
+            return dateFormat.format(date)
+        }
+
+        fun formatTime(time: Long): String {
+            return timeFormat.format(time)
+        }
+
+        fun formatTime(time: Int): String {
+            return timeFormat.format(time)
+        }
     }
 
     override fun onPause() {
@@ -130,6 +163,7 @@ class PlayerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()
+        handler.removeCallbacks(runnable)
     }
 
 }

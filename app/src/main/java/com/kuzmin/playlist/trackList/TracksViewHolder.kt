@@ -29,10 +29,6 @@ class TracksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         artistName.text = track.artistName
         timeSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime.toLong())
 
-//        trackItem.isClickable = true
-//        sourceImage.isClickable = false
-//        dotImage.isClickable = false
-
         Glide.with(itemView)
             .load(track.artworkUrl100)
             .fitCenter()

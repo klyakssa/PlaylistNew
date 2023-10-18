@@ -198,10 +198,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showSearchHistory(text: String) {
-        recyclerViewTracksHistory.visibility = if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
-        recyclerViewTracks.visibility = if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) View.GONE  else View.VISIBLE
-        textHistory.visibility = if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
-        clearHistoryButton.visibility = if (inputEditText.hasFocus() && text?.isEmpty() == true && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
+        recyclerViewTracksHistory.visibility = if (inputEditText.hasFocus() && text.isEmpty() && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
+        recyclerViewTracks.visibility = if (inputEditText.hasFocus() && text.isEmpty() && tracksListHistory.isNotEmpty()) View.GONE  else View.VISIBLE
+        textHistory.visibility = if (inputEditText.hasFocus() && text.isEmpty() && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
+        clearHistoryButton.visibility = if (inputEditText.hasFocus() && text.isEmpty() && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
         updateButton.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
         placeholderImage.visibility = View.GONE
