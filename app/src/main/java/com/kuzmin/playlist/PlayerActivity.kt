@@ -37,6 +37,8 @@ class PlayerActivity : AppCompatActivity() {
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
         private const val TIME_DEBOUNCE_DELAY_MILLIS = 1000L
+        private const val YEAR = "yyyy"
+        private const val MINUTES_SECONDS = "mm:ss"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,8 +143,8 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     object DateTimeUtil {
-        private val dateFormat = SimpleDateFormat("yyyy", Locale.getDefault())
-        private val timeFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
+        private val dateFormat = SimpleDateFormat(YEAR, Locale.getDefault())
+        private val timeFormat = SimpleDateFormat(MINUTES_SECONDS, Locale.getDefault())
 
         fun formatDate(date: Date): String {
             return dateFormat.format(date)
