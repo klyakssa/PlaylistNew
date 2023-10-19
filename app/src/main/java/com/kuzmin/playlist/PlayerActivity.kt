@@ -36,7 +36,7 @@ class PlayerActivity : AppCompatActivity() {
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
-        private const val TIME_DEBOUNCE_DELAY_MILLIS = 2000L
+        private const val TIME_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +83,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun startPlayer() {
+        //handler.post(runnable)
         mediaPlayer.start()
         binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(
             R.drawable.ic_pause_button,
@@ -91,11 +92,11 @@ class PlayerActivity : AppCompatActivity() {
             0
         );
         playerState = STATE_PLAYING
-        handler.postDelayed(runnable,TIME_DEBOUNCE_DELAY_MILLIS)
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
+        //handler.removeCallbacks(runnable)
         binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(
             R.drawable.ic_play_button,
             0,
@@ -103,16 +104,17 @@ class PlayerActivity : AppCompatActivity() {
             0
         );
         playerState = STATE_PAUSED
-        handler.removeCallbacks(runnable)
     }
 
     private fun playbackControl() {
         when (playerState) {
             STATE_PLAYING -> {
+                handler.removeCallbacks(runnable)
                 pausePlayer()
             }
 
             STATE_PREPARED, STATE_PAUSED -> {
+                handler.post(runnable)
                 startPlayer()
             }
         }
