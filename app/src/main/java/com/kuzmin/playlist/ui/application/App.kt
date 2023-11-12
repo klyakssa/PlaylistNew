@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.kuzmin.playlist.domain.model.Preferences
 import com.kuzmin.playlist.creator.Creator
-import com.kuzmin.playlist.domain.repository.PreferencesListener
 
 class App : Application() {
 

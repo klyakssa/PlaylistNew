@@ -4,16 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.switchmaterial.SwitchMaterial
-import com.kuzmin.playlist.ui.application.App
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.creator.Creator
-import com.kuzmin.playlist.databinding.ActivityPlayerBinding
 import com.kuzmin.playlist.databinding.ActivitySettingsBinding
-import com.kuzmin.playlist.domain.repository.PreferencesListener
 
 class SettingsActivity : AppCompatActivity() {
 

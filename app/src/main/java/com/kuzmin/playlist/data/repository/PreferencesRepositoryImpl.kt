@@ -1,10 +1,8 @@
 package com.kuzmin.playlist.data.repository
 
-import android.app.AlertDialog
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import com.kuzmin.playlist.domain.model.Preferences
-import com.kuzmin.playlist.domain.repository.PreferencesListener
 import com.kuzmin.playlist.domain.repository.PreferencesRepository
 
 class PreferencesRepositoryImpl(
@@ -26,12 +24,4 @@ class PreferencesRepositoryImpl(
             }
         )
     }
-
-    override fun setListener(listener: PreferencesListener) {
-        sp.registerOnSharedPreferenceChangeListener { _, _ ->
-            listener.setChangePreferencesListener(getThemeFromPreferences())
-            //(Creator.application as App).switchTheme(getThemeFromPreferences())
-        }
-    }
-
 }
