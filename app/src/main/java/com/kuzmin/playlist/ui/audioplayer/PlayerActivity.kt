@@ -8,12 +8,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.kuzmin.playlist.domain.model.Preferences
-import com.kuzmin.playlist.presentation.mapper.DateTimeUtil
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.creator.Creator
 import com.kuzmin.playlist.databinding.ActivityPlayerBinding
 import com.kuzmin.playlist.domain.repository.MediaPlayerListener
 import com.kuzmin.playlist.presentation.mapper.ArtworkMapper
+import com.kuzmin.playlist.presentation.mapper.DateTimeMapper
 import com.kuzmin.playlist.presentation.model.TrackPlayerInfo
 
 class PlayerActivity : AppCompatActivity() {
@@ -46,9 +46,9 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.album.text = track.collectionName
         binding.artist.text = track.artistName
-        binding.time.text = DateTimeUtil.formatTime(track.trackTime.toLong())
+        binding.time.text = DateTimeMapper.formatTime(track.trackTime.toLong())
         binding.albumToo.text = track.collectionName
-        binding.year.text = DateTimeUtil.formatDate(track.releaseDate)
+        binding.year.text = DateTimeMapper.formatDate(track.releaseDate)
         binding.genre.text = track.primaryGenreName
         binding.country.text = track.country
         track.previewUrl
@@ -89,7 +89,7 @@ class PlayerActivity : AppCompatActivity() {
             }
 
             override fun currentTimeMusic(timeInt: Int) {
-                binding.timeNow.text = DateTimeUtil.formatTime(timeInt)
+                binding.timeNow.text = DateTimeMapper.formatTime(timeInt)
             }
         }
         )

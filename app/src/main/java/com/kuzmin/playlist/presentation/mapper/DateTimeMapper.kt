@@ -4,14 +4,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
-object Time{
-    const val YEAR = "yyyy"
-    const val MINUTES_SECONDS = "mm:ss"
-}
-object DateTimeUtil {
-    private val dateFormat = SimpleDateFormat(Time.YEAR, Locale.getDefault())
-    private val timeFormat = SimpleDateFormat(Time.MINUTES_SECONDS, Locale.getDefault())
+object DateTimeMapper {
+    private const val YEAR = "yyyy"
+    private const val MINUTES_SECONDS = "mm:ss"
+    private val dateFormat = SimpleDateFormat(YEAR, Locale.getDefault())
+    private val timeFormat = SimpleDateFormat(MINUTES_SECONDS, Locale.getDefault())
 
     fun formatDate(date: Date): String {
         return dateFormat.format(date)
