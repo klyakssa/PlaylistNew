@@ -1,14 +1,15 @@
-package com.kuzmin.playlist.trackList
+package com.kuzmin.playlist.ui.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kuzmin.playlist.R
+import com.kuzmin.playlist.String
 import java.util.*
 
 class TracksListAdapter(val clickListener: TrackClickListener) : RecyclerView.Adapter<TracksViewHolder> () {
 
-    var data = ArrayList<Track>()
+    var data = ArrayList<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TracksViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_item, parent, false)
@@ -27,7 +28,7 @@ class TracksListAdapter(val clickListener: TrackClickListener) : RecyclerView.Ad
     }
 
     fun interface TrackClickListener {
-        fun onLocationClick(adapter: TracksListAdapter,track: Track)
+        fun onLocationClick(adapter: TracksListAdapter, track: String)
     }
 
 }

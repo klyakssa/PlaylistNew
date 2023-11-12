@@ -1,4 +1,4 @@
-package com.kuzmin.playlist.trackList
+package com.kuzmin.playlist.ui.search
 
 import android.content.Context
 import android.util.TypedValue
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.kuzmin.playlist.R
+import com.kuzmin.playlist.String
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,7 +24,7 @@ class TracksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val sourceImage: ImageView = itemView.findViewById(R.id.sourceImage)
     private val dotImage: ImageView = itemView.findViewById(R.id.dotImage)
 
-    fun bind(track: Track) {
+    fun bind(track: String) {
         val sb = StringBuilder()
         titleTrack.text = track.trackName
         artistName.text = track.artistName

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:theme="@style/Theme.Playlist"
     android:background="?attr/colorPrimary"
-    tools:context=".MainActivity"
+    tools:context=".ui.main.MainActivity"
     android:padding="@dimen/padding_20dp">
 
 

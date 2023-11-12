@@ -1,8 +1,7 @@
-package com.kuzmin.playlist
+package com.kuzmin.playlist.ui.search
 
 import android.content.Context
 import android.content.Intent
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -17,10 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.kuzmin.playlist.iTunesAPI.TracksResponse
-import com.kuzmin.playlist.iTunesAPI.itunesApi
-import com.kuzmin.playlist.trackList.Track
-import com.kuzmin.playlist.trackList.TracksListAdapter
+import com.kuzmin.playlist.domain.model.Preferences
+import com.kuzmin.playlist.ui.audioplayer.PlayerActivity
+import com.kuzmin.playlist.R
+import com.kuzmin.playlist.SearchHistory
+import com.kuzmin.playlist.String
+import com.kuzmin.playlist.TracksResponse
+import com.kuzmin.playlist.itunesApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,7 +30,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.collections.ArrayList
 
-class SearchActivity : AppCompatActivity() {
+class TracksSearchActivity : AppCompatActivity() {
 
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
@@ -59,7 +61,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val itunesService = retrofit.create(itunesApi::class.java)
 
-    private val tracksList = ArrayList<Track>()
+    private val tracksList = ArrayList<String>()
     private val tracksAdapter = TracksListAdapter{_,it ->
         if (clickDebounce()) {
             tracksListHistory.remove(it)
@@ -68,19 +70,19 @@ class SearchActivity : AppCompatActivity() {
                 tracksListHistory.subList(10, tracksListHistory.size).clear()
             }
             val playerIntent = Intent(this, PlayerActivity::class.java)
-            playerIntent.putExtra(Const.TRACK_TO_ARRIVE.const, Gson().toJson(it));
+            playerIntent.putExtra(Preferences.TRACK_TO_ARRIVE.pref, Gson().toJson(it));
             startActivity(playerIntent)
         }
     }
 
-    private val tracksListHistory = ArrayList<Track>()
-    private val tracksAdapterHistory = TracksListAdapter{ adapter,it ->
+    private val tracksListHistory = ArrayList<String>()
+    private val tracksAdapterHistory = TracksListAdapter{ adapter, it ->
         if (clickDebounce()) {
             tracksListHistory.remove(it)
             tracksListHistory.add(0, it)
             adapter.notifyDataSetChanged()
             val playerIntent = Intent(this, PlayerActivity::class.java)
-            playerIntent.putExtra(Const.TRACK_TO_ARRIVE.const, Gson().toJson(it));
+            playerIntent.putExtra(Preferences.TRACK_TO_ARRIVE.pref, Gson().toJson(it));
             startActivity(playerIntent)
         }
     }
@@ -92,23 +94,18 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val sharedPrefs = getSharedPreferences(Const.PLAYLIST_PREFERENCES.const, MODE_PRIVATE)
+        val sharedPrefs = getSharedPreferences(Preferences.PLAYLIST_PREFERENCES.pref, MODE_PRIVATE)
         searchHistory = SearchHistory(sharedPrefs)
-
         inputEditText = findViewById<EditText>(R.id.inputEditText)
-
         clearButton = findViewById<ImageView>(R.id.clearIcon)
         placeholderImage = findViewById<TextView>(R.id.placeholderImage)
         placeholderMessage = findViewById<TextView>(R.id.textPlaceholderMessage)
         updateButton = findViewById<Button>(R.id.updateButton)
         progressBar = findViewById<ProgressBar>(R.id.progressBar)
-
         placeholderImage.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
         updateButton.visibility = View.GONE
-
         recyclerViewTracks = findViewById<RecyclerView>(R.id.tracksList)
-
         recyclerViewTracksHistory = findViewById<RecyclerView>(R.id.tracksListHistory)
         textHistory = findViewById<TextView>(R.id.textHistory)
         clearHistoryButton = findViewById<Button>(R.id.clearHistoryButton)
@@ -133,7 +130,6 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setOnFocusChangeListener { view, hasFocus ->
                 showSearchHistory(inputEditText.text.toString())
                 tracksAdapterHistory.notifyDataSetChanged()
-
         }
 
         clearHistoryButton.setOnClickListener {
@@ -197,7 +193,7 @@ class SearchActivity : AppCompatActivity() {
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
-    private fun showSearchHistory(text: String) {
+    private fun showSearchHistory(text: kotlin.String) {
         recyclerViewTracksHistory.visibility = if (inputEditText.hasFocus() && text.isEmpty() && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
         recyclerViewTracks.visibility = if (inputEditText.hasFocus() && text.isEmpty() && tracksListHistory.isNotEmpty()) View.GONE  else View.VISIBLE
         textHistory.visibility = if (inputEditText.hasFocus() && text.isEmpty() && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
@@ -215,7 +211,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    private fun showPlaceholder(isEthernet: Boolean, text: String) {
+    private fun showPlaceholder(isEthernet: Boolean, text: kotlin.String) {
         if(text.isNotEmpty()) {
             if (isEthernet) {
                 updateButton.visibility = View.GONE
