@@ -1,6 +1,4 @@
-package com.kuzmin.playlist.domain.repository
-
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+package com.kuzmin.playlist.domain.repository.preferences
 
 interface PreferencesRepository {
     fun getThemeFromPreferences() : Boolean

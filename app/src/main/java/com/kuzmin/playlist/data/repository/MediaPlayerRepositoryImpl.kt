@@ -3,10 +3,7 @@ package com.kuzmin.playlist.data.repository
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
-import com.kuzmin.playlist.domain.repository.MediaPlayerListener
-import com.kuzmin.playlist.domain.repository.MediaPlayerRepository
-import com.kuzmin.playlist.presentation.mapper.DateTimeUtil
-import com.kuzmin.playlist.ui.audioplayer.PlayerActivity
+import com.kuzmin.playlist.domain.repository.mediaplayer.MediaPlayerRepository
 
 class MediaPlayerRepositoryImpl: MediaPlayerRepository {
     private var mediaPlayer = MediaPlayer()
@@ -14,7 +11,7 @@ class MediaPlayerRepositoryImpl: MediaPlayerRepository {
     private val handler = Handler(Looper.getMainLooper())
 
     private lateinit var runnable: Runnable
-    private lateinit var listener: MediaPlayerListener
+    private lateinit var listener: MediaPlayerRepository.MediaPlayerListener
 
     companion object {
         private const val STATE_DEFAULT = 0
@@ -23,7 +20,7 @@ class MediaPlayerRepositoryImpl: MediaPlayerRepository {
         private const val STATE_PAUSED = 3
         private const val TIME_DEBOUNCE_DELAY_MILLIS = 1000L
     }
-    override fun initPreparePlayer(previewUrl: String, listener: MediaPlayerListener) {
+    override fun initPreparePlayer(previewUrl: String, listener: MediaPlayerRepository.MediaPlayerListener) {
         mediaPlayer.setDataSource(previewUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {

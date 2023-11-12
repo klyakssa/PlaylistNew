@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorOnPrimary"
     android:theme="@style/Theme.Playlist"
-    tools:context=".ui.audioplayer.PlayerActivity">
+    tools:context=".presentation.audioplayer.PlayerActivity">
 
 
     <TextView

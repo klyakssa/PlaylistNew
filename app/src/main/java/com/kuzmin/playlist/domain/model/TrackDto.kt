@@ -1,4 +1,4 @@
-package com.kuzmin.playlist
+package com.kuzmin.playlist.domain.model
 
 import com.google.gson.annotations.SerializedName
 import java.util.Date
@@ -15,6 +15,3 @@ data class TrackDto(@SerializedName("trackId")val trackId: String, // Назва
                     @SerializedName("country")val country: String,
                     @SerializedName("previewUrl") val previewUrl: String
 )
-{
-    fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
-}

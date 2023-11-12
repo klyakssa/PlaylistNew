@@ -1,8 +1,6 @@
-package com.kuzmin.playlist.ui.audioplayer
+package com.kuzmin.playlist.presentation.audioplayer
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -11,16 +9,16 @@ import com.kuzmin.playlist.domain.model.Preferences
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.creator.Creator
 import com.kuzmin.playlist.databinding.ActivityPlayerBinding
-import com.kuzmin.playlist.domain.repository.MediaPlayerListener
+import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.domain.repository.mediaplayer.MediaPlayerRepository
 import com.kuzmin.playlist.presentation.mapper.ArtworkMapper
 import com.kuzmin.playlist.presentation.mapper.DateTimeMapper
-import com.kuzmin.playlist.presentation.model.TrackPlayerInfo
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
-    private lateinit var track: TrackPlayerInfo
+    private lateinit var track: TrackDto
 
-    private val workWithMediaPlayerUseCase = Creator.provideWorkWithMediaPlayerUseCase()
+    private val workWithMediaPlayerUseCase = Creator.provideMediaPlayerInteraction()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,9 +26,9 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        track = Gson().fromJson<TrackPlayerInfo>(
+        track = Gson().fromJson<TrackDto>(
             intent.getStringExtra(Preferences.TRACK_TO_ARRIVE.pref),
-            TrackPlayerInfo::class.java
+            TrackDto::class.java
         )
 
         binding.back.setOnClickListener {
@@ -51,11 +49,10 @@ class PlayerActivity : AppCompatActivity() {
         binding.year.text = DateTimeMapper.formatDate(track.releaseDate)
         binding.genre.text = track.primaryGenreName
         binding.country.text = track.country
-        track.previewUrl
         //preparePlayer()
-        workWithMediaPlayerUseCase.playerPrepare(
+        workWithMediaPlayerUseCase.initPreparePlayer(
             previewUrl = track.previewUrl,
-            listener = object : MediaPlayerListener {
+            listener = object : MediaPlayerRepository.MediaPlayerListener {
             override fun preparedPlayer() {
                 binding.buttonPlay.isEnabled = true
             }
@@ -103,12 +100,12 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        workWithMediaPlayerUseCase.hardPauseToPlayer()
+        workWithMediaPlayerUseCase.pauseMediaPlayer()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        workWithMediaPlayerUseCase.releasePlayer()
+        workWithMediaPlayerUseCase.releseMediaPlayer()
     }
 
 }

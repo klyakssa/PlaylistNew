@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".ui.application.App"
+        android:name=".presentation.application.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -17,20 +17,20 @@
         android:theme="@style/Theme.Playlist"
         tools:targetApi="31" >
         <activity
-            android:name=".ui.audioplayer.PlayerActivity"
+            android:name=".presentation.audioplayer.PlayerActivity"
             android:exported="false"/>
         <activity
-            android:name=".ui.library.LibraryActivity"
+            android:name=".presentation.library.LibraryActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.search.TracksSearchActivity"
+            android:name=".presentation.search.TracksSearchActivity"
             android:exported="false" />
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:exported="false" >
         </activity>
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

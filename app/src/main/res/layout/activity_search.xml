@@ -7,7 +7,7 @@
     android:theme="@style/Theme.Playlist"
     android:background="?attr/colorOnPrimary"
     android:orientation="vertical"
-    tools:context=".ui.search.TracksSearchActivity">
+    tools:context=".presentation.search.TracksSearchActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

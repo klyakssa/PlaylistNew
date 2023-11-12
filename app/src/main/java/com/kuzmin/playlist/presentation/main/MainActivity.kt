@@ -1,4 +1,4 @@
-package com.kuzmin.playlist.ui.main
+package com.kuzmin.playlist.presentation.main
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import com.kuzmin.playlist.R
-import com.kuzmin.playlist.ui.library.LibraryActivity
-import com.kuzmin.playlist.ui.search.TracksSearchActivity
+import com.kuzmin.playlist.presentation.library.LibraryActivity
+import com.kuzmin.playlist.presentation.search.TracksSearchActivity
 import com.kuzmin.playlist.ui.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {

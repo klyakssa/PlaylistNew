@@ -3,7 +3,7 @@ package com.kuzmin.playlist.data.repository
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import com.kuzmin.playlist.domain.model.Preferences
-import com.kuzmin.playlist.domain.repository.PreferencesRepository
+import com.kuzmin.playlist.domain.repository.preferences.PreferencesRepository
 
 class PreferencesRepositoryImpl(
     private val sp: SharedPreferences

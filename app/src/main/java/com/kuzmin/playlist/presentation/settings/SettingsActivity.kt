@@ -8,10 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.creator.Creator
 import com.kuzmin.playlist.databinding.ActivitySettingsBinding
+import com.kuzmin.playlist.domain.iterators.preferences.PreferencesIteractor
+import com.kuzmin.playlist.domain.model.Preferences
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
+    private lateinit var workWithPreferences: PreferencesIteractor
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,9 +25,11 @@ class SettingsActivity : AppCompatActivity() {
         binding.back.setOnClickListener {
             finish()
         }
-
+        workWithPreferences = Creator.providePreferencesInteraction(getSharedPreferences(
+            Preferences.PLAYLIST_PREFERENCES.pref, MODE_PRIVATE
+        ))
         binding.switch1.setOnCheckedChangeListener { switcher, checked ->
-            Creator.workWithPreferencesUseCase.setTheme(checked)
+            workWithPreferences.setThemeToPreferences(checked)
         }
 
         val message = getString(R.string.messageProfile)
@@ -56,6 +61,6 @@ class SettingsActivity : AppCompatActivity() {
             }
             startActivity(webIntent)
         }
-        binding.switch1.isChecked = Creator.workWithPreferencesUseCase.getTheme()
+        binding.switch1.isChecked = workWithPreferences.getThemeFromPreferences()
     }
 }

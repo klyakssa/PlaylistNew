@@ -1,4 +1,4 @@
-package com.kuzmin.playlist.ui.search
+package com.kuzmin.playlist.presentation.search
 
 import android.content.Context
 import android.content.Intent
@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.kuzmin.playlist.domain.model.Preferences
-import com.kuzmin.playlist.ui.audioplayer.PlayerActivity
+import com.kuzmin.playlist.presentation.audioplayer.PlayerActivity
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.SearchHistory
-import com.kuzmin.playlist.String
+import com.kuzmin.playlist.domain.model.TrackDto
 import com.kuzmin.playlist.TracksResponse
 import com.kuzmin.playlist.itunesApi
 import retrofit2.Call
@@ -61,7 +61,7 @@ class TracksSearchActivity : AppCompatActivity() {
 
     private val itunesService = retrofit.create(itunesApi::class.java)
 
-    private val tracksList = ArrayList<String>()
+    private val tracksList = ArrayList<TrackDto>()
     private val tracksAdapter = TracksListAdapter{_,it ->
         if (clickDebounce()) {
             tracksListHistory.remove(it)
@@ -75,7 +75,7 @@ class TracksSearchActivity : AppCompatActivity() {
         }
     }
 
-    private val tracksListHistory = ArrayList<String>()
+    private val tracksListHistory = ArrayList<TrackDto>()
     private val tracksAdapterHistory = TracksListAdapter{ adapter, it ->
         if (clickDebounce()) {
             tracksListHistory.remove(it)

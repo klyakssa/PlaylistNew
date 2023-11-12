@@ -1,31 +1,28 @@
 package com.kuzmin.playlist.creator
 
-import android.app.Application
 import android.content.SharedPreferences
-import android.media.MediaPlayer
 import com.kuzmin.playlist.data.repository.MediaPlayerRepositoryImpl
 import com.kuzmin.playlist.data.repository.PreferencesRepositoryImpl
-import com.kuzmin.playlist.domain.repository.MediaPlayerRepository
-import com.kuzmin.playlist.domain.repository.PreferencesRepository
-import com.kuzmin.playlist.domain.use_case.WorkWithMediaPlayerUseCase
-import com.kuzmin.playlist.domain.use_case.WorkWithPreferencesUseCase
+import com.kuzmin.playlist.domain.iterators.mediaplayer.MediaPlayerIteractor
+import com.kuzmin.playlist.domain.repository.mediaplayer.MediaPlayerRepository
+import com.kuzmin.playlist.domain.impl.mediaplayer.MediaPlayerInteractionImpl
+import com.kuzmin.playlist.domain.impl.preferences.PreferencesInteractionImpl
+import com.kuzmin.playlist.domain.iterators.preferences.PreferencesIteractor
+import com.kuzmin.playlist.domain.repository.preferences.PreferencesRepository
 
 object Creator {
-    lateinit var workWithPreferencesUseCase: WorkWithPreferencesUseCase
-
-    fun initPreferences(sp: SharedPreferences){
-       this.workWithPreferencesUseCase = WorkWithPreferencesUseCase(providePreferencesRepository(sp))
-    }
-
-    private fun providePreferencesRepository(sp: SharedPreferences): PreferencesRepository {
-        return PreferencesRepositoryImpl(sp)
-    }
-
-    fun provideWorkWithMediaPlayerUseCase(): WorkWithMediaPlayerUseCase{
-        return WorkWithMediaPlayerUseCase(provideMediaPlayerRepository())
-    }
-
-    private fun provideMediaPlayerRepository(): MediaPlayerRepository {
+    private fun getMediaPlayerRepository(): MediaPlayerRepository {
         return MediaPlayerRepositoryImpl()
     }
+    fun provideMediaPlayerInteraction(): MediaPlayerIteractor {
+        return MediaPlayerInteractionImpl(getMediaPlayerRepository())
+    }
+    private fun getPreferencesRepository(sp: SharedPreferences): PreferencesRepository {
+        return PreferencesRepositoryImpl(sp)
+    }
+    fun providePreferencesInteraction(sp: SharedPreferences): PreferencesIteractor {
+        return PreferencesInteractionImpl(getPreferencesRepository(sp))
+    }
+
+
 }

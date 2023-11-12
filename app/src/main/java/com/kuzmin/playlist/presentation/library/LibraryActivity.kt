@@ -1,4 +1,4 @@
-package com.kuzmin.playlist.ui.library
+package com.kuzmin.playlist.presentation.library
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
