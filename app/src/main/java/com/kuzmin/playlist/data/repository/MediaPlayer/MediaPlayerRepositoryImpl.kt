@@ -1,4 +1,4 @@
-package com.kuzmin.playlist.data.repository
+package com.kuzmin.playlist.data.repository.MediaPlayer
 
 import android.media.MediaPlayer
 import android.os.Handler

@@ -1,4 +1,4 @@
-package com.kuzmin.playlist.data.repository
+package com.kuzmin.playlist.data.repository.Preferences
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate

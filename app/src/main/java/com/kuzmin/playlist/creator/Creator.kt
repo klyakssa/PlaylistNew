@@ -1,8 +1,8 @@
 package com.kuzmin.playlist.creator
 
 import android.content.SharedPreferences
-import com.kuzmin.playlist.data.repository.MediaPlayerRepositoryImpl
-import com.kuzmin.playlist.data.repository.PreferencesRepositoryImpl
+import com.kuzmin.playlist.data.repository.MediaPlayer.MediaPlayerRepositoryImpl
+import com.kuzmin.playlist.data.repository.Preferences.PreferencesRepositoryImpl
 import com.kuzmin.playlist.domain.iterators.mediaplayer.MediaPlayerIteractor
 import com.kuzmin.playlist.domain.repository.mediaplayer.MediaPlayerRepository
 import com.kuzmin.playlist.domain.impl.mediaplayer.MediaPlayerInteractionImpl
