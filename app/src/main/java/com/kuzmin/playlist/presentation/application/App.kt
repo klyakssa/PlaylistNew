@@ -11,7 +11,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val workWithPreferencesUseCase = Creator.providePreferencesInteraction(getSharedPreferences(Preferences.PLAYLIST_PREFERENCES.pref, MODE_PRIVATE))
+        val workWithPreferencesUseCase = Creator.providePreferencesThemeInteraction(getSharedPreferences(Preferences.PLAYLIST_PREFERENCES.pref, MODE_PRIVATE))
         val currentNightMode = baseContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
             workWithPreferencesUseCase.setThemeToPreferences(true)

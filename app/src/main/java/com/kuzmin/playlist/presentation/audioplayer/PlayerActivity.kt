@@ -10,7 +10,7 @@ import com.kuzmin.playlist.R
 import com.kuzmin.playlist.creator.Creator
 import com.kuzmin.playlist.databinding.ActivityPlayerBinding
 import com.kuzmin.playlist.domain.model.TrackDto
-import com.kuzmin.playlist.domain.repository.mediaplayer.MediaPlayerRepository
+import com.kuzmin.playlist.domain.mediaplayer.repository.MediaPlayerRepository
 import com.kuzmin.playlist.presentation.mapper.ArtworkMapper
 import com.kuzmin.playlist.presentation.mapper.DateTimeMapper
 
@@ -18,7 +18,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var track: TrackDto
 
-    private val workWithMediaPlayerUseCase = Creator.provideMediaPlayerInteraction()
+    private val workWithMediaPlayer = Creator.provideMediaPlayerInteraction()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,13 +50,12 @@ class PlayerActivity : AppCompatActivity() {
         binding.genre.text = track.primaryGenreName
         binding.country.text = track.country
         //preparePlayer()
-        workWithMediaPlayerUseCase.initPreparePlayer(
+        workWithMediaPlayer.initPreparePlayer(
             previewUrl = track.previewUrl,
             listener = object : MediaPlayerRepository.MediaPlayerListener {
             override fun preparedPlayer() {
                 binding.buttonPlay.isEnabled = true
             }
-
             override fun completionPlayer() {
                 binding.timeNow.text = getString(R.string.testTimeNow)
                 binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(
@@ -66,7 +65,6 @@ class PlayerActivity : AppCompatActivity() {
                     0
                 )
             }
-
             override fun startPlayer() {
                 binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_pause_button,
@@ -75,7 +73,6 @@ class PlayerActivity : AppCompatActivity() {
                     0
                 )
             }
-
             override fun pausePlayer() {
                 binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_play_button,
@@ -84,7 +81,6 @@ class PlayerActivity : AppCompatActivity() {
                     0
                 )
             }
-
             override fun currentTimeMusic(timeInt: Int) {
                 binding.timeNow.text = DateTimeMapper.formatTime(timeInt)
             }
@@ -92,7 +88,7 @@ class PlayerActivity : AppCompatActivity() {
         )
 
         binding.buttonPlay.setOnClickListener {
-            workWithMediaPlayerUseCase.playStartControl()
+            workWithMediaPlayer.playStartControl()
         }
 
     }
@@ -100,12 +96,12 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        workWithMediaPlayerUseCase.pauseMediaPlayer()
+        workWithMediaPlayer.pauseMediaPlayer()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        workWithMediaPlayerUseCase.releseMediaPlayer()
+        workWithMediaPlayer.releseMediaPlayer()
     }
 
 }

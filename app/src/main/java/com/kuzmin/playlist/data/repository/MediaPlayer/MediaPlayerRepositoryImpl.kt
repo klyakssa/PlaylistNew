@@ -3,7 +3,7 @@ package com.kuzmin.playlist.data.repository.MediaPlayer
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
-import com.kuzmin.playlist.domain.repository.mediaplayer.MediaPlayerRepository
+import com.kuzmin.playlist.domain.mediaplayer.repository.MediaPlayerRepository
 
 class MediaPlayerRepositoryImpl: MediaPlayerRepository {
     private var mediaPlayer = MediaPlayer()
