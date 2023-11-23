@@ -23,6 +23,10 @@ import com.kuzmin.playlist.domain.searchTracksByName.repository.TracksListReposi
 import com.kuzmin.playlist.domain.searchTracksByName.use_case.GetTracksUseCaseImpl
 
 object Creator {
+    lateinit var app: Context
+    fun initApp(context: Context){
+        app = context
+    }
     private fun getMediaPlayerRepository(): MediaPlayerRepository {
         return MediaPlayerRepositoryImpl()
     }

@@ -8,26 +8,25 @@ import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.creator.Creator
-import com.kuzmin.playlist.domain.model.Preferences
-import com.kuzmin.playlist.domain.model.Preferences.*
+import com.kuzmin.playlist.data.model.Preferences.*
 import com.kuzmin.playlist.domain.model.TrackDto
 import com.kuzmin.playlist.domain.preferencesSearchHistory.iteractors.PreferencesSearchHistoryIteractor
+import com.kuzmin.playlist.domain.searchTracksByName.api.GetTracksUseCase
 import com.kuzmin.playlist.domain.searchTracksByName.consumer.Consumer
-import com.kuzmin.playlist.domain.searchTracksByName.consumer.ConsumerData
 import com.kuzmin.playlist.presentation.application.App
 import com.kuzmin.playlist.presentation.search.model.TracksState
-import java.security.PrivateKey
 
 class TracksSearchViewModel(
-    application: Application,
     private val searchHistory: PreferencesSearchHistoryIteractor,
-) : AndroidViewModel(application) {
+    private val tracksInteractor: GetTracksUseCase
+) : ViewModel() {
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
@@ -37,16 +36,15 @@ class TracksSearchViewModel(
                 val searchHistory = Creator.providePreferencesSearchHistoryInteraction((this[APPLICATION_KEY] as App).getSharedPreferences(
                     PLAYLIST_PREFERENCES.pref, MODE_PRIVATE
                 ))
+                val tracksInteractor = Creator.provideGetTracksListUseCase((this[APPLICATION_KEY] as App))
                 TracksSearchViewModel(
-                    this[APPLICATION_KEY] as App,
                     searchHistory,
+                    tracksInteractor
                 )
             }
         }
     }
 
-
-    private val tracksInteractor = Creator.provideGetTracksListUseCase(getApplication())
     private val handler = Handler(Looper.getMainLooper())
 
     private val stateLiveData = MutableLiveData<TracksState>()
@@ -93,14 +91,14 @@ class TracksSearchViewModel(
                         errorMessage != null -> {
                             renderState(
                                 TracksState.Error(
-                                    errorMessage = getApplication<App>().getString(R.string.something_went_wrong),
+                                    errorMessage = Creator.app.getString(R.string.something_went_wrong),
                                 )
                             )
                         }
                         movies.isEmpty() -> {
                             renderState(
                                 TracksState.Empty(
-                                    message = getApplication<Application>().getString(R.string.nothing_found),
+                                    message = Creator.app.getString(R.string.nothing_found),
                                 )
                             )
                         }

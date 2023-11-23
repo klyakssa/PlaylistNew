@@ -6,19 +6,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
-import com.kuzmin.playlist.domain.model.Preferences
+import com.kuzmin.playlist.data.model.Preferences
 import com.kuzmin.playlist.R
-import com.kuzmin.playlist.creator.Creator
 import com.kuzmin.playlist.databinding.ActivityPlayerBinding
 import com.kuzmin.playlist.domain.model.TrackDto
-import com.kuzmin.playlist.domain.mediaplayer.repository.MediaPlayerRepository
-import com.kuzmin.playlist.presentation.application.App
 import com.kuzmin.playlist.presentation.audioplayer.model.PlayerState
 import com.kuzmin.playlist.presentation.audioplayer.view_model.PlayerViewModel
 import com.kuzmin.playlist.presentation.mapper.ArtworkMapper
 import com.kuzmin.playlist.presentation.mapper.DateTimeMapper
-import com.kuzmin.playlist.presentation.search.model.TracksState
-import com.kuzmin.playlist.presentation.settings.view_model.SettingsViewModel
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding

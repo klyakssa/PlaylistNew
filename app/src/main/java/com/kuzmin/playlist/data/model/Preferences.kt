@@ -1,4 +1,4 @@
-package com.kuzmin.playlist.domain.model
+package com.kuzmin.playlist.data.model
 
 enum class Preferences(val pref: String) {
     PLAYLIST_PREFERENCES("playlist_preferences"),

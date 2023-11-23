@@ -5,8 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import com.kuzmin.playlist.R
-import com.kuzmin.playlist.domain.model.Preferences
+import com.kuzmin.playlist.data.model.Preferences
 import com.kuzmin.playlist.creator.Creator
 import com.kuzmin.playlist.data.repository.PreferencesTheme.PreferencesThemeRepositoryImpl
 import com.kuzmin.playlist.data.repository.share.ExternalNavigatorImpl
@@ -22,6 +21,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Creator.initApp(baseContext)
         val workWithPreferencesUseCase = providePreferencesThemeInteraction()
         val currentNightMode = baseContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
@@ -46,13 +46,14 @@ class App : Application() {
         return PreferencesThemeRepositoryImpl(sp)
     }
     fun providePreferencesThemeInteraction(): PreferencesThemeIteractor {
-        return PreferencesThemeInteractionImpl(getPreferencesThemeRepository(getSharedPreferences(Preferences.PLAYLIST_PREFERENCES.pref, MODE_PRIVATE)))
+        return PreferencesThemeInteractionImpl(getPreferencesThemeRepository(getSharedPreferences(
+            Preferences.PLAYLIST_PREFERENCES.pref, MODE_PRIVATE)))
     }
 
     private fun getExternalNavigator(): ExternalNavigator {
         return ExternalNavigatorImpl()
     }
-    fun provideShareInteraction(context: Context): SharingInteractor {
-        return SharingInteractorImpl(getExternalNavigator(), context)
+    fun provideShareInteraction(): SharingInteractor {
+        return SharingInteractorImpl(getExternalNavigator())
     }
 }

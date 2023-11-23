@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.kuzmin.playlist.creator.Creator
-import com.kuzmin.playlist.domain.model.Preferences
+import com.kuzmin.playlist.data.model.Preferences
 import com.kuzmin.playlist.domain.preferencesTheme.iterators.PreferencesThemeIteractor
 import com.kuzmin.playlist.domain.sharing.iterators.SharingInteractor
 import com.kuzmin.playlist.presentation.application.App
@@ -43,7 +43,7 @@ class SettingsViewModel(
     companion object {
         fun getViewModelFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val interactorShare = (this[APPLICATION_KEY] as App).provideShareInteraction(context)
+                val interactorShare = (this[APPLICATION_KEY] as App).provideShareInteraction()
                 val interactorTheme = Creator.providePreferencesThemeInteraction(context.getSharedPreferences(
                     Preferences.PLAYLIST_PREFERENCES.pref,
                     Application.MODE_PRIVATE
