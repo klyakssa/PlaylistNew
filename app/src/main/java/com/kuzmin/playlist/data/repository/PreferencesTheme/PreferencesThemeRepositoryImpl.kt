@@ -1,7 +1,12 @@
 package com.kuzmin.playlist.data.repository.PreferencesTheme
 
+import android.app.Application
 import android.content.SharedPreferences
+import androidx.activity.ComponentActivity
+import androidx.activity.ComponentDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.CoreComponentFactory
 import com.kuzmin.playlist.domain.model.Preferences
 import com.kuzmin.playlist.domain.preferencesTheme.repository.PreferencesThemeRepository
 

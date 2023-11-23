@@ -1,5 +1,7 @@
 package com.kuzmin.playlist.creator
 
+import android.app.Application
+import android.content.Context
 import android.content.SharedPreferences
 import com.kuzmin.playlist.data.network.TracksRetrofitNetworkClient
 import com.kuzmin.playlist.data.repository.MediaPlayer.MediaPlayerRepositoryImpl
@@ -27,26 +29,25 @@ object Creator {
     fun provideMediaPlayerInteraction(): MediaPlayerIteractor {
         return MediaPlayerInteractionImpl(getMediaPlayerRepository())
     }
-    private fun getPreferencesThemeRepository(sp: SharedPreferences): PreferencesThemeRepository {
-        return PreferencesThemeRepositoryImpl(sp)
-    }
-    fun providePreferencesThemeInteraction(sp: SharedPreferences): PreferencesThemeIteractor {
-        return PreferencesThemeInteractionImpl(getPreferencesThemeRepository(sp))
-    }
-
     private fun getPreferencesSearchHistoryRepository(sp: SharedPreferences): PreferencesSearchHistoryRepository {
         return PreferencesSearchHistoryRepositoryImpl(sp)
     }
     fun providePreferencesSearchHistoryInteraction(sp: SharedPreferences): PreferencesSearchHistoryIteractor {
         return PreferencesSearchHistoryInteractionImpl(getPreferencesSearchHistoryRepository(sp))
     }
-    private fun getTracksNetworkClient(): TracksNetworkClient {
-        return TracksRetrofitNetworkClient()
+    private fun getTracksNetworkClient(context: Context): TracksNetworkClient {
+        return TracksRetrofitNetworkClient(context)
     }
-    private fun getTrackListRepository(): TracksListRepository {
-        return TrackListRepositoryImpl(getTracksNetworkClient())
+    private fun getTrackListRepository(context: Context): TracksListRepository {
+        return TrackListRepositoryImpl(getTracksNetworkClient(context))
     }
-    fun provideGetTracksListUseCase(): GetTracksUseCase {
-        return GetTracksUseCaseImpl(getTrackListRepository())
+    fun provideGetTracksListUseCase(context: Context): GetTracksUseCase {
+        return GetTracksUseCaseImpl(getTrackListRepository(context))
+    }
+    private fun getPreferencesThemeRepository(sp: SharedPreferences): PreferencesThemeRepository {
+        return PreferencesThemeRepositoryImpl(sp)
+    }
+    fun providePreferencesThemeInteraction(sp: SharedPreferences): PreferencesThemeIteractor {
+        return PreferencesThemeInteractionImpl(getPreferencesThemeRepository(sp))
     }
 }

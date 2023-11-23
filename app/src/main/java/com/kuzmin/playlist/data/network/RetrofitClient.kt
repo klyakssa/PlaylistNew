@@ -1,7 +1,6 @@
 package com.kuzmin.playlist.data.network
 
 import com.google.gson.GsonBuilder
-import com.kuzmin.playlist.itunesApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

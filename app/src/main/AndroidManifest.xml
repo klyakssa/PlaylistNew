@@ -4,6 +4,7 @@
     package="com.kuzmin.playlist" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".presentation.application.App"
@@ -26,7 +27,7 @@
             android:name=".presentation.search.TracksSearchActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name=".presentation.settings.activity.SettingsActivity"
             android:exported="false" >
         </activity>
         <activity

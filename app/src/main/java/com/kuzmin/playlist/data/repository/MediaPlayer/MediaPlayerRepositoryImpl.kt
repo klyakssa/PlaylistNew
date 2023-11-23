@@ -51,10 +51,10 @@ class MediaPlayerRepositoryImpl: MediaPlayerRepository {
             }
 
             STATE_PREPARED, STATE_PAUSED -> {
+                listener.startPlayer()
                 handler.post(runnable)
                 mediaPlayer.start()
                 playerState = STATE_PLAYING
-                listener.startPlayer()
             }
         }
     }
