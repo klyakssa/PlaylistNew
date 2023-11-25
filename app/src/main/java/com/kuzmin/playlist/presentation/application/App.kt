@@ -1,20 +1,14 @@
 package com.kuzmin.playlist.presentation.application
 
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import com.kuzmin.playlist.data.model.Preferences
 import com.kuzmin.playlist.creator.Creator
-import com.kuzmin.playlist.data.repository.PreferencesTheme.PreferencesThemeRepositoryImpl
 import com.kuzmin.playlist.data.repository.share.ExternalNavigatorImpl
-import com.kuzmin.playlist.domain.preferencesTheme.impl.PreferencesThemeInteractionImpl
-import com.kuzmin.playlist.domain.preferencesTheme.iterators.PreferencesThemeIteractor
-import com.kuzmin.playlist.domain.preferencesTheme.repository.PreferencesThemeRepository
 import com.kuzmin.playlist.domain.sharing.impl.SharingInteractorImpl
 import com.kuzmin.playlist.domain.sharing.iterators.SharingInteractor
 import com.kuzmin.playlist.domain.sharing.repository.ExternalNavigator
+import com.kuzmin.playlist.presentation.settings.view_model.SettingsViewModel
 
 class App : Application() {
 
@@ -22,7 +16,10 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Creator.initApp(baseContext)
-        val workWithPreferencesUseCase = providePreferencesThemeInteraction()
+        val workWithPreferencesUseCase = Creator.providePreferencesThemeInteraction(getSharedPreferences(
+            SettingsViewModel.PLAYLIST_PREFERENCES,
+            MODE_PRIVATE
+        ))
         val currentNightMode = baseContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
             workWithPreferencesUseCase.setThemeToPreferences(true)
@@ -40,14 +37,6 @@ class App : Application() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
-    }
-
-    private fun getPreferencesThemeRepository(sp: SharedPreferences): PreferencesThemeRepository {
-        return PreferencesThemeRepositoryImpl(sp)
-    }
-    fun providePreferencesThemeInteraction(): PreferencesThemeIteractor {
-        return PreferencesThemeInteractionImpl(getPreferencesThemeRepository(getSharedPreferences(
-            Preferences.PLAYLIST_PREFERENCES.pref, MODE_PRIVATE)))
     }
 
     private fun getExternalNavigator(): ExternalNavigator {

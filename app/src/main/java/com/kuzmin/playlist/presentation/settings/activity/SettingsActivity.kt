@@ -1,13 +1,8 @@
 package com.kuzmin.playlist.presentation.settings.activity
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
-import com.kuzmin.playlist.R
 import com.kuzmin.playlist.databinding.ActivitySettingsBinding
 import com.kuzmin.playlist.presentation.application.App
 import com.kuzmin.playlist.presentation.settings.view_model.SettingsViewModel

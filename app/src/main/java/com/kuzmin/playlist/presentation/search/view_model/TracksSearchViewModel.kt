@@ -8,14 +8,12 @@ import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.creator.Creator
-import com.kuzmin.playlist.data.model.Preferences.*
 import com.kuzmin.playlist.domain.model.TrackDto
 import com.kuzmin.playlist.domain.preferencesSearchHistory.iteractors.PreferencesSearchHistoryIteractor
 import com.kuzmin.playlist.domain.searchTracksByName.api.GetTracksUseCase
@@ -24,20 +22,23 @@ import com.kuzmin.playlist.presentation.application.App
 import com.kuzmin.playlist.presentation.search.model.TracksState
 
 class TracksSearchViewModel(
+    application: Application,
     private val searchHistory: PreferencesSearchHistoryIteractor,
     private val tracksInteractor: GetTracksUseCase
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
+        const val PLAYLIST_PREFERENCES = "playlist_preferences"
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val searchHistory = Creator.providePreferencesSearchHistoryInteraction((this[APPLICATION_KEY] as App).getSharedPreferences(
-                    PLAYLIST_PREFERENCES.pref, MODE_PRIVATE
+                    PLAYLIST_PREFERENCES, MODE_PRIVATE
                 ))
                 val tracksInteractor = Creator.provideGetTracksListUseCase((this[APPLICATION_KEY] as App))
                 TracksSearchViewModel(
+                    (this[APPLICATION_KEY] as App),
                     searchHistory,
                     tracksInteractor
                 )
@@ -47,10 +48,16 @@ class TracksSearchViewModel(
 
     private val handler = Handler(Looper.getMainLooper())
 
+    private val tracksListHistory = ArrayList<TrackDto>()
+
     private val stateLiveData = MutableLiveData<TracksState>()
     fun observeState(): LiveData<TracksState> = stateLiveData
 
     private var latestSearchText: String? = null
+
+    init {
+        getHistory()
+    }
 
     override fun onCleared() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
@@ -82,23 +89,23 @@ class TracksSearchViewModel(
                     data: ArrayList<TrackDto>?,
                     errorMessage: String?
                 ) {
-                    val movies = mutableListOf<TrackDto>()
+                    val tracks = mutableListOf<TrackDto>()
                     if (data != null) {
-                        movies.addAll(data)
+                        tracks.addAll(data)
                     }
 
                     when {
                         errorMessage != null -> {
                             renderState(
                                 TracksState.Error(
-                                    errorMessage = Creator.app.getString(R.string.something_went_wrong),
+                                    errorMessage = getApplication<App>().getString(R.string.something_went_wrong),
                                 )
                             )
                         }
-                        movies.isEmpty() -> {
+                        tracks.isEmpty() -> {
                             renderState(
                                 TracksState.Empty(
-                                    message = Creator.app.getString(R.string.nothing_found),
+                                    message = getApplication<App>().getString(R.string.nothing_found),
                                 )
                             )
                         }
@@ -106,7 +113,7 @@ class TracksSearchViewModel(
                         else -> {
                             renderState(
                                 TracksState.Content(
-                                    movies = movies,
+                                    tracks = tracks,
                                 )
                             )
                         }
@@ -120,14 +127,46 @@ class TracksSearchViewModel(
         stateLiveData.postValue(state)
     }
 
-    fun getHistory(): ArrayList<TrackDto>{
-        return searchHistory.getHistory()
+    fun showHistory(changedText: String) {
+        if (changedText.isEmpty() && tracksListHistory.isNotEmpty()){
+            renderState(
+                TracksState.ShowHistory(tracksListHistory)
+            )
+        }
+    }
+
+    private fun getHistory(){
+        tracksListHistory.addAll(searchHistory.getHistory())
+        renderState(
+            TracksState.Start
+        )
     }
     fun saveHistory(trackList: ArrayList<TrackDto>){
         searchHistory.saveHistory(trackList)
     }
     fun clearHistory() {
         searchHistory.clearHistory()
+        renderState(
+            TracksState.Start
+        )
+    }
+
+
+
+    fun clickOnMainTrack(track: TrackDto){
+        tracksListHistory.remove(track)
+        tracksListHistory.add(0, track)
+        if (tracksListHistory.size > 10) {
+            tracksListHistory.subList(10, tracksListHistory.size).clear()
+        }
+    }
+
+    fun clickOnHistoryTrack(track: TrackDto){
+        tracksListHistory.remove(track)
+        tracksListHistory.add(0, track)
+        renderState(
+            TracksState.ShowHistory(tracksListHistory)
+        )
     }
 
 }

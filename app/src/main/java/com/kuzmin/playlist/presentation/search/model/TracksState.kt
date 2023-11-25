@@ -6,8 +6,10 @@ sealed interface TracksState {
 
     object Loading : TracksState
 
+    object Start : TracksState
+
     data class Content(
-        val movies: List<TrackDto>
+        val tracks: List<TrackDto>
     ) : TracksState
 
     data class Error(
@@ -16,6 +18,10 @@ sealed interface TracksState {
 
     data class Empty(
         val message: String
+    ) : TracksState
+
+    data class ShowHistory(
+        val tracks: ArrayList<TrackDto>
     ) : TracksState
 
 }

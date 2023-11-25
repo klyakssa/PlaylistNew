@@ -15,7 +15,6 @@ import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
-import com.kuzmin.playlist.data.model.Preferences
 import com.kuzmin.playlist.presentation.audioplayer.PlayerActivity
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.domain.model.TrackDto
@@ -40,13 +39,9 @@ class TracksSearchActivity : AppCompatActivity() {
     private val tracksList = ArrayList<TrackDto>()
     private val tracksAdapter = TracksListAdapter{_,it ->
         if (clickDebounce()) {
-            tracksListHistory.remove(it)
-            tracksListHistory.add(0, it)
-            if (tracksListHistory.size > 10) {
-                tracksListHistory.subList(10, tracksListHistory.size).clear()
-            }
+            viewModel.clickOnMainTrack(it)
             val playerIntent = Intent(this, PlayerActivity::class.java)
-            playerIntent.putExtra(Preferences.TRACK_TO_ARRIVE.pref, Gson().toJson(it));
+            playerIntent.putExtra(TRACK_TO_ARRIVE, Gson().toJson(it));
             startActivity(playerIntent)
         }
     }
@@ -54,11 +49,9 @@ class TracksSearchActivity : AppCompatActivity() {
     private val tracksListHistory = ArrayList<TrackDto>()
     private val tracksAdapterHistory = TracksListAdapter{ adapter, it ->
         if (clickDebounce()) {
-            tracksListHistory.remove(it)
-            tracksListHistory.add(0, it)
-            adapter.notifyDataSetChanged()
+            viewModel.clickOnHistoryTrack(it)
             val playerIntent = Intent(this, PlayerActivity::class.java)
-            playerIntent.putExtra(Preferences.TRACK_TO_ARRIVE.pref, Gson().toJson(it));
+            playerIntent.putExtra(TRACK_TO_ARRIVE, Gson().toJson(it));
             startActivity(playerIntent)
         }
     }
@@ -72,8 +65,7 @@ class TracksSearchActivity : AppCompatActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(this, TracksSearchViewModel.getViewModelFactory())[TracksSearchViewModel::class.java]
 
-        //showSearchHistory(binding.inputEditText.text.toString())
-        showHistoryContent()
+        //showHistoryContent(null)
 
         binding.textHistory.text = getString(R.string.searchMessage)
 
@@ -81,25 +73,22 @@ class TracksSearchActivity : AppCompatActivity() {
         binding.tracksList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.tracksList.adapter = tracksAdapter
 
-        tracksListHistory.addAll(viewModel.getHistory())
         tracksAdapterHistory.data = tracksListHistory
         binding.tracksListHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.tracksListHistory.adapter = tracksAdapterHistory
 
         binding.updateButton.setOnClickListener {
-            //getTracks()
             viewModel.searchDebounce(binding.inputEditText.text.toString())
         }
 
         binding.inputEditText.setOnFocusChangeListener { view, hasFocus ->
-                showHistoryContent()
+            viewModel.showHistory(binding.inputEditText.text.toString())
         }
 
         binding.clearHistoryButton.setOnClickListener {
             tracksListHistory.clear()
             tracksAdapterHistory.notifyDataSetChanged()
             viewModel.clearHistory()
-            showHistoryContent()
         }
 
         binding.clearIcon.setOnClickListener {
@@ -107,7 +96,7 @@ class TracksSearchActivity : AppCompatActivity() {
             tracksList.clear()
             tracksAdapter.notifyDataSetChanged()
             closeKeyboard()
-            showHistoryContent()
+            viewModel.showHistory(binding.inputEditText.text.toString())
         }
 
         binding.inputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -129,7 +118,7 @@ class TracksSearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearIcon.visibility = clearButtonVisibility(s)
-                showHistoryContent()
+                viewModel.showHistory(s.toString())
                 viewModel.searchDebounce(
                     changedText = s?.toString() ?: ""
                 )
@@ -149,13 +138,27 @@ class TracksSearchActivity : AppCompatActivity() {
 
     private fun render(state: TracksState) {
         when (state) {
-            is TracksState.Content -> showContent(state.movies)
+            is TracksState.Start -> showStart()
+            is TracksState.Content -> showContent(state.tracks)
             is TracksState.Empty -> showEmpty(state.message)
             is TracksState.Error -> showError(state.errorMessage)
             is TracksState.Loading -> showLoading()
+            is TracksState.ShowHistory -> showHistoryContent(state.tracks)
         }
     }
 
+    private fun showStart() {
+        binding.tracksList.visibility = View.GONE
+        binding.tracksListHistory.visibility = View.GONE
+        binding.placeholderImage.visibility = View.GONE
+        binding.textPlaceholderMessage.visibility = View.GONE
+        binding.textHistory.visibility = View.GONE
+        binding.clearHistoryButton.visibility = View.GONE
+        binding.updateButton.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+        binding.clearHistoryButton.visibility =View.GONE
+
+    }
     private fun showLoading() {
         binding.tracksList.visibility = View.GONE
         binding.tracksListHistory.visibility = View.GONE
@@ -211,11 +214,11 @@ class TracksSearchActivity : AppCompatActivity() {
         tracksAdapter.notifyDataSetChanged()
     }
 
-    private fun showHistoryContent() {
-        binding.tracksListHistory.visibility = if (binding.inputEditText.hasFocus() && binding.inputEditText.text.isEmpty() && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
-        binding.tracksList.visibility = if (binding.inputEditText.hasFocus() && binding.inputEditText.text.isEmpty() && tracksListHistory.isNotEmpty()) View.GONE  else View.VISIBLE
-        binding.textHistory.visibility = if (binding.inputEditText.hasFocus() && binding.inputEditText.text.isEmpty() && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
-        binding.clearHistoryButton.visibility = if (binding.inputEditText.hasFocus() && binding.inputEditText.text.isEmpty() && tracksListHistory.isNotEmpty()) View.VISIBLE else View.GONE
+    private fun showHistoryContent(tracks: List<TrackDto>) {
+        binding.tracksListHistory.visibility = View.VISIBLE
+        binding.tracksList.visibility =View.GONE
+        binding.textHistory.visibility = View.VISIBLE
+        binding.clearHistoryButton.visibility =View.VISIBLE
         binding.updateButton.visibility = View.GONE
         binding.textPlaceholderMessage.visibility = View.GONE
         binding.placeholderImage.visibility = View.GONE
@@ -226,6 +229,9 @@ class TracksSearchActivity : AppCompatActivity() {
             binding.tracksListHistory.recycledViewPool.clear();
             tracksAdapterHistory.notifyDataSetChanged();
         }
+        tracksListHistory.clear()
+        tracksListHistory.addAll(tracks)
+        tracksAdapterHistory.notifyDataSetChanged()
     }
 
     private fun clickDebounce() : Boolean {
@@ -263,5 +269,6 @@ class TracksSearchActivity : AppCompatActivity() {
     private companion object {
         const val SEARCH = "SEARCH"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val TRACK_TO_ARRIVE = "track"
     }
 }

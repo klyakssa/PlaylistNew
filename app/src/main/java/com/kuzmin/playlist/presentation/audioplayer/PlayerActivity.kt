@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
-import com.kuzmin.playlist.data.model.Preferences
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.databinding.ActivityPlayerBinding
 import com.kuzmin.playlist.domain.model.TrackDto
@@ -23,6 +22,10 @@ class PlayerActivity : AppCompatActivity() {
         ViewModelProvider(this, PlayerViewModel.getViewModelFactory(track.previewUrl))[PlayerViewModel::class.java]
     }
 
+    companion object {
+        const val TRACK_TO_ARRIVE = "track"
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +33,7 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         track = Gson().fromJson<TrackDto>(
-            intent.getStringExtra(Preferences.TRACK_TO_ARRIVE.pref),
+            intent.getStringExtra(TRACK_TO_ARRIVE),
             TrackDto::class.java
         )
 
