@@ -23,35 +23,5 @@ import com.kuzmin.playlist.domain.searchTracksByName.repository.TracksListReposi
 import com.kuzmin.playlist.domain.searchTracksByName.use_case.GetTracksUseCaseImpl
 
 object Creator {
-    lateinit var app: Context
-    fun initApp(context: Context){
-        app = context
-    }
-    private fun getMediaPlayerRepository(): MediaPlayerRepository {
-        return MediaPlayerRepositoryImpl()
-    }
-    fun provideMediaPlayerInteraction(): MediaPlayerIteractor {
-        return MediaPlayerInteractionImpl(getMediaPlayerRepository())
-    }
-    private fun getPreferencesSearchHistoryRepository(sp: SharedPreferences): PreferencesSearchHistoryRepository {
-        return PreferencesSearchHistoryRepositoryImpl(sp)
-    }
-    fun providePreferencesSearchHistoryInteraction(sp: SharedPreferences): PreferencesSearchHistoryIteractor {
-        return PreferencesSearchHistoryInteractionImpl(getPreferencesSearchHistoryRepository(sp))
-    }
-    private fun getTracksNetworkClient(context: Context): TracksNetworkClient {
-        return TracksRetrofitNetworkClient(context)
-    }
-    private fun getTrackListRepository(context: Context): TracksListRepository {
-        return TrackListRepositoryImpl(getTracksNetworkClient(context))
-    }
-    fun provideGetTracksListUseCase(context: Context): GetTracksUseCase {
-        return GetTracksUseCaseImpl(getTrackListRepository(context))
-    }
-    private fun getPreferencesThemeRepository(sp: SharedPreferences): PreferencesThemeRepository {
-        return PreferencesThemeRepositoryImpl(sp)
-    }
-    fun providePreferencesThemeInteraction(sp: SharedPreferences): PreferencesThemeIteractor {
-        return PreferencesThemeInteractionImpl(getPreferencesThemeRepository(sp))
-    }
+
 }

@@ -13,15 +13,17 @@ import com.kuzmin.playlist.presentation.audioplayer.model.PlayerState
 import com.kuzmin.playlist.presentation.audioplayer.view_model.PlayerViewModel
 import com.kuzmin.playlist.presentation.mapper.ArtworkMapper
 import com.kuzmin.playlist.presentation.mapper.DateTimeMapper
+import com.kuzmin.playlist.presentation.search.view_model.TracksSearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var track: TrackDto
 
-    private val viewModel: PlayerViewModel by lazy {
-        ViewModelProvider(this, PlayerViewModel.getViewModelFactory(track.previewUrl))[PlayerViewModel::class.java]
+    private val viewModel: PlayerViewModel by viewModel<PlayerViewModel>() {
+        parametersOf(track.previewUrl)
     }
-
     companion object {
         const val TRACK_TO_ARRIVE = "track"
     }

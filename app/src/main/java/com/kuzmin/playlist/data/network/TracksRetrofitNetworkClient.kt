@@ -6,13 +6,15 @@ import android.net.NetworkCapabilities
 import com.kuzmin.playlist.data.dto.NetworkResponse
 import com.kuzmin.playlist.data.repository.TrackListRepository.TracksNetworkClient
 
-class TracksRetrofitNetworkClient(private val context: Context): TracksNetworkClient {
+class TracksRetrofitNetworkClient(
+    private val api: RetrofitApi,
+    private val context: Context): TracksNetworkClient {
     override fun getTracks(trackName: String?): NetworkResponse {
         return try {
             if (!isConnected()) {
                 return NetworkResponse().apply { resultCode = -1 }
             }
-            val response = RetrofitClient.api.search(trackName).execute()
+            val response = api.search(trackName).execute()
             val networkResponse = response.body() ?: NetworkResponse()
 
             networkResponse.apply { resultCode = response.code() }

@@ -23,18 +23,6 @@ class PlayerViewModel(
     private val stateLiveData = MutableLiveData<PlayerState>()
     fun observeState(): LiveData<PlayerState> = stateLiveData
 
-    companion object {
-        fun getViewModelFactory(url: String): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val workWithMediaPlayer = Creator.provideMediaPlayerInteraction()
-                PlayerViewModel(
-                    url,
-                    workWithMediaPlayer
-                )
-            }
-        }
-    }
-
     init {
         initPlayer()
     }

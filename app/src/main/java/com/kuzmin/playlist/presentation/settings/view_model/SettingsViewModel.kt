@@ -3,6 +3,7 @@ package com.kuzmin.playlist.presentation.settings.view_model
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
@@ -18,11 +19,20 @@ import com.kuzmin.playlist.domain.sharing.model.EmailData
 import com.kuzmin.playlist.presentation.application.App
 
 class SettingsViewModel(
-    application: Application,
+    private val context: Context,
     private val sharingInteractor: SharingInteractor,
     private val settingsInteractor: PreferencesThemeIteractor,
-) : AndroidViewModel(application = application) {
+) : ViewModel() {
 
+
+    init {
+        val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
+            switchTheme(true)
+        }else{
+            switchTheme(false)
+        }
+    }
 
     fun switchTheme(bool: Boolean) {
         settingsInteractor.setThemeToPreferences(bool)
@@ -32,41 +42,23 @@ class SettingsViewModel(
        return settingsInteractor.getThemeFromPreferences()
     }
     fun shareApp(): Intent {
-        return sharingInteractor.shareApp(getApplication<App>().getString(R.string.messageProfile))
+        return sharingInteractor.shareApp(context.getString(R.string.messageProfile))
     }
 
     fun openSupport(): Intent {
         return sharingInteractor.openSupport(
             email = EmailData(
-            mailto = Uri.parse(getApplication<App>().getString(R.string.mailto)),
-            email = getApplication<App>().getString(R.string.emailMy),
-            subject = getApplication<App>().getString(R.string.subjectEmail),
-            text = getApplication<App>().getString(R.string.textEmail),
-            type = getApplication<App>().getString(R.string.type),
+            mailto = Uri.parse(context.getString(R.string.mailto)),
+            email = context.getString(R.string.emailMy),
+            subject = context.getString(R.string.subjectEmail),
+            text = context.getString(R.string.textEmail),
+            type = context.getString(R.string.type),
         )
         )
     }
 
     fun openTerms(): Intent {
-        return sharingInteractor.openTerms(getApplication<App>().getString(R.string.termsLink))
+        return sharingInteractor.openTerms(context.getString(R.string.termsLink))
     }
 
-
-    companion object {
-        const val PLAYLIST_PREFERENCES = "playlist_preferences"
-        fun getViewModelFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val interactorShare = (this[APPLICATION_KEY] as App).provideShareInteraction()
-                val interactorTheme = Creator.providePreferencesThemeInteraction(context.getSharedPreferences(
-                    PLAYLIST_PREFERENCES,
-                    Application.MODE_PRIVATE
-                ))
-                SettingsViewModel(
-                    (this[APPLICATION_KEY] as App),
-                    interactorShare,
-                    interactorTheme,
-                )
-            }
-        }
-    }
 }
