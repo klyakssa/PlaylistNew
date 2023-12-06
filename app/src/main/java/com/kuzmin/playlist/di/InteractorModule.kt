@@ -16,7 +16,7 @@ val interactorModule = module {
         PreferencesSearchHistoryInteractionImpl(get())
     }
 
-    single<MediaPlayerIteractor> {
+    factory<MediaPlayerIteractor> {
         MediaPlayerInteractionImpl(get())
     }
 

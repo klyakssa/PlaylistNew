@@ -38,11 +38,11 @@ val repositoryModule = module {
         PreferencesSearchHistoryRepositoryImpl(get(), get())
     }
 
-    single {
+    factory {
         MediaPlayer()
     }
 
-    single<MediaPlayerRepository> {
+    factory<MediaPlayerRepository> {
         MediaPlayerRepositoryImpl(get())
     }
 
