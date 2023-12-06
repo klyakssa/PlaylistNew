@@ -1,3 +1,41 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">Playlist</string>
+=======
+    <string name="title">Playlist maker</string>
+    <string name="search">Поиск</string>
+    <string name="library">Медиатека</string>
+    <string name="settings">Настройки</string>
+    <string name="theme">Темная тема</string>
+    <string name="share">Поделиться приложением</string>
+    <string name="support">Написать в поддержку</string>
+    <string name="terms">Пользовательское соглашение</string>
+    <string name="messageProfile">https://practicum.yandex.ru/profile/android-developer/</string>
+    <string name="emailMy">denis.spb.2004@gmail.com</string>
+    <string name="subjectEmail">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="textEmail">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="termsLink">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="itunesLink">https://itunes.apple.com</string>
+    <string name="mailto">mailto:</string>
+    <string name="type">text/plain</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="something_went_wrong">Проблемы со связью \n \n Загрузка не удалась. Проверьте подключение к интеренету</string>
+    <string name="update">Обновить</string>
+    <string name="clearHistory">Очистить историю</string>
+    <string name="searchMessage">Вы искали</string>
+    <string name="title_activity_player">PlayerActivity</string>
+    <string name="testAlbum">Yesterday (Remastered 2009)</string>
+    <string name="testArtist">The Beatles</string>
+    <string name="testTimeNow">00:00</string>
+    <string name="testDuration">5:35</string>
+    <string name="testYear">1965</string>
+    <string name="testGenre">Rock</string>
+    <string name="testCountry">Великобритания</string>
+    <string name="duration">Длительность</string>
+    <string name="album">Альбом</string>
+    <string name="year">Год</string>
+    <string name="genre">Жанр</string>
+    <string name="country">Страна</string>
+    <string name="error">Произошла сетевая ошибка</string>
+>>>>>>> sprint_8
 </resources>

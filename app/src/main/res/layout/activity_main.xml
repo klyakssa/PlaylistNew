@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     tools:context=".MainActivity">
 
     <TextView
@@ -16,3 +17,54 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+=======
+    android:orientation="vertical"
+    android:theme="@style/Theme.Playlist"
+    android:background="?attr/colorPrimary"
+    tools:context=".presentation.main.MainActivity"
+    android:padding="@dimen/padding_20dp">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:layout_gravity="start"
+        android:textColor="@color/white"
+        android:textSize="@dimen/title22" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_24dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_width"
+            android:layout_weight="1"
+            style="@style/ButtonSearch"
+            android:text="@string/search" />
+
+        <Button
+            android:id="@+id/library"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_width"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/margin_main16"
+            style="@style/ButtonLibrary"
+            android:text="@string/library"/>
+
+        <Button
+            android:id="@+id/settings"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_width"
+            android:layout_weight="1"
+            style="@style/ButtonSettings"
+            android:layout_marginTop="@dimen/margin_main16"
+            android:text="@string/settings"/>
+    </LinearLayout>
+
+</LinearLayout>
+>>>>>>> sprint_8

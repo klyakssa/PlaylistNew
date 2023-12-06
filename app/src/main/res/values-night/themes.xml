@@ -7,8 +7,18 @@
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
+<<<<<<< HEAD
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
+=======
+        <item name="colorSecondaryVariant">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorTitleTrack">@color/white</item>
+        <item name="colorArtistTrack">@color/white</item>
+        <item name="colorPlaceholderImage">@color/white</item>
+        <item name="colorPlaceholderMessage">@color/YP_black</item>
+        <item name="colorPlayListAndFavorite">@color/white</item>
+>>>>>>> sprint_8
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
