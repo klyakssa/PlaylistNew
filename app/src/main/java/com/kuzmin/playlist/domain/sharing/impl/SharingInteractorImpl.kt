@@ -18,6 +18,6 @@ class SharingInteractorImpl(
     }
 
     override fun openSupport(email: EmailData): Intent {
-        return externalNavigator.openEmail(email)
+        return externalNavigator.openEmail(email)//В задании было сказанно что использовать надо свою почту, а куда написать использоваться не должно, или прикрепите задание по intents, может я что то не увидел
     }
 }

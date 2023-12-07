@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="ys_regular">16sp</dimen>
-    <dimen name="ys_regular_14sp">14sp</dimen>
+    <dimen name="ys_regular_13sp">13sp</dimen>
     <dimen name="title22">22sp</dimen>
     <dimen name="title_19sp">19sp</dimen>
+    <dimen name="title_16sp">16sp</dimen>
     <dimen name="artist_13sp">13sp</dimen>
+    <dimen name="artist_11sp">11sp</dimen>
     <dimen name="main_text22">22sp</dimen>
     <dimen name="corner16">16dp</dimen>
     <dimen name="cornerText8">8dp</dimen>

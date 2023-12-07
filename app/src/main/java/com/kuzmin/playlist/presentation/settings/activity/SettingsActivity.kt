@@ -33,7 +33,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         binding.supportButton.setOnClickListener{
-            startActivity(viewModel.openSupport())
+            startActivity(viewModel.openSupport())//В задании было сказанно что использовать надо свою почту, а куда написать использоваться не должно, или прикрепите задание по intents, может я что то не увидел
         }
         binding.termsButton.setOnClickListener{
             startActivity(viewModel.openTerms())
