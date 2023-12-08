@@ -20,9 +20,10 @@ class SettingsViewModel(
         settingsInteractor.setThemeToPreferences(bool)
     }
 
-    fun getTheme(): Boolean{
-       return settingsInteractor.getThemeFromPreferences()
+    fun getTheme(): Boolean {
+        return settingsInteractor.getThemeFromPreferences()
     }
+
     fun shareApp(): Intent {
         return sharingInteractor.shareApp(context.getString(R.string.messageProfile))
     }
@@ -30,12 +31,12 @@ class SettingsViewModel(
     fun openSupport(): Intent {
         return sharingInteractor.openSupport(
             email = EmailData(
-            mailto = Uri.parse(context.getString(R.string.mailto)),
-            email = context.getString(R.string.emailMy),
-            subject = context.getString(R.string.subjectEmail),
-            text = context.getString(R.string.textEmail),
-            type = context.getString(R.string.type),
-        )//В задании было сказанно что использовать надо свою почту, а куда написать использоваться не должно, или прикрепите задание по intents, может я что то не увидел
+                mailto = Uri.parse(context.getString(R.string.mailto)),
+                email = context.getString(R.string.emailMy),
+                subject = context.getString(R.string.subjectEmail),
+                text = context.getString(R.string.textEmail),
+                type = context.getString(R.string.type),
+            )
         )
     }
 

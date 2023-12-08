@@ -38,7 +38,7 @@
             android:paddingTop="@dimen/margin_10dp"
             android:textSize="@dimen/title22"
             android:layout_marginEnd="@dimen/margin_end_head52"
-            android:fontFamily="@font/ys_text_regular"
+            android:fontFamily="@font/ys_text_medium"
             android:textFontWeight="500"/>
 
     </LinearLayout>
@@ -140,7 +140,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tracksList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_main16"/>
 
             <LinearLayout
                 android:id="@+id/containerPlaceholderNothing"

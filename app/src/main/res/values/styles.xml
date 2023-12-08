@@ -9,7 +9,7 @@
         <item name="android:textColor">@color/YP_black</item>
         <item name="android:textSize">@dimen/main_text22</item>
         <item name="backgroundTint">@color/white</item>
-        <item name="fontFamily">@font/ys_text_regular</item>
+        <item name="fontFamily">@font/ys_text_medium</item>
         <item name="android:textFontWeight">500</item>
     </style>
     <style name="ButtonLibrary" parent="Widget.MaterialComponents.Button.UnelevatedButton">
@@ -21,7 +21,7 @@
         <item name="android:textColor">@color/YP_black</item>
         <item name="android:textSize">@dimen/main_text22</item>
         <item name="backgroundTint">@color/white</item>
-        <item name="fontFamily">@font/ys_text_regular</item>
+        <item name="fontFamily">@font/ys_text_medium</item>
         <item name="android:textFontWeight">500</item>
     </style>
     <style name="ButtonSettings" parent="Widget.MaterialComponents.Button.UnelevatedButton">
@@ -33,7 +33,7 @@
         <item name="android:textColor">@color/YP_black</item>
         <item name="android:textSize">@dimen/main_text22</item>
         <item name="backgroundTint">@color/white</item>
-        <item name="fontFamily">@font/ys_text_regular</item>
+        <item name="fontFamily">@font/ys_text_medium</item>
         <item name="android:textFontWeight">500</item>
     </style>
     <style name="Settings">

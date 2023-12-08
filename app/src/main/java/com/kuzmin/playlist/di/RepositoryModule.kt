@@ -2,6 +2,7 @@ package com.kuzmin.playlist.di
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.media.MediaPlayer
 import com.google.gson.Gson
 import com.kuzmin.playlist.data.repository.MediaPlayer.MediaPlayerRepositoryImpl
@@ -27,7 +28,7 @@ val repositoryModule = module {
         Gson()
     }
 
-    single {
+    single<SharedPreferences>{
         androidContext()
             .getSharedPreferences("playlist_preferences",
                 Application.MODE_PRIVATE

@@ -38,7 +38,7 @@
                 android:paddingBottom="@dimen/padding_left12"
                 android:paddingTop="@dimen/margin_10dp"
                 android:textSize="@dimen/title22"
-                android:fontFamily="@font/ys_text_regular"
+                android:fontFamily="@font/ys_text_medium"
                 android:textFontWeight="500"/>
 
 

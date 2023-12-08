@@ -34,6 +34,6 @@ class ExternalNavigatorImpl: ExternalNavigator {
             putExtra(Intent.EXTRA_SUBJECT, email.subject)
             putExtra(Intent.EXTRA_TEXT, email.text)
             type = email.type
-        }//В задании было сказанно что использовать надо свою почту, а куда написать использоваться не должно, или прикрепите задание по intents, может я что то не увидел
+        }
     }
 }

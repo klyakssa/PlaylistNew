@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ys_display_regular"
-                    android:textSize="@dimen/artist_13sp"
+                    android:textSize="@dimen/artist_11sp"
                     android:textColor="?attr/colorArtistTrack"
                     tools:text="03:59"
                     />
