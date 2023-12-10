@@ -5,8 +5,9 @@ import android.os.Handler
 import android.os.Looper
 import com.kuzmin.playlist.domain.mediaplayer.repository.MediaPlayerRepository
 
-class MediaPlayerRepositoryImpl: MediaPlayerRepository {
-    private var mediaPlayer = MediaPlayer()
+class MediaPlayerRepositoryImpl(
+    private var mediaPlayer: MediaPlayer
+): MediaPlayerRepository {
     private var playerState = STATE_DEFAULT
     private val handler = Handler(Looper.getMainLooper())
 

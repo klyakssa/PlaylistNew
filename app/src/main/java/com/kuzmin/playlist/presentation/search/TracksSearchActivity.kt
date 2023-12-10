@@ -21,13 +21,14 @@ import com.kuzmin.playlist.domain.model.TrackDto
 import com.kuzmin.playlist.databinding.ActivitySearchBinding
 import com.kuzmin.playlist.presentation.search.model.TracksState
 import com.kuzmin.playlist.presentation.search.view_model.TracksSearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.collections.ArrayList
 
 class TracksSearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
 
-    private lateinit var viewModel: TracksSearchViewModel
+    private val viewModel by viewModel<TracksSearchViewModel>()
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -63,11 +64,11 @@ class TracksSearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this, TracksSearchViewModel.getViewModelFactory())[TracksSearchViewModel::class.java]
+
 
         //showHistoryContent(null)
 
-        binding.textHistory.text = getString(R.string.searchMessage)
+
 
         tracksAdapter.data = tracksList
         binding.tracksList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -108,6 +109,7 @@ class TracksSearchActivity : AppCompatActivity() {
         }
         val btnBack = findViewById<TextView>(R.id.back)
         btnBack.setOnClickListener {
+            viewModel.saveHistory()
             finish()
         }
 
@@ -194,7 +196,7 @@ class TracksSearchActivity : AppCompatActivity() {
         binding.textPlaceholderMessage.text = emptyMessage
         binding.textHistory.visibility = View.GONE
         binding.clearHistoryButton.visibility = View.GONE
-        binding.updateButton.visibility = View.VISIBLE
+        binding.updateButton.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
         tracksList.clear()
         tracksAdapter.notifyDataSetChanged()
@@ -244,7 +246,7 @@ class TracksSearchActivity : AppCompatActivity() {
     }
 
     override fun onStop() {
-        viewModel.saveHistory(tracksListHistory)
+        viewModel.saveHistory()
         super.onStop()
     }
 

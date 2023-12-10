@@ -1,32 +1,28 @@
 package com.kuzmin.playlist.presentation.application
 
 import android.app.Application
-import android.content.res.Configuration
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.kuzmin.playlist.creator.Creator
-import com.kuzmin.playlist.data.repository.share.ExternalNavigatorImpl
-import com.kuzmin.playlist.domain.sharing.impl.SharingInteractorImpl
-import com.kuzmin.playlist.domain.sharing.iterators.SharingInteractor
-import com.kuzmin.playlist.domain.sharing.repository.ExternalNavigator
-import com.kuzmin.playlist.presentation.settings.view_model.SettingsViewModel
+import com.kuzmin.playlist.data.model.Preferences
+import com.kuzmin.playlist.di.dataModule
+import com.kuzmin.playlist.di.interactorModule
+import com.kuzmin.playlist.di.repositoryModule
+import com.kuzmin.playlist.di.useCaseModule
+import com.kuzmin.playlist.di.viewModelModule
+import org.koin.android.ext.android.get
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
 
 class App : Application() {
 
 
     override fun onCreate() {
         super.onCreate()
-        Creator.initApp(baseContext)
-        val workWithPreferencesUseCase = Creator.providePreferencesThemeInteraction(getSharedPreferences(
-            SettingsViewModel.PLAYLIST_PREFERENCES,
-            MODE_PRIVATE
-        ))
-        val currentNightMode = baseContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES){
-            workWithPreferencesUseCase.setThemeToPreferences(true)
-        }else{
-            workWithPreferencesUseCase.setThemeToPreferences(false)
+        startKoin {
+            androidContext(this@App)
+            modules(dataModule, repositoryModule, interactorModule, viewModelModule, useCaseModule)
         }
-        switchTheme(workWithPreferencesUseCase.getThemeFromPreferences())
+        switchTheme(get<SharedPreferences>().getBoolean(Preferences.DARK_THEME_KEY.pref, false))
     }
 
     fun switchTheme(darkThemeEnabled: Boolean){
@@ -39,10 +35,4 @@ class App : Application() {
         )
     }
 
-    private fun getExternalNavigator(): ExternalNavigator {
-        return ExternalNavigatorImpl()
-    }
-    fun provideShareInteraction(): SharingInteractor {
-        return SharingInteractorImpl(getExternalNavigator())
-    }
 }

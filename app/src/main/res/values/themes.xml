@@ -5,6 +5,7 @@
     <attr name="colorPlaceholderImage" format="color"/>
     <attr name="colorPlaceholderMessage" format="color"/>
     <attr name="colorPlayListAndFavorite" format="color"/>
+    <attr name="colorShapeEditText" format="color"/>
 
     <style name="Theme.Playlist" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -20,6 +21,7 @@
         <item name="colorPlaceholderImage">@color/YP_black</item>
         <item name="colorPlaceholderMessage">@color/white</item>
         <item name="colorPlayListAndFavorite">@color/YP_black</item>
+        <item name="colorShapeEditText">@color/YP_light_gray</item>
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>

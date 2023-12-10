@@ -2,16 +2,15 @@ package com.kuzmin.playlist.presentation.settings.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.kuzmin.playlist.databinding.ActivitySettingsBinding
-import com.kuzmin.playlist.presentation.application.App
 import com.kuzmin.playlist.presentation.settings.view_model.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
-    private val viewModel: SettingsViewModel by lazy {
-        ViewModelProvider(this, SettingsViewModel.getViewModelFactory((application as App)))[SettingsViewModel::class.java]
-    }
+
+    private val viewModel by viewModel<SettingsViewModel>()
+
     private lateinit var binding: ActivitySettingsBinding
 
 
@@ -33,7 +32,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(viewModel.shareApp())
         }
 
-        binding.supportButton.setOnClickListener{
+        binding.supportButton.setOnClickListener {
             startActivity(viewModel.openSupport())
         }
         binding.termsButton.setOnClickListener{
