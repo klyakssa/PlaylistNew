@@ -1,9 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.library.LibraryActivity">
+    tools:context=".presentation.library.LibraryActivity"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_4dp"
+        android:paddingEnd="52dp">
+
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="?attr/colorPrimaryVariant"
+            android:drawableLeft="@drawable/ic_arrow_back"
+            android:padding="@dimen/padding"
+            android:textColor="?attr/colorPrimaryVariant" />
+
+        <TextView
+            android:layout_width="@dimen/layout_width"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text="@string/library"
+            android:textColor="?attr/colorOnSecondary"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_left12"
+            android:paddingBottom="@dimen/padding_left12"
+            android:paddingTop="@dimen/margin_10dp"
+            android:textSize="@dimen/title22"
+            android:layout_marginEnd="@dimen/margin_end_head52"
+            android:fontFamily="@font/ys_text_medium"
+            android:textFontWeight="500"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/section_margin"
+        android:layout_marginRight="@dimen/section_margin"
+        android:background="@color/white"
+        app:tabRippleColor="@color/YP_black"
+        app:tabTextAppearance="@style/MyCustomTextAppearance"
+        app:tabTextColor="@color/black"
+        app:tabIndicatorColor="@color/black"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
