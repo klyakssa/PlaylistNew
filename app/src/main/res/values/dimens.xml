@@ -2,12 +2,14 @@
 <resources>
     <dimen name="ys_regular">16sp</dimen>
     <dimen name="ys_regular_13sp">13sp</dimen>
+    <dimen name="ys_regular_14sp">14sp</dimen>
     <dimen name="title22">22sp</dimen>
     <dimen name="title_19sp">19sp</dimen>
     <dimen name="title_16sp">16sp</dimen>
     <dimen name="artist_13sp">13sp</dimen>
     <dimen name="artist_11sp">11sp</dimen>
     <dimen name="main_text22">22sp</dimen>
+    <dimen name="section_margin">16dp</dimen>
     <dimen name="corner16">16dp</dimen>
     <dimen name="cornerText8">8dp</dimen>
     <dimen name="margin_main16">16dp</dimen>
@@ -31,6 +33,7 @@
     <dimen name="margin_30dp">30dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
     <dimen name="margin_120dp">120dp</dimen>
+    <dimen name="margin_210dp">210dp</dimen>
     <dimen name="margin_end_head52">52dp</dimen>
     <dimen name="margin_end_clear24">24dp</dimen>
     <dimen name="height_set_61dp">61dp</dimen>
