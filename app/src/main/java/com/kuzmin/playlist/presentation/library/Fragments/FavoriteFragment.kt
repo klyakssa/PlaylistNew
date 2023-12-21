@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.databinding.FragmentFavoriteBinding
 import com.kuzmin.playlist.presentation.library.Fragments.view_models.FavoriteViewModel
@@ -19,7 +20,7 @@ class FavoriteFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -31,11 +32,9 @@ class FavoriteFragment : Fragment() {
     }
 
     companion object {
-        @JvmStatic
         fun newInstance() =
             FavoriteFragment().apply {
-                arguments = Bundle().apply {
-                }
+                arguments = bundleOf()
             }
     }
 }

@@ -20,7 +20,7 @@ class PlaylistFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPlaylistBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -32,7 +32,6 @@ class PlaylistFragment : Fragment() {
     }
 
     companion object {
-        @JvmStatic
         fun newInstance() =
             PlaylistFragment().apply {
                 arguments = Bundle().apply {

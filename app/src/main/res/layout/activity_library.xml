@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
     tools:context=".presentation.library.LibraryActivity"
     android:orientation="vertical">
 
@@ -47,11 +48,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/section_margin"
         android:layout_marginRight="@dimen/section_margin"
-        android:background="@color/white"
-        app:tabRippleColor="@color/YP_black"
+        android:background="?attr/colorPlaceholderMessage"
+        app:tabRippleColor="?attr/colorPlayListAndFavorite"
         app:tabTextAppearance="@style/MyCustomTextAppearance"
-        app:tabTextColor="@color/black"
-        app:tabIndicatorColor="@color/black"/>
+        app:tabTextColor="?attr/colorPlayListAndFavorite"
+        app:tabIndicatorColor="?attr/colorPlayListAndFavorite"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

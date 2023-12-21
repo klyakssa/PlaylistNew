@@ -33,7 +33,6 @@ class ExternalNavigatorImpl: ExternalNavigator {
             putExtra(Intent.EXTRA_EMAIL, email.email)
             putExtra(Intent.EXTRA_SUBJECT, email.subject)
             putExtra(Intent.EXTRA_TEXT, email.text)
-            type = email.type
         }
     }
 }
