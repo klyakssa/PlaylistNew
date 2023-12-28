@@ -2,17 +2,19 @@ package com.kuzmin.playlist.presentation.search
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.kuzmin.playlist.presentation.audioplayer.PlayerActivity
@@ -24,7 +26,7 @@ import com.kuzmin.playlist.presentation.search.view_model.TracksSearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.collections.ArrayList
 
-class TracksSearchActivity : AppCompatActivity() {
+class TracksSearchFragment : Fragment() {
 
     private lateinit var binding: ActivitySearchBinding
 
@@ -41,7 +43,7 @@ class TracksSearchActivity : AppCompatActivity() {
     private val tracksAdapter = TracksListAdapter{_,it ->
         if (clickDebounce()) {
             viewModel.clickOnMainTrack(it)
-            val playerIntent = Intent(this, PlayerActivity::class.java)
+            val playerIntent = Intent(requireContext(), PlayerActivity::class.java)
             playerIntent.putExtra(TRACK_TO_ARRIVE, Gson().toJson(it));
             startActivity(playerIntent)
         }
@@ -51,31 +53,31 @@ class TracksSearchActivity : AppCompatActivity() {
     private val tracksAdapterHistory = TracksListAdapter{ adapter, it ->
         if (clickDebounce()) {
             viewModel.clickOnHistoryTrack(it)
-            val playerIntent = Intent(this, PlayerActivity::class.java)
+            val playerIntent = Intent(requireContext(), PlayerActivity::class.java)
             playerIntent.putExtra(TRACK_TO_ARRIVE, Gson().toJson(it));
             startActivity(playerIntent)
         }
     }
 
 
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        return binding.root
+    }
 
-
-        //showHistoryContent(null)
-
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         tracksAdapter.data = tracksList
-        binding.tracksList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.tracksList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.tracksList.adapter = tracksAdapter
 
         tracksAdapterHistory.data = tracksListHistory
-        binding.tracksListHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.tracksListHistory.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.tracksListHistory.adapter = tracksAdapterHistory
 
         binding.updateButton.setOnClickListener {
@@ -107,10 +109,10 @@ class TracksSearchActivity : AppCompatActivity() {
             }
             false
         }
-        val btnBack = findViewById<TextView>(R.id.back)
-        btnBack.setOnClickListener {
+
+        binding.back.setOnClickListener {
             viewModel.saveHistory()
-            finish()
+            findNavController().navigateUp()
         }
 
         textWatcher = object : TextWatcher {
@@ -133,7 +135,7 @@ class TracksSearchActivity : AppCompatActivity() {
 
         textWatcher.let { binding.inputEditText.addTextChangedListener(it) }
 
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
     }
@@ -155,7 +157,6 @@ class TracksSearchActivity : AppCompatActivity() {
         binding.placeholderImage.visibility = View.GONE
         binding.textPlaceholderMessage.visibility = View.GONE
         binding.textHistory.visibility = View.GONE
-        binding.clearHistoryButton.visibility = View.GONE
         binding.updateButton.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
         binding.clearHistoryButton.visibility =View.GONE
@@ -250,14 +251,14 @@ class TracksSearchActivity : AppCompatActivity() {
         super.onStop()
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
         textWatcher.let { binding.inputEditText.removeTextChangedListener(it) }
-        super.onDestroy()
+        super.onDestroyView()
     }
 
     private fun closeKeyboard(){
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-        inputMethodManager?.hideSoftInputFromWindow(window.decorView.windowToken, 0)
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        inputMethodManager?.hideSoftInputFromWindow(requireActivity().window.decorView.windowToken, 0)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
