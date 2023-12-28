@@ -28,10 +28,6 @@ class LibraryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.back.setOnClickListener {
-            findNavController().navigateUp()
-        }
-
         binding.viewPager.adapter = LibraryViewPagerAdapter(requireActivity())
 
 

@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </androidx.fragment.app.FragmentContainerView>
-    
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
@@ -33,8 +33,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:itemTextColor="?attr/colorPrimaryVariant"
-        app:itemIconTint="?attr/colorPrimaryVariant"
+        app:itemTextColor="@color/btn_nav_bottom_clicked"
+        app:itemIconTint="@color/btn_nav_bottom_clicked"
         app:menu="@menu/nav_items"
         app:itemRippleColor="?attr/colorPrimaryVariant"
         app:backgroundTint="?attr/colorOnPrimary"

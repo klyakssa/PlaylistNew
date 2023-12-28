@@ -30,10 +30,6 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.back.setOnClickListener {
-            findNavController().navigateUp()
-        }
-
         binding.switch1.setOnCheckedChangeListener { switcher, checked ->
             viewModel.switchTheme(checked)
         }

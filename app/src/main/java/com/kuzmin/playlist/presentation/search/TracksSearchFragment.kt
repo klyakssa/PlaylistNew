@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.view.isNotEmpty
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -92,6 +93,7 @@ class TracksSearchFragment : Fragment() {
             tracksListHistory.clear()
             tracksAdapterHistory.notifyDataSetChanged()
             viewModel.clearHistory()
+            viewModel.saveHistory()
         }
 
         binding.clearIcon.setOnClickListener {
@@ -100,6 +102,7 @@ class TracksSearchFragment : Fragment() {
             tracksAdapter.notifyDataSetChanged()
             closeKeyboard()
             viewModel.showHistory(binding.inputEditText.text.toString())
+
         }
 
         binding.inputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -108,11 +111,6 @@ class TracksSearchFragment : Fragment() {
                 true
             }
             false
-        }
-
-        binding.back.setOnClickListener {
-            viewModel.saveHistory()
-            findNavController().navigateUp()
         }
 
         textWatcher = object : TextWatcher {
@@ -152,85 +150,97 @@ class TracksSearchFragment : Fragment() {
     }
 
     private fun showStart() {
-        binding.tracksList.visibility = View.GONE
-        binding.tracksListHistory.visibility = View.GONE
-        binding.placeholderImage.visibility = View.GONE
-        binding.textPlaceholderMessage.visibility = View.GONE
-        binding.textHistory.visibility = View.GONE
-        binding.updateButton.visibility = View.GONE
-        binding.progressBar.visibility = View.GONE
-        binding.clearHistoryButton.visibility =View.GONE
+        with(binding) {
+            tracksList.visibility = View.GONE
+            tracksListHistory.visibility = View.GONE
+            placeholderImage.visibility = View.GONE
+            textPlaceholderMessage.visibility = View.GONE
+            textHistory.visibility = View.GONE
+            updateButton.visibility = View.GONE
+            progressBar.visibility = View.GONE
+            clearHistoryButton.visibility = View.GONE
+        }
 
     }
     private fun showLoading() {
-        binding.tracksList.visibility = View.GONE
-        binding.tracksListHistory.visibility = View.GONE
-        binding.placeholderImage.visibility = View.GONE
-        binding.textPlaceholderMessage.visibility = View.GONE
-        binding.textHistory.visibility = View.GONE
-        binding.clearHistoryButton.visibility = View.GONE
-        binding.updateButton.visibility = View.GONE
-        binding.progressBar.visibility = View.VISIBLE
+        with(binding){
+            tracksList.visibility = View.GONE
+            tracksListHistory.visibility = View.GONE
+            placeholderImage.visibility = View.GONE
+            textPlaceholderMessage.visibility = View.GONE
+            textHistory.visibility = View.GONE
+            clearHistoryButton.visibility = View.GONE
+            updateButton.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
+        }
     }
 
     private fun showError(errorMessage: String) {
-        binding.tracksList.visibility = View.GONE
-        binding.tracksListHistory.visibility = View.GONE
-        binding.placeholderImage.visibility = View.VISIBLE
-        binding.placeholderImage.setBackgroundResource(R.drawable.ic_noethernet)
-        binding.textPlaceholderMessage.visibility = View.VISIBLE
-        binding.textPlaceholderMessage.text = errorMessage
-        binding.textHistory.visibility = View.GONE
-        binding.clearHistoryButton.visibility = View.GONE
-        binding.updateButton.visibility = View.VISIBLE
-        binding.progressBar.visibility = View.GONE
+        with(binding){
+            tracksList.visibility = View.GONE
+            tracksListHistory.visibility = View.GONE
+            placeholderImage.visibility = View.VISIBLE
+            placeholderImage.setBackgroundResource(R.drawable.ic_noethernet)
+            textPlaceholderMessage.visibility = View.VISIBLE
+            textPlaceholderMessage.text = errorMessage
+            textHistory.visibility = View.GONE
+            clearHistoryButton.visibility = View.GONE
+            updateButton.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+        }
         tracksList.clear()
         tracksAdapter.notifyDataSetChanged()
     }
 
     private fun showEmpty(emptyMessage: String) {
-        binding.tracksList.visibility = View.GONE
-        binding.tracksListHistory.visibility = View.GONE
-        binding.placeholderImage.visibility = View.VISIBLE
-        binding.placeholderImage.setBackgroundResource(R.drawable.ic_nothing)
-        binding.textPlaceholderMessage.visibility = View.VISIBLE
-        binding.textPlaceholderMessage.text = emptyMessage
-        binding.textHistory.visibility = View.GONE
-        binding.clearHistoryButton.visibility = View.GONE
-        binding.updateButton.visibility = View.GONE
-        binding.progressBar.visibility = View.GONE
+        with(binding){
+            tracksList.visibility = View.GONE
+            tracksListHistory.visibility = View.GONE
+            placeholderImage.visibility = View.VISIBLE
+            placeholderImage.setBackgroundResource(R.drawable.ic_nothing)
+            textPlaceholderMessage.visibility = View.VISIBLE
+            textPlaceholderMessage.text = emptyMessage
+            textHistory.visibility = View.GONE
+            clearHistoryButton.visibility = View.GONE
+            updateButton.visibility = View.GONE
+            progressBar.visibility = View.GONE
+        }
         tracksList.clear()
         tracksAdapter.notifyDataSetChanged()
     }
 
     private fun showContent(tracks: List<TrackDto>) {
-        binding.tracksList.visibility = View.VISIBLE
-        binding.tracksListHistory.visibility = View.GONE
-        binding.placeholderImage.visibility = View.GONE
-        binding.textPlaceholderMessage.visibility = View.GONE
-        binding.textHistory.visibility = View.GONE
-        binding.clearHistoryButton.visibility = View.GONE
-        binding.updateButton.visibility = View.GONE
-        binding.progressBar.visibility = View.GONE
+        with(binding){
+            tracksList.visibility = View.VISIBLE
+            tracksListHistory.visibility = View.GONE
+            placeholderImage.visibility = View.GONE
+            textPlaceholderMessage.visibility = View.GONE
+            textHistory.visibility = View.GONE
+            clearHistoryButton.visibility = View.GONE
+            updateButton.visibility = View.GONE
+            progressBar.visibility = View.GONE
+        }
         tracksList.clear()
         tracksList.addAll(tracks)
         tracksAdapter.notifyDataSetChanged()
     }
 
     private fun showHistoryContent(tracks: List<TrackDto>) {
-        binding.tracksListHistory.visibility = View.VISIBLE
-        binding.tracksList.visibility =View.GONE
-        binding.textHistory.visibility = View.VISIBLE
-        binding.clearHistoryButton.visibility =View.VISIBLE
-        binding.updateButton.visibility = View.GONE
-        binding.textPlaceholderMessage.visibility = View.GONE
-        binding.placeholderImage.visibility = View.GONE
-        if (binding.inputEditText.hasFocus() && binding.inputEditText.text?.isEmpty() == true && tracksListHistory.isNotEmpty()) {
-            binding.tracksList.recycledViewPool.clear();
-            tracksAdapter.notifyDataSetChanged();
-        }else{
-            binding.tracksListHistory.recycledViewPool.clear();
-            tracksAdapterHistory.notifyDataSetChanged();
+        with(binding){
+            tracksListHistory.visibility = View.VISIBLE
+            tracksList.visibility =View.GONE
+            textHistory.visibility = View.VISIBLE
+            clearHistoryButton.visibility =View.VISIBLE
+            updateButton.visibility = View.GONE
+            textPlaceholderMessage.visibility = View.GONE
+            placeholderImage.visibility = View.GONE
+            if (inputEditText.hasFocus() && inputEditText.text?.isEmpty() == true && tracksListHistory.isNotEmpty()) {
+                tracksList.recycledViewPool.clear();
+                tracksAdapter.notifyDataSetChanged();
+            }else{
+                tracksListHistory.recycledViewPool.clear();
+                tracksAdapterHistory.notifyDataSetChanged();
+            }
         }
         tracksListHistory.clear()
         tracksListHistory.addAll(tracks)
