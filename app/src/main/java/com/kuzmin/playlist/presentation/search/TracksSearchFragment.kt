@@ -12,10 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
 import androidx.core.view.isNotEmpty
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.kuzmin.playlist.presentation.audioplayer.PlayerActivity
@@ -86,7 +84,10 @@ class TracksSearchFragment : Fragment() {
         }
 
         binding.inputEditText.setOnFocusChangeListener { view, hasFocus ->
-            viewModel.showHistory(binding.inputEditText.text.toString())
+            viewModel.showHistory(
+                binding.inputEditText.text.toString(),
+                binding.inputEditText.hasFocus()
+            )
         }
 
         binding.clearHistoryButton.setOnClickListener {
@@ -101,7 +102,10 @@ class TracksSearchFragment : Fragment() {
             tracksList.clear()
             tracksAdapter.notifyDataSetChanged()
             closeKeyboard()
-            viewModel.showHistory(binding.inputEditText.text.toString())
+            viewModel.showHistory(
+                binding.inputEditText.text.toString(),
+                binding.inputEditText.hasFocus()
+            )
 
         }
 
@@ -120,7 +124,11 @@ class TracksSearchFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearIcon.visibility = clearButtonVisibility(s)
-                viewModel.showHistory(s.toString())
+                viewModel.showHistory(
+                    changedText = s?.toString() ?: "",
+                    binding.inputEditText.hasFocus()
+                )
+
                 viewModel.searchDebounce(
                     changedText = s?.toString() ?: ""
                 )
