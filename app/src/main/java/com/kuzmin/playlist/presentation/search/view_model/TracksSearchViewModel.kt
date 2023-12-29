@@ -117,7 +117,7 @@ class TracksSearchViewModel(
             )
         }else{
             renderState(
-                TracksState.Loading
+                TracksState.Start
             )
         }
     }
