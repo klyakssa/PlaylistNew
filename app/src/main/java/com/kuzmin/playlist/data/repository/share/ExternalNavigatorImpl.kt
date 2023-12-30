@@ -28,9 +28,9 @@ class ExternalNavigatorImpl: ExternalNavigator {
 
     override fun openEmail(email: EmailData): Intent{
         return Intent().apply {
-            action = Intent.ACTION_SEND
+            action = Intent.ACTION_SENDTO
             data = email.mailto
-            putExtra(Intent.EXTRA_EMAIL, email.email)
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(email.email))
             putExtra(Intent.EXTRA_SUBJECT, email.subject)
             putExtra(Intent.EXTRA_TEXT, email.text)
         }

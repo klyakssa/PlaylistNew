@@ -110,10 +110,14 @@ class TracksSearchViewModel(
         stateLiveData.postValue(state)
     }
 
-    fun showHistory(changedText: String) {
-        if (changedText.isEmpty() && tracksListHistory.isNotEmpty()){
+    fun showHistory(changedText: String, hasFocus: Boolean) {
+        if (changedText.isEmpty() && tracksListHistory.isNotEmpty() && hasFocus){
             renderState(
                 TracksState.ShowHistory(tracksListHistory)
+            )
+        }else{
+            renderState(
+                TracksState.Start
             )
         }
     }

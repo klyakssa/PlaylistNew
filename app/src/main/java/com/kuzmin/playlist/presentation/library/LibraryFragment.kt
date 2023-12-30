@@ -1,27 +1,35 @@
 package com.kuzmin.playlist.presentation.library
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.databinding.ActivityLibraryBinding
 
-class LibraryActivity : AppCompatActivity() {
+class LibraryFragment : Fragment() {
 
     private lateinit var binding: ActivityLibraryBinding
 
     private lateinit var tabMediator: TabLayoutMediator
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = ActivityLibraryBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        return binding.root
+    }
 
-        binding.back.setOnClickListener {
-            finish()
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        binding.viewPager.adapter = LibraryViewPagerAdapter(supportFragmentManager,
-            lifecycle)
+        binding.viewPager.adapter = LibraryViewPagerAdapter(requireActivity())
+
 
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when(position) {
@@ -33,8 +41,8 @@ class LibraryActivity : AppCompatActivity() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         tabMediator.detach()
     }
 }

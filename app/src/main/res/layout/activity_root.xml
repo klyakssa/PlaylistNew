@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.main.RootActivity">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/rootFragmentContainerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:navGraph="@navigation/main_nav"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </androidx.fragment.app.FragmentContainerView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/YP_light_gray"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView">
+    </View>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:itemTextColor="@color/btn_nav_bottom_clicked"
+        app:itemIconTint="@color/btn_nav_bottom_clicked"
+        app:menu="@menu/nav_items"
+        app:itemRippleColor="?attr/colorPrimaryVariant"
+        app:backgroundTint="?attr/colorOnPrimary"
+        android:outlineAmbientShadowColor="@color/YP_light_gray"
+        android:outlineSpotShadowColor="@color/YP_light_gray"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
-    tools:context=".presentation.library.LibraryActivity"
+    android:background="?attr/colorOnPrimary"
+    tools:context=".presentation.library.LibraryFragment"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,15 +14,6 @@
         android:orientation="horizontal"
         android:padding="@dimen/margin_4dp"
         android:paddingEnd="52dp">
-
-        <TextView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:backgroundTint="?attr/colorPrimaryVariant"
-            android:drawableLeft="@drawable/ic_arrow_back"
-            android:padding="@dimen/padding"
-            android:textColor="?attr/colorPrimaryVariant" />
 
         <TextView
             android:layout_width="@dimen/layout_width"
