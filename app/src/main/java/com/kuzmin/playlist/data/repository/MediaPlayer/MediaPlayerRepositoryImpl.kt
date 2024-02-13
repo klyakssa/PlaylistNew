@@ -1,19 +1,24 @@
 package com.kuzmin.playlist.data.repository.MediaPlayer
 
 import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
 import com.kuzmin.playlist.domain.mediaplayer.repository.MediaPlayerRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class MediaPlayerRepositoryImpl(
     private var mediaPlayer: MediaPlayer
 ): MediaPlayerRepository {
     private var playerState = STATE_DEFAULT
-    private val handler = Handler(Looper.getMainLooper())
 
-    private lateinit var runnable: Runnable
     private lateinit var listener: MediaPlayerRepository.MediaPlayerListener
-
+    private val myCoroutineScope = CoroutineScope(Dispatchers.Default)
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
@@ -29,55 +34,55 @@ class MediaPlayerRepositoryImpl(
             listener.preparedPlayer()
         }
         mediaPlayer.setOnCompletionListener {
-            handler.removeCallbacks(runnable)
             playerState = STATE_PREPARED
             listener.completionPlayer()
         }
-        runnable = object : Runnable {
-            override fun run() {
-                handler.postDelayed(this, TIME_DEBOUNCE_DELAY_MILLIS)
-                listener.currentTimeMusic(mediaPlayer.currentPosition)
+
+        this.listener = listener
+    }
+
+    private fun startTimer() {
+        myCoroutineScope.launch {
+            // ваш код корутины
+            while (mediaPlayer.isPlaying) {
+                delay(TIME_DEBOUNCE_DELAY_MILLIS)
+                withContext(Dispatchers.Main) {
+                    listener.currentTimeMusic(mediaPlayer.currentPosition)
+                }
             }
         }
-        this.listener = listener
+    }
+
+    private fun cancelTimer() {
+        myCoroutineScope.cancel() // отменяем все корутины в этой области
     }
 
     override fun playStartControl() {
         when (playerState) {
             STATE_PLAYING -> {
-                handler.removeCallbacks(runnable)
-                mediaPlayer.pause()
-                playerState = STATE_PAUSED
-                listener.pausePlayer()
+                pauseMediaPlayer()
             }
-
             STATE_PREPARED, STATE_PAUSED -> {
-                listener.startPlayer()
-                handler.post(runnable)
-                mediaPlayer.start()
-                playerState = STATE_PLAYING
+                startMediaPlayer()
             }
         }
     }
 
     override fun releseMediaPlayer() {
+        mediaPlayer.stop()
         mediaPlayer.release()
-        handler.removeCallbacks(runnable)
+        playerState = STATE_DEFAULT
     }
 
     override fun startMediaPlayer() {
-        if (!handler.hasCallbacks(runnable)) {
-            handler.post(runnable)
-        }
         mediaPlayer.start()
+        startTimer()
         playerState = STATE_PLAYING
         listener.startPlayer()
     }
 
     override fun pauseMediaPlayer() {
-        if (!handler.hasCallbacks(runnable)) {
-            handler.removeCallbacks(runnable)
-        }
+        cancelTimer()
         mediaPlayer.pause()
         playerState = STATE_PAUSED
         listener.pausePlayer()

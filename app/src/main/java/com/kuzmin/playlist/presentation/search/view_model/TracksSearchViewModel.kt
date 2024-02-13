@@ -1,18 +1,19 @@
 package com.kuzmin.playlist.presentation.search.view_model
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.domain.model.TrackDto
 import com.kuzmin.playlist.domain.preferencesSearchHistory.iteractors.PreferencesSearchHistoryIteractor
 import com.kuzmin.playlist.domain.searchTracksByName.api.GetTracksUseCase
 import com.kuzmin.playlist.domain.searchTracksByName.consumer.Consumer
 import com.kuzmin.playlist.presentation.search.model.TracksState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class TracksSearchViewModel(
     private val context: Context,
@@ -22,10 +23,10 @@ class TracksSearchViewModel(
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private val SEARCH_REQUEST_TOKEN = Any()
     }
 
-    private val handler = Handler(Looper.getMainLooper())
+
+    private var searchJob: Job? = null
 
     private val tracksListHistory = ArrayList<TrackDto>()
 
@@ -39,70 +40,68 @@ class TracksSearchViewModel(
         getHistory()
     }
 
-    override fun onCleared() {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-    }
-
     fun searchDebounce(changedText: String) {
         if (latestSearchText == changedText && !errorInet) {
             return
         }
 
         this.latestSearchText = changedText
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
 
-        val searchRunnable = Runnable { searchRequest(changedText) }
+        searchJob?.cancel()
 
-        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-        handler.postAtTime(
-            searchRunnable,
-            SEARCH_REQUEST_TOKEN,
-            postTime,
-        )
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            searchRequest(changedText)
+        }
     }
 
     private fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
+
             renderState(TracksState.Loading)
-            tracksInteractor.execute(newSearchText, object : Consumer<ArrayList<TrackDto>> {
-                override fun consume(
-                    data: ArrayList<TrackDto>?,
-                    errorMessage: String?
-                ) {
-                    val tracks = mutableListOf<TrackDto>()
-                    if (data != null) {
-                        tracks.addAll(data)
-                    }
 
-                    when {
-                        errorMessage != null -> {
-                            renderState(
-                                TracksState.Error(
-                                    errorMessage = context.getString(R.string.something_went_wrong),
-                                )
-                            )
-                            errorInet = true
-                        }
-                        tracks.isEmpty() -> {
-                            renderState(
-                                TracksState.Empty(
-                                    message = context.getString(R.string.nothing_found),
-                                )
-                            )
-                            errorInet = false
-                        }
-
-                        else -> {
-                            renderState(
-                                TracksState.Content(
-                                    tracks = tracks,
-                                )
-                            )
-                            errorInet = false
-                        }
+            viewModelScope.launch {
+                tracksInteractor
+                    .execute(newSearchText)
+                    .collect { pair ->
+                        processResult(pair.first, pair.second)
                     }
-                }
-            })
+            }
+        }
+    }
+
+    private fun processResult(foundNames: ArrayList<TrackDto>?, errorMessage: String?) {
+        val tracks = mutableListOf<TrackDto>()
+
+        if (foundNames != null) {
+            tracks.addAll(foundNames)
+        }
+
+        when {
+            errorMessage != null -> {
+                renderState(
+                    TracksState.Error(
+                        errorMessage = context.getString(R.string.something_went_wrong),
+                    )
+                )
+                errorInet = true
+            }
+            tracks.isEmpty() -> {
+                renderState(
+                    TracksState.Empty(
+                        message = context.getString(R.string.nothing_found),
+                    )
+                )
+                errorInet = false
+            }
+            else -> {
+                renderState(
+                    TracksState.Content(
+                        tracks = tracks,
+                    )
+                )
+                errorInet = false
+            }
         }
     }
 
