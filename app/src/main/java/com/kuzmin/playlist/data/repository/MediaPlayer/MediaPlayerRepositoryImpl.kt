@@ -1,85 +1,95 @@
 package com.kuzmin.playlist.data.repository.MediaPlayer
 
 import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
+import com.kuzmin.playlist.data.repository.MediaPlayer.MediaPlayerRepositoryImpl.MediaPlayerState.*
 import com.kuzmin.playlist.domain.mediaplayer.repository.MediaPlayerRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MediaPlayerRepositoryImpl(
     private var mediaPlayer: MediaPlayer
 ): MediaPlayerRepository {
-    private var playerState = STATE_DEFAULT
-    private val handler = Handler(Looper.getMainLooper())
+    private var playerState = DEFAULT
 
-    private lateinit var runnable: Runnable
     private lateinit var listener: MediaPlayerRepository.MediaPlayerListener
-
+    private val myCoroutineScope = CoroutineScope(Dispatchers.Default)
     companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-        private const val TIME_DEBOUNCE_DELAY_MILLIS = 1000L
+        private const val TIME_DEBOUNCE_DELAY_MILLIS = 300L
     }
+
+    enum class MediaPlayerState {
+        DEFAULT,
+        PREPARED,
+        PLAYING,
+        PAUSED
+    }
+
     override fun initPreparePlayer(previewUrl: String, listener: MediaPlayerRepository.MediaPlayerListener) {
         mediaPlayer.setDataSource(previewUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            playerState = STATE_PREPARED
+            playerState = PREPARED
             listener.preparedPlayer()
         }
         mediaPlayer.setOnCompletionListener {
-            handler.removeCallbacks(runnable)
-            playerState = STATE_PREPARED
+            playerState = PREPARED
             listener.completionPlayer()
         }
-        runnable = object : Runnable {
-            override fun run() {
-                handler.postDelayed(this, TIME_DEBOUNCE_DELAY_MILLIS)
-                listener.currentTimeMusic(mediaPlayer.currentPosition)
+
+        this.listener = listener
+    }
+
+    private fun startTimer() {
+        myCoroutineScope.launch {
+            while (mediaPlayer.isPlaying) {
+                delay(TIME_DEBOUNCE_DELAY_MILLIS)
+                withContext(Dispatchers.Main) {
+                    listener.currentTimeMusic(mediaPlayer.currentPosition)
+                }
+            }
+            withContext(Dispatchers.Main) {
+                listener.currentTimeMusic(0)
             }
         }
-        this.listener = listener
+    }
+
+    private fun cancelTimer() {
+        myCoroutineScope.cancel() // отменяем все корутины в этой области
     }
 
     override fun playStartControl() {
         when (playerState) {
-            STATE_PLAYING -> {
-                handler.removeCallbacks(runnable)
-                mediaPlayer.pause()
-                playerState = STATE_PAUSED
-                listener.pausePlayer()
+            PLAYING -> {
+                pauseMediaPlayer()
             }
-
-            STATE_PREPARED, STATE_PAUSED -> {
-                listener.startPlayer()
-                handler.post(runnable)
-                mediaPlayer.start()
-                playerState = STATE_PLAYING
+            PREPARED, PAUSED -> {
+                startMediaPlayer()
             }
+            else -> {}
         }
     }
 
     override fun releseMediaPlayer() {
+        mediaPlayer.stop()
         mediaPlayer.release()
-        handler.removeCallbacks(runnable)
+        playerState = DEFAULT
     }
 
     override fun startMediaPlayer() {
-        if (!handler.hasCallbacks(runnable)) {
-            handler.post(runnable)
-        }
         mediaPlayer.start()
-        playerState = STATE_PLAYING
+        startTimer()
+        playerState = PLAYING
         listener.startPlayer()
     }
 
     override fun pauseMediaPlayer() {
-        if (!handler.hasCallbacks(runnable)) {
-            handler.removeCallbacks(runnable)
-        }
+        cancelTimer()
         mediaPlayer.pause()
-        playerState = STATE_PAUSED
+        playerState = PAUSED
         listener.pausePlayer()
     }
 }

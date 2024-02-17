@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isNotEmpty
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.kuzmin.playlist.presentation.audioplayer.PlayerActivity
@@ -22,6 +23,8 @@ import com.kuzmin.playlist.domain.model.TrackDto
 import com.kuzmin.playlist.databinding.ActivitySearchBinding
 import com.kuzmin.playlist.presentation.search.model.TracksState
 import com.kuzmin.playlist.presentation.search.view_model.TracksSearchViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.collections.ArrayList
 
@@ -31,7 +34,6 @@ class TracksSearchFragment : Fragment() {
 
     private val viewModel by viewModel<TracksSearchViewModel>()
 
-    private val handler = Handler(Looper.getMainLooper())
 
     private lateinit var textWatcher: TextWatcher
 
@@ -259,7 +261,10 @@ class TracksSearchFragment : Fragment() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }
