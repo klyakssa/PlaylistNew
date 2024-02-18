@@ -9,7 +9,14 @@
         android:id="@+id/libraryFragment"
         android:name="com.kuzmin.playlist.presentation.library.LibraryFragment"
         android:label="activity_library"
-        tools:layout="@layout/activity_library" />
+        tools:layout="@layout/activity_library" >
+        <action
+            android:id="@+id/action_libraryFragment_to_playerActivity"
+            app:destination="@id/playerActivity" />
+        <argument
+            android:name="track"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.kuzmin.playlist.presentation.search.TracksSearchFragment"
@@ -20,4 +27,9 @@
         android:name="com.kuzmin.playlist.presentation.settings.activity.SettingsFragment"
         android:label="activity_settings"
         tools:layout="@layout/activity_settings" />
+    <activity
+        android:id="@+id/playerActivity"
+        android:name="com.kuzmin.playlist.presentation.audioplayer.PlayerActivity"
+        android:label="activity_player"
+        tools:layout="@layout/activity_player" />
 </navigation>

@@ -39,6 +39,8 @@ class PlayerActivity : AppCompatActivity() {
             TrackDto::class.java
         )
 
+        viewModel.initFav(track.trackId)
+
         binding.back.setOnClickListener {
             finish()
         }
@@ -60,6 +62,10 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.buttonPlay.setOnClickListener {
             viewModel.playStartControl()
+        }
+
+        binding.buttonLike.setOnClickListener {
+            viewModel.addOrDelTrack(track)
         }
 
         viewModel.observeState().observe(this) {
@@ -96,6 +102,22 @@ class PlayerActivity : AppCompatActivity() {
             is PlayerState.Start -> {
                 binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_pause_button,
+                    0,
+                    0,
+                    0
+                )
+            }
+            is PlayerState.Liked -> {
+                binding.buttonLike.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_favorite_button_click,
+                    0,
+                    0,
+                    0
+                )
+            }
+            is PlayerState.NotLiked -> {
+                binding.buttonLike.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_favorite_button,
                     0,
                     0,
                     0
