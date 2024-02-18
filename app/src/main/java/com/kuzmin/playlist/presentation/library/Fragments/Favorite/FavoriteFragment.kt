@@ -84,7 +84,7 @@ class FavoriteFragment : Fragment() {
                 binding.favoriteText.visibility = View.GONE
                 binding.tracksList.visibility = View.VISIBLE
                 tracksList.clear()
-                tracksList.addAll(state.tracks)
+                tracksList.addAll(state.tracks.reversed())
                 tracksAdapter.notifyDataSetChanged()
             }
         }

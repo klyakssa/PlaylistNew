@@ -30,24 +30,15 @@ class PlayerViewModel(
         viewModelScope.launch {
             favoriteIterator.
                     existTrack(trackId)
-                    .collect{
-                        processResult(it)
+                    .collect{like ->
+                        processResult(like)
                     }
         }
     }
 
     private fun processResult(like: Boolean) {
-        if (like){
-            clickedLike = true
-            renderState(
-                PlayerState.Liked
-            )
-        }else{
-            clickedLike = false
-            renderState(
-                PlayerState.NotLiked
-            )
-        }
+        clickedLike = like
+        renderState(if (like) PlayerState.Liked else PlayerState.NotLiked)
     }
 
     private fun initPlayer(){

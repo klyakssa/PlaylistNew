@@ -32,12 +32,7 @@ class FavoriteRepositoryImpl(
     }
 
     override suspend fun existTrackById(trackId: String): Flow<Boolean> = flow {
-            val track = appDatabase.trackDao().existTrackById(trackId)
-            if (track != null){
-                emit(true)
-            }else{
-                emit(false)
-            }
+        emit(appDatabase.trackDao().existTrackById(trackId) != null)
     }
 
     private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<TrackDto> {

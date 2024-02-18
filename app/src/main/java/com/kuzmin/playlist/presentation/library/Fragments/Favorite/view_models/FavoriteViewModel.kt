@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.playlist.domain.db.iterators.FavoriteIterator
 import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.presentation.audioplayer.model.PlayerState
 import com.kuzmin.playlist.presentation.library.Fragments.model.FavoriteState
 import kotlinx.coroutines.launch
 
@@ -20,8 +21,8 @@ class FavoriteViewModel(
         viewModelScope.launch{
             favoriteIterator
                 .getTracks()
-                .collect{
-                    processResult(it)
+                .collect{tracks ->
+                    processResult(tracks)
                 }
         }
     }
