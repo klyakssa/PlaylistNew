@@ -43,7 +43,7 @@ class LibraryFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        binding.tabLayout.getTabAt(0)?.select() // при возврате на library не знаю как сделать проверку на добавившиеся треки в базе
+        //binding.tabLayout.getTabAt(0)?.select() // при возврате на library не знаю как сделать проверку на добавившиеся треки в базе
     }
 
     override fun onDestroyView() {

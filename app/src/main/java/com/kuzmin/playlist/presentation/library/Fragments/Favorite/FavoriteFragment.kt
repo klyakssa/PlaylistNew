@@ -69,7 +69,7 @@ class FavoriteFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        favoriteViewModel.initTracks()
+        favoriteViewModel.getTracks()
     }
 
     private fun render(state: FavoriteState) {

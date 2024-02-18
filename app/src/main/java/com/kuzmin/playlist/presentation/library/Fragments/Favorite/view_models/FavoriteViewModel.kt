@@ -6,18 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.playlist.domain.db.iterators.FavoriteIterator
 import com.kuzmin.playlist.domain.model.TrackDto
-import com.kuzmin.playlist.presentation.audioplayer.model.PlayerState
+import com.kuzmin.playlist.presentation.audioplayer.model.UpdateLibrary
 import com.kuzmin.playlist.presentation.library.Fragments.model.FavoriteState
 import kotlinx.coroutines.launch
 
 class FavoriteViewModel(
     private val favoriteIterator: FavoriteIterator,
-):  ViewModel(){
+):  ViewModel(), UpdateLibrary{
 
     private val stateLiveData = MutableLiveData<FavoriteState>()
     fun observeState(): LiveData<FavoriteState> = stateLiveData
 
-    fun initTracks() {
+    fun getTracks() {
         viewModelScope.launch{
             favoriteIterator
                 .getTracks()
@@ -43,5 +43,9 @@ class FavoriteViewModel(
 
     private fun renderState(state: FavoriteState) {
         stateLiveData.postValue(state)
+    }
+
+    override suspend fun callOnUpdate() {
+        getTracks()
     }
 }

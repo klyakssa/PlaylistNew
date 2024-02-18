@@ -1,5 +1,6 @@
 package com.kuzmin.playlist.di
 
+import com.kuzmin.playlist.presentation.audioplayer.model.UpdateLibrary
 import com.kuzmin.playlist.presentation.audioplayer.view_model.PlayerViewModel
 import com.kuzmin.playlist.presentation.library.Fragments.Favorite.view_models.FavoriteViewModel
 import com.kuzmin.playlist.presentation.library.Fragments.Playlist.view_models.PlaylistViewModel
@@ -12,8 +13,16 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
 
+    single<UpdateLibrary> {
+        FavoriteViewModel(get())
+    }
+
+    viewModel {
+        FavoriteViewModel(get())
+    }
+
     viewModel { (url: String) ->
-        PlayerViewModel(url,get(), get())
+        PlayerViewModel(url,get(), get(), get())
     }
 
     viewModel {
@@ -22,10 +31,6 @@ val viewModelModule = module {
 
     viewModel {
         SettingsViewModel(androidContext(),get(),get())
-    }
-
-    viewModel {
-        FavoriteViewModel(get())
     }
 
     viewModel {

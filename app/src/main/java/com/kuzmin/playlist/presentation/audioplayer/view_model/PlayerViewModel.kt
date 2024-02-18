@@ -9,12 +9,14 @@ import com.kuzmin.playlist.domain.mediaplayer.iterators.MediaPlayerIteractor
 import com.kuzmin.playlist.domain.mediaplayer.repository.MediaPlayerRepository
 import com.kuzmin.playlist.domain.model.TrackDto
 import com.kuzmin.playlist.presentation.audioplayer.model.PlayerState
+import com.kuzmin.playlist.presentation.audioplayer.model.UpdateLibrary
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val url: String,
     private val workWithMediaPlayer: MediaPlayerIteractor,
     private val favoriteIterator: FavoriteIterator,
+    private val updateLibrary: UpdateLibrary,
 ): ViewModel() {
 
     private val stateLiveData = MutableLiveData<PlayerState>()
