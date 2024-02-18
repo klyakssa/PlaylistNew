@@ -1,6 +1,8 @@
 package com.kuzmin.playlist.di
 
+import androidx.room.Room
 import com.google.gson.GsonBuilder
+import com.kuzmin.playlist.data.db.AppDatabase
 import com.kuzmin.playlist.data.network.RetrofitApi
 import com.kuzmin.playlist.data.network.TracksRetrofitNetworkClient
 import com.kuzmin.playlist.data.repository.TrackListRepository.TracksNetworkClient
@@ -23,6 +25,9 @@ val dataModule = module {
         TracksRetrofitNetworkClient(get(), androidContext())
     }
 
-
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
+    }
 
 }

@@ -4,6 +4,8 @@ import com.kuzmin.playlist.domain.model.TrackDto
 import com.kuzmin.playlist.presentation.search.model.TracksState
 
 sealed interface PlayerState{
+    object Liked : PlayerState
+    object NotLiked : PlayerState
     object Prepared : PlayerState
     object Completion : PlayerState
     object Start : PlayerState

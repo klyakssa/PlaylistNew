@@ -1,5 +1,7 @@
 package com.kuzmin.playlist.di
 
+import com.kuzmin.playlist.domain.db.impl.FavoriteIteractorImpl
+import com.kuzmin.playlist.domain.db.iterators.FavoriteIterator
 import com.kuzmin.playlist.domain.mediaplayer.impl.MediaPlayerInteractionImpl
 import com.kuzmin.playlist.domain.mediaplayer.iterators.MediaPlayerIteractor
 import com.kuzmin.playlist.domain.preferencesSearchHistory.impl.PreferencesSearchHistoryInteractionImpl
@@ -26,5 +28,9 @@ val interactorModule = module {
 
     single<SharingInteractor> {
         SharingInteractorImpl(get())
+    }
+
+    single<FavoriteIterator> {
+        FavoriteIteractorImpl(get())
     }
 }

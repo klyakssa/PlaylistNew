@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.databinding.ActivityLibraryBinding
+import com.kuzmin.playlist.presentation.library.Fragments.Favorite.FavoriteFragment
 
 class LibraryFragment : Fragment() {
 
@@ -39,6 +39,11 @@ class LibraryFragment : Fragment() {
         }
         tabMediator.attach()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //binding.tabLayout.getTabAt(0)?.select() // при возврате на library не знаю как сделать проверку на добавившиеся треки в базе
     }
 
     override fun onDestroyView() {
