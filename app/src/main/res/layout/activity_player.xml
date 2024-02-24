@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorOnPrimary"
     android:theme="@style/Theme.Playlist"
+    android:orientation="vertical"
     tools:context=".presentation.audioplayer.PlayerActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorOnPrimary"
+        android:theme="@style/Theme.Playlist"
+        android:id="@+id/main">
 
     <TextView
         android:id="@+id/back"
@@ -334,12 +341,51 @@
 
     </ScrollView>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/standard_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/player_background_bottom"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/addPlaylist"
+            android:textAlignment="center"
+            android:textSize="@dimen/title_19sp"
+            android:textColor="?attr/colorPrimaryVariant"
+            android:fontFamily="@font/ys_display_medium"
+            android:layout_marginStart="@dimen/margin_main16"
+            android:layout_marginEnd="@dimen/margin_main16"
+            android:layout_marginTop="@dimen/margin_24dp"/>
+
+        <Button
+            android:id="@+id/newPlaylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_24dp"
+            android:text="@string/newPlaylist"
+            android:gravity="center_horizontal|center"
+            android:textAllCaps="false"
+            android:textSize="@dimen/ys_regular_14sp"
+            style="@style/UpdateButton" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playlistList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_main16" />
+
+
+    </LinearLayout>
 
 
 
 
-
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

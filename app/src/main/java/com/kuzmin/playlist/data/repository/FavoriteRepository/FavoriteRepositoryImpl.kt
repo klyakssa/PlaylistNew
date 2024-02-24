@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 
 class FavoriteRepositoryImpl(
     private val appDatabase: AppDatabase,
-    private val movieDbConvertor: TrackDbConverter,
+    private val trackDbConverter: TrackDbConverter,
 ) : FavoriteRepository {
     override suspend fun insertTrack(trackDto: TrackDto) {
         withContext(Dispatchers.IO) {
@@ -36,10 +36,10 @@ class FavoriteRepositoryImpl(
     }
 
     private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<TrackDto> {
-        return tracks.map { movie -> movieDbConvertor.map(movie) }
+        return tracks.map { track -> trackDbConverter.map(track) }
     }
 
     private fun convertFromTrackDto(track: TrackDto): TrackEntity {
-        return movieDbConvertor.map(track)
+        return trackDbConverter.map(track)
     }
 }

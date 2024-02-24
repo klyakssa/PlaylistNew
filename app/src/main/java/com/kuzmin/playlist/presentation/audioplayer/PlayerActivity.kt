@@ -1,51 +1,83 @@
 package com.kuzmin.playlist.presentation.audioplayer
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.databinding.ActivityPlayerBinding
+import com.kuzmin.playlist.domain.model.PlaylistDto
 import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.presentation.audioplayer.bottom_sheet.PlaylistAdapter
 import com.kuzmin.playlist.presentation.audioplayer.model.PlayerState
 import com.kuzmin.playlist.presentation.audioplayer.view_model.PlayerViewModel
 import com.kuzmin.playlist.presentation.mapper.ArtworkMapper
 import com.kuzmin.playlist.presentation.mapper.DateTimeMapper
-import com.kuzmin.playlist.presentation.search.view_model.TracksSearchViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class PlayerActivity : AppCompatActivity() {
+
+class PlayerActivity : Fragment() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var track: TrackDto
+
+    private var isClickAllowed = true
 
     private val viewModel: PlayerViewModel by viewModel<PlayerViewModel>() {
         parametersOf(track.previewUrl)
     }
-    companion object {
-        const val TRACK_TO_ARRIVE = "track"
+
+    val bottomSheetBehavior: BottomSheetBehavior<*> by lazy {
+        BottomSheetBehavior.from(binding.standardBottomSheet)
+    }
+
+    private val playlistList = ArrayList<PlaylistDto>()
+    private val playlistAdapter = PlaylistAdapter{_, it ->
+            viewModel.addTrackInPlaylist(it, track.trackId)
     }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    companion object {
+        const val TRACK_TO_ARRIVE = "track"
+        private const val CLICK_DEBOUNCE_DELAY = 300L
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         track = Gson().fromJson<TrackDto>(
-            intent.getStringExtra(TRACK_TO_ARRIVE),
+            arguments?.getString(TRACK_TO_ARRIVE),
             TrackDto::class.java
         )
 
         viewModel.initFav(track.trackId)
 
         binding.back.setOnClickListener {
-            finish()
+            findNavController().navigateUp()
         }
 
-        Glide.with(applicationContext)
+        Glide.with(requireContext())
             .load(ArtworkMapper.getCoverArtwork(track.artworkUrl100))
             .fitCenter()
             .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner_8dp)))
@@ -65,13 +97,44 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         binding.buttonLike.setOnClickListener {
-            viewModel.addOrDelTrack(track)
+            if (clickDebounce()){
+                viewModel.addOrDelTrack(track)
+            }
         }
 
-        viewModel.observeState().observe(this) {
+        binding.buttonPlaylist.setOnClickListener {
+            if (clickDebounce()){
+                viewModel.getPlaylists()
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+            }
+        }
+
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
+        binding.newPlaylist.setOnClickListener {
+            findNavController().navigate(R.id.action_playerActivity_to_addPlaylist2)
+        }
+
+        playlistAdapter.data = playlistList
+        binding.playlistList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.playlistList.adapter = playlistAdapter
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.main.alpha = 1f
+                    }
+                    else -> {
+                        binding.main.alpha = 0.5f
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
     }
 
     private fun render(state: PlayerState) {
@@ -123,9 +186,35 @@ class PlayerActivity : AppCompatActivity() {
                     0
                 )
             }
+            is PlayerState.isNotPlaylist -> {
+                binding.playlistList.visibility = View.GONE
+            }
+            is PlayerState.isPlaylist -> {
+                binding.playlistList.visibility = View.VISIBLE
+                playlistList.clear()
+                playlistList.addAll(state.playlist)
+                playlistAdapter.notifyDataSetChanged()
+            }
+            is PlayerState.notInPlaylist -> {
+                Toast.makeText(requireContext(), "Добавлено в плейлист ${state.playlistName}", Toast.LENGTH_SHORT).show()
+            }
+            is PlayerState.isInPlaylist -> {
+                Toast.makeText(requireContext(), "Трек уже добавлен в плейлист ${state.playlistName}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            lifecycleScope.launch {
+                delay(PlayerActivity.CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
 
     override fun onPause() {
         super.onPause()
@@ -136,5 +225,6 @@ class PlayerActivity : AppCompatActivity() {
         super.onDestroy()
         viewModel.releseMediaPlayer()
     }
+
 
 }

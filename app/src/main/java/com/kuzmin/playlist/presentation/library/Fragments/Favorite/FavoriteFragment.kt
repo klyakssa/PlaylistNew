@@ -11,6 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.kuzmin.playlist.R
@@ -32,15 +33,12 @@ class FavoriteFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoriteBinding
 
-    private lateinit var navController: NavController
-
-
     private var isClickAllowed = true
 
     private val tracksList = ArrayList<TrackDto>()
     private val tracksAdapter = TracksListAdapter{_,it ->
         if (clickDebounce()) {
-            navController.navigate(R.id.action_libraryFragment_to_playerActivity, bundleOf("track" to Gson().toJson(it)))
+            findNavController().navigate(R.id.action_libraryFragment_to_playerActivity, bundleOf("track" to Gson().toJson(it)))
         }
     }
 
@@ -49,8 +47,6 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFavoriteBinding.inflate(inflater, container, false)
-        val navHostFragment = parentFragmentManager.findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
-        navController = navHostFragment.navController
         return binding.root
     }
 

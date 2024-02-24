@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings.Global.putString
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -12,9 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.core.view.isNotEmpty
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.kuzmin.playlist.presentation.audioplayer.PlayerActivity
@@ -44,9 +47,7 @@ class TracksSearchFragment : Fragment() {
     private val tracksAdapter = TracksListAdapter{_,it ->
         if (clickDebounce()) {
             viewModel.clickOnMainTrack(it)
-            val playerIntent = Intent(requireContext(), PlayerActivity::class.java)
-            playerIntent.putExtra(TRACK_TO_ARRIVE, Gson().toJson(it));
-            startActivity(playerIntent)
+            findNavController().navigate(R.id.action_searchFragment_to_playerActivity, bundleOf("track" to Gson().toJson(it)))
         }
     }
 
@@ -54,9 +55,7 @@ class TracksSearchFragment : Fragment() {
     private val tracksAdapterHistory = TracksListAdapter{ adapter, it ->
         if (clickDebounce()) {
             viewModel.clickOnHistoryTrack(it)
-            val playerIntent = Intent(requireContext(), PlayerActivity::class.java)
-            playerIntent.putExtra(TRACK_TO_ARRIVE, Gson().toJson(it));
-            startActivity(playerIntent)
+            findNavController().navigate(R.id.action_searchFragment_to_playerActivity, bundleOf("track" to Gson().toJson(it)))
         }
     }
 

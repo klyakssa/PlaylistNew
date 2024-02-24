@@ -1,7 +1,7 @@
 package com.kuzmin.playlist.presentation.main
 
+import android.Manifest
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -24,4 +24,11 @@ class RootActivity : AppCompatActivity() {
 
     }
 
+    fun animateBottomNavigationView(gone: Int) {
+        binding.bottomNavigationView.visibility = gone
+    }
+
+    fun animateBottomNavigationViewE(gone: Int) {
+        binding.bottomNavigationView.visibility = gone
+    }
 }

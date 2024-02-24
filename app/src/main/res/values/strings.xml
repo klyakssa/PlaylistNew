@@ -1,8 +1,11 @@
 <resources>
     <string name="title">Playlist maker</string>
     <string name="search">Поиск</string>
+    <string name="playlist">Новый плейлист</string>
+    <string name="addPlaylist">Добавить в плейлист</string>
     <string name="library">Медиатека</string>
     <string name="settings">Настройки</string>
+    <string name="create">Создать</string>
     <string name="theme">Темная тема</string>
     <string name="share">Поделиться приложением</string>
     <string name="support">Написать в поддержку</string>

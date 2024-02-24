@@ -5,7 +5,7 @@ import com.kuzmin.playlist.domain.db.repository.FavoriteRepository
 import com.kuzmin.playlist.domain.model.TrackDto
 import kotlinx.coroutines.flow.Flow
 
-class FavoriteIteractorImpl(
+class FavoriteIteratorImpl(
     private val favoriteRepository: FavoriteRepository
 ): FavoriteIterator {
     override suspend fun insertTrack(track: TrackDto) {
