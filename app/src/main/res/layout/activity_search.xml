@@ -53,13 +53,14 @@
             android:layout_marginStart="@dimen/margin_main16"
             android:layout_marginEnd="@dimen/margin_main16"
             android:paddingStart="@dimen/margin_12dp"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:hint="@string/search"
             android:drawablePadding="8dp"
             android:maxLines="1"
+            android:singleLine="true"
             android:inputType="text"
             style="@style/SearchEditText"
-            android:imeOptions="actionDone"
-            android:singleLine="true"/>
+            android:imeOptions="actionDone" />
 
         <ImageView
             android:id="@+id/clearIcon"

@@ -122,6 +122,9 @@
                 android:id="@+id/inputEditTextName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:fontFamily="@font/ys_text_regular"
                 android:hint="Название*"
                 android:textSize="@dimen/title_16sp"/>
@@ -149,6 +152,9 @@
                 android:fontFamily="@font/ys_text_regular"
                 android:textColor="?attr/colorPlayListAndFavorite"
                 android:textColorHint="?attr/colorPlayListAndFavorite"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:textSize="@dimen/title_16sp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
