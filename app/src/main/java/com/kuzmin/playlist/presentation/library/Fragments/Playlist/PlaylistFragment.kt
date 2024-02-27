@@ -6,17 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.databinding.FragmentPlaylistBinding
-import com.kuzmin.playlist.domain.model.PlaylistDto
 import com.kuzmin.playlist.presentation.audioplayer.view_model.PlayerViewModel
 import com.kuzmin.playlist.presentation.library.Fragments.Playlist.view_models.PlaylistViewModel
 import com.kuzmin.playlist.presentation.library.Fragments.model.FavoriteState
 import com.kuzmin.playlist.presentation.library.Fragments.model.PlaylistState
 import com.kuzmin.playlist.presentation.main.RootActivity
+import com.kuzmin.playlist.presentation.models.Playlist
 import com.kuzmin.playlist.presentation.utils.debounce
 import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,7 +32,7 @@ class PlaylistFragment : Fragment() {
 
     private lateinit var onCreatePlaylistDebounce: () -> Unit
 
-    private val playlistList = ArrayList<PlaylistDto>()
+    private val playlistList = ArrayList<Playlist>()
     private val playlistAdapter = PlaylistAdapter{_, _ ->
 
     }
@@ -50,7 +51,7 @@ class PlaylistFragment : Fragment() {
         binding.playlistText.text = getString(R.string.playlistText)
 
         onCreatePlaylistDebounce = debounce(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope,  Dispatchers.Main) {
-            findNavController().navigate(R.id.action_libraryFragment_to_addPlaylist)
+            findNavController().navigate(R.id.action_libraryFragment_to_addPlaylist, bundleOf("from" to 2))
         }
 
         binding.newPlaylist.setOnClickListener {
@@ -89,6 +90,7 @@ class PlaylistFragment : Fragment() {
         super.onResume()
         viewModel.getPlaylists()
     }
+
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 300L

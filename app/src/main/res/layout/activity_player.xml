@@ -7,7 +7,7 @@
     android:background="?attr/colorOnPrimary"
     android:theme="@style/Theme.Playlist"
     android:orientation="vertical"
-    tools:context=".presentation.audioplayer.PlayerActivity">
+    tools:context=".presentation.audioplayer.PlayerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

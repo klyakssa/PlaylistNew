@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.target.Target
 import com.kuzmin.playlist.R
-import com.kuzmin.playlist.domain.model.PlaylistDto
+import com.kuzmin.playlist.presentation.models.Playlist
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -31,14 +31,12 @@ class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
     private val sourceImage: ImageView = itemView.findViewById(R.id.sourceImage)
     private val dotImage: ImageView = itemView.findViewById(R.id.dotImage)
 
-    fun bind(playlist: PlaylistDto) {
+    fun bind(playlist: Playlist) {
         titleTrack.text =  playlist.playlistName
         artistName.text = playlist.countTracks.toString() + " треков"
-        val filePath = File(itemView.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "PlaylistMaker")
-        val file = File(filePath, "${playlist.playlistName}.jpg")
 
         Glide.with(itemView)
-            .load(file.toUri())
+            .load(playlist.imgFilePath.toUri())
             .fitCenter()
             .transform(RoundedCorners(dpToPx(2f,itemView.context)))
             .placeholder(R.drawable.ic_placeholder)

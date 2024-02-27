@@ -39,7 +39,7 @@
         tools:layout="@layout/activity_settings" />
     <fragment
         android:id="@+id/playerActivity"
-        android:name="com.kuzmin.playlist.presentation.audioplayer.PlayerActivity"
+        android:name="com.kuzmin.playlist.presentation.audioplayer.PlayerFragment"
         android:label="activity_player"
         tools:layout="@layout/activity_player" >
         <action

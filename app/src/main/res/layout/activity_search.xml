@@ -68,7 +68,6 @@
             android:layout_gravity="end|center"
             android:layout_marginEnd="@dimen/margin_end_clear24"
             android:src="@drawable/light_mode"
-            android:background="@color/YP_light_gray"
             android:visibility="gone" />
         </FrameLayout>
     </LinearLayout>

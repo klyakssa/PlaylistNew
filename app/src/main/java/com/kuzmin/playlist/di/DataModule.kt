@@ -3,8 +3,10 @@ package com.kuzmin.playlist.di
 import androidx.room.Room
 import com.google.gson.GsonBuilder
 import com.kuzmin.playlist.data.db.AppDatabase
+import com.kuzmin.playlist.data.model.SaveFiles
 import com.kuzmin.playlist.data.network.RetrofitApi
 import com.kuzmin.playlist.data.network.TracksRetrofitNetworkClient
+import com.kuzmin.playlist.data.repository.SaveFilesImpl
 import com.kuzmin.playlist.data.repository.TrackListRepository.TracksNetworkClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -31,4 +33,7 @@ val dataModule = module {
             .build()
     }
 
+    single<SaveFiles> {
+        SaveFilesImpl(androidContext())
+    }
 }

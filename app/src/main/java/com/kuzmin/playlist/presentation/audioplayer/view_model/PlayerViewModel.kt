@@ -9,19 +9,20 @@ import com.kuzmin.playlist.domain.db.iterators.PlaylistIterator
 import com.kuzmin.playlist.domain.mediaplayer.iterators.MediaPlayerIteractor
 import com.kuzmin.playlist.domain.mediaplayer.repository.MediaPlayerRepository
 import com.kuzmin.playlist.domain.model.IsTrackInPlaylist
-import com.kuzmin.playlist.domain.model.PlaylistDto
-import com.kuzmin.playlist.domain.model.TrackDto
 import com.kuzmin.playlist.presentation.audioplayer.model.PlayerState
-import com.kuzmin.playlist.presentation.audioplayer.model.UpdateLibrary
+import com.kuzmin.playlist.presentation.mapper.PlaylistMapper
+import com.kuzmin.playlist.presentation.mapper.TrackMapper
+import com.kuzmin.playlist.presentation.models.Playlist
+import com.kuzmin.playlist.presentation.models.Track
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val url: String,
     private val workWithMediaPlayer: MediaPlayerIteractor,
     private val favoriteIterator: FavoriteIterator,
-    private val updateLibrary: UpdateLibrary,
     private val playlistIterator: PlaylistIterator,
-): ViewModel() {
+) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<PlayerState>()
     fun observeState(): LiveData<PlayerState> = stateLiveData
@@ -31,15 +32,25 @@ class PlayerViewModel(
 
     init {
         initPlayer()
+        initUpdate()
+    }
+
+    private fun initUpdate() {
+        playlistIterator.initListenerOnUpdate(
+            object : PlaylistIterator.PlaylistListener {
+                override fun callOnupdate() {
+                    getPlaylists()
+                }
+            }
+        )
     }
 
     fun initFav(trackId: String) {
         viewModelScope.launch {
-            favoriteIterator.
-                    existTrack(trackId)
-                    .collect{like ->
-                        processResult(like)
-                    }
+            favoriteIterator.existTrack(trackId)
+                .collect { like ->
+                    processResult(like)
+                }
         }
     }
 
@@ -49,21 +60,23 @@ class PlayerViewModel(
     }
 
     fun getPlaylists() {
-        viewModelScope.launch{
+        viewModelScope.launch {
             playlistIterator
                 .getPlaylists()
-                .collect{ playlists ->
-                    processResult(playlists)
+                .collect { playlists ->
+                    processResult(playlists.map {
+                        PlaylistMapper.map(it)
+                    })
                 }
         }
     }
 
-    private fun processResult(playlists: List<PlaylistDto>) {
-        if (playlists.isNullOrEmpty()){
+    private fun processResult(playlists: List<Playlist>) {
+        if (playlists.isNullOrEmpty()) {
             renderState(
                 PlayerState.isNotPlaylist
             )
-        }else{
+        } else {
             renderState(
                 PlayerState.isPlaylist(
                     playlists
@@ -72,7 +85,7 @@ class PlayerViewModel(
         }
     }
 
-    private fun initPlayer(){
+    private fun initPlayer() {
         workWithMediaPlayer.initPreparePlayer(
             previewUrl = url,
             listener = object : MediaPlayerRepository.MediaPlayerListener {
@@ -81,21 +94,25 @@ class PlayerViewModel(
                         PlayerState.Prepared
                     )
                 }
+
                 override fun completionPlayer() {
                     renderState(
                         PlayerState.Completion
                     )
                 }
+
                 override fun startPlayer() {
                     renderState(
                         PlayerState.Start
                     )
                 }
+
                 override fun pausePlayer() {
                     renderState(
                         PlayerState.Pause
                     )
                 }
+
                 override fun currentTimeMusic(timeInt: Int) {
                     renderState(
                         PlayerState.CurrentTime(
@@ -115,56 +132,54 @@ class PlayerViewModel(
         workWithMediaPlayer.pauseMediaPlayer()
     }
 
-    fun releseMediaPlayer(){
+    fun releseMediaPlayer() {
         workWithMediaPlayer.releseMediaPlayer()
     }
 
-    fun playStartControl(){
+    fun playStartControl() {
         workWithMediaPlayer.playStartControl()
     }
 
-    fun addOrDelTrack(track: TrackDto){
-        if (clickedLike){
+    fun addOrDelTrack(track: Track) {
+        if (clickedLike) {
             clickedLike = false
             viewModelScope.launch {
-                favoriteIterator.deleteTrack(track)
+                favoriteIterator.deleteTrack(TrackMapper.map(track))
             }
             renderState(
                 PlayerState.NotLiked
             )
-        }else{
+        } else {
             clickedLike = true
             viewModelScope.launch {
-                favoriteIterator.insertTrack(track)
+                favoriteIterator.insertTrack(TrackMapper.map(track))
             }
             renderState(
                 PlayerState.Liked
             )
         }
-        viewModelScope.launch {
-            updateLibrary.callOnUpdate()
+    }
+
+    fun addTrackInPlaylist(playlist: Playlist, track: Track) {
+        viewModelScope.launch(Dispatchers.IO) {
+            playlistIterator
+                .updateTracksInPlaylist(PlaylistMapper.map(playlist), TrackMapper.map(track))
+                .collect {
+                    processResult(it)
+                }
         }
     }
 
-    fun addTrackInPlaylist(playlist: PlaylistDto, trackId: String){
-       viewModelScope.launch {
-           playlistIterator
-               .updateTracksInPlaylist(playlist, trackId)
-               .collect{
-                   processResult(it)
-               }
-       }
-    }
-
     private fun processResult(it: IsTrackInPlaylist) {
-        when(it){
+        when (it) {
             is IsTrackInPlaylist.isInPlaylist -> {
                 renderState(
-                   PlayerState.isInPlaylist(
-                       it.playlistName
-                   )
+                    PlayerState.isInPlaylist(
+                        it.playlistName
+                    )
                 )
             }
+
             is IsTrackInPlaylist.notInPlaylist -> {
                 renderState(
                     PlayerState.notInPlaylist(

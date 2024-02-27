@@ -20,8 +20,6 @@ import com.kuzmin.playlist.domain.preferencesSearchHistory.repository.Preference
 import com.kuzmin.playlist.domain.preferencesTheme.repository.PreferencesThemeRepository
 import com.kuzmin.playlist.domain.searchTracksByName.repository.TracksListRepository
 import com.kuzmin.playlist.domain.sharing.repository.ExternalNavigator
-import com.kuzmin.playlist.presentation.library.Fragments.Playlist.view_models.PlaylistViewModel
-import com.kuzmin.playlist.presentation.library.Fragments.model.UpdatePlaylist
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -71,6 +69,6 @@ val repositoryModule = module {
     }
 
     single<PlaylistRepository> {
-        PlaylistRepositoryImpl(get(), get(), get())
+        PlaylistRepositoryImpl(get(), get(), get(), get(), get())
     }
 }

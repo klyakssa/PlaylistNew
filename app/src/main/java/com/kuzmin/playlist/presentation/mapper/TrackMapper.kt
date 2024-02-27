@@ -1,26 +1,11 @@
-package com.kuzmin.playlist.data.db.converters
+package com.kuzmin.playlist.presentation.mapper
 
-import com.kuzmin.playlist.data.db.entity.TrackEntity
+
 import com.kuzmin.playlist.domain.model.TrackDto
-import java.text.SimpleDateFormat
+import com.kuzmin.playlist.presentation.models.Track
 
-class TrackDbConverter {
-    fun map(track: TrackDto): TrackEntity {
-        return TrackEntity(
-            track.trackId,
-            track.trackName,
-            track.artistName,
-            track.trackTime,
-            track.artworkUrl100,
-            track.collectionName,
-            DateTimeMapper.formatDate(track.releaseDate),
-            track.primaryGenreName,
-            track.country,
-            track.previewUrl
-        )
-    }
-
-    fun map(track: TrackEntity): TrackDto {
+object TrackMapper {
+    fun map(track: Track): TrackDto {
         return TrackDto(
             track.trackId,
             track.trackName,
@@ -28,10 +13,26 @@ class TrackDbConverter {
             track.trackTime,
             track.artworkUrl100,
             track.collectionName,
-            DateTimeMapper.formatDate(track.releaseDate),
+            track.releaseDate,
             track.primaryGenreName,
             track.country,
             track.previewUrl
         )
     }
+
+    fun map(track: TrackDto): Track {
+        return Track(
+            track.trackId,
+            track.trackName,
+            track.artistName,
+            track.trackTime,
+            track.artworkUrl100,
+            track.collectionName,
+            track.releaseDate,
+            track.primaryGenreName,
+            track.country,
+            track.previewUrl
+        )
+    }
+
 }

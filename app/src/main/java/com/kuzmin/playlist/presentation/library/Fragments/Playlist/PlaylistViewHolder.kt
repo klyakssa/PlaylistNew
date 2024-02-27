@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.target.Target
 import com.kuzmin.playlist.R
-import com.kuzmin.playlist.domain.model.PlaylistDto
+import com.kuzmin.playlist.presentation.models.Playlist
 import java.io.File
 
 
@@ -24,16 +24,14 @@ class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
     private val name: TextView = itemView.findViewById(R.id.playlistName)
     private val count: TextView = itemView.findViewById(R.id.countTracks)
 
-    fun bind(playlist: PlaylistDto) {
-        val filePath = File(itemView.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "PlaylistMaker")
-        val file = File(filePath, "${playlist.playlistName}.jpg")
-
-
+    fun bind(playlist: Playlist) {
         Glide.with(itemView)
-            .load(file.toUri())
+            .load(playlist.imgFilePath.toUri())
+            .centerCrop()
             .transform(RoundedCorners(dpToPx(8f,itemView.context)))
             .placeholder(R.drawable.ic_placeholder_playlist)
             .into(img)
+
         name.text = playlist.playlistName
         count.text = playlist.countTracks.toString() + " треков"
     }

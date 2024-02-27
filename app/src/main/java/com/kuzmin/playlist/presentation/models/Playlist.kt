@@ -1,9 +1,9 @@
-package com.kuzmin.playlist.domain.model
+package com.kuzmin.playlist.presentation.models
 
 import java.io.File
 
 
-data class PlaylistDto(
+data class Playlist(
     val playlistId: Int,
     val playlistName: String,
     val playlistDescribe: String,

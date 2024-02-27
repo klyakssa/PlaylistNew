@@ -98,7 +98,6 @@
             android:id="@+id/cover"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:scaleType="centerCrop"
             android:background="@drawable/shape_img_playlist"
             android:layout_marginTop="16dp"
             app:layout_constraintDimensionRatio="H, 1:1"
@@ -108,7 +107,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/name_playlist"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/MyEditTextPlaylist"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_24dp"
@@ -116,16 +115,14 @@
             app:layout_constraintTop_toBottomOf="@id/cover"
             app:layout_constraintStart_toEndOf="@id/left_guideline16dp"
             app:layout_constraintEnd_toStartOf="@id/right_guideline16dp"
-            app:hintTextColor="?attr/colorPlayListAndFavorite"
-            >
+            app:hintTextColor="@color/YP_blue"
+            app:boxStrokeColor="@color/YP_blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputEditTextName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/ys_text_regular"
-                android:textColor="?attr/colorPlayListAndFavorite"
-                android:textColorHint="?attr/colorPlayListAndFavorite"
                 android:hint="Название*"
                 android:textSize="@dimen/title_16sp"/>
 
@@ -133,7 +130,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/discribe"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/MyEditTextPlaylist"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_24dp"
@@ -141,7 +138,8 @@
             app:layout_constraintTop_toBottomOf="@id/name_playlist"
             app:layout_constraintStart_toEndOf="@id/left_guideline16dp"
             app:layout_constraintEnd_toStartOf="@id/right_guideline16dp"
-            app:hintTextColor="?attr/colorPlayListAndFavorite"
+            app:hintTextColor="@color/YP_blue"
+            app:boxStrokeColor="@color/YP_blue"
             android:hint="Описание" >
 
             <com.google.android.material.textfield.TextInputEditText

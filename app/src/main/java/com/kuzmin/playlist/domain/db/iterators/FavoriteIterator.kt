@@ -11,4 +11,10 @@ interface FavoriteIterator {
     fun getTracks(): Flow<List<TrackDto>>
 
     suspend fun existTrack(trackId: String): Flow<Boolean>
+
+    fun initListenerOnUpdate(favoriteListener: FavoriteListener)
+
+    interface FavoriteListener {
+        fun callOnupdate()
+    }
 }

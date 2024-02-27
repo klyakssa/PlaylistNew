@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kuzmin.playlist.R
-import com.kuzmin.playlist.domain.model.PlaylistDto
+import com.kuzmin.playlist.presentation.models.Playlist
 import java.util.ArrayList
 
 class PlaylistAdapter(val clickListener: PlaylistClickListener): RecyclerView.Adapter<PlaylistViewHolder>() {
 
-    var data = ArrayList<PlaylistDto>()
+    var data = ArrayList<Playlist>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_item, parent, false)
         return PlaylistViewHolder(view)
@@ -27,6 +27,6 @@ class PlaylistAdapter(val clickListener: PlaylistClickListener): RecyclerView.Ad
     }
 
     fun interface PlaylistClickListener {
-        fun onLocationClick(adapter: PlaylistAdapter, playlist: PlaylistDto)
+        fun onLocationClick(adapter: PlaylistAdapter, playlist: Playlist)
     }
 }

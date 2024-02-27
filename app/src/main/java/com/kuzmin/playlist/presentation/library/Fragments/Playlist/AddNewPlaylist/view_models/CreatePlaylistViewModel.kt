@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.playlist.domain.db.iterators.PlaylistIterator
 import com.kuzmin.playlist.presentation.library.Fragments.Playlist.AddNewPlaylist.models.CreatePlaylistState
-import com.kuzmin.playlist.presentation.library.Fragments.model.UpdatePlaylist
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,9 +18,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 class CreatePlaylistViewModel(
-    private val activity: FragmentActivity,
     private val playlistIterator: PlaylistIterator,
-    private val updatePlaylist: UpdatePlaylist,
 ): ViewModel() {
 
     private val stateLiveData = MutableLiveData<CreatePlaylistState>()
@@ -31,28 +28,17 @@ class CreatePlaylistViewModel(
         viewModelScope.launch {
             playlistIterator.insertPlaylist(playlistName, playlistDescribe, imgFilePath)
                 .collect{ error ->
-                    processResult(error, playlistName, imgFilePath)
+                    processResult(error, playlistName)
                 }
         }
 
     }
 
-    private fun processResult(error: String?, playlistName: String, imgFilePath: String) {
+    private fun processResult(error: String?, playlistName: String) {
         if (error != null){
             renderState(
                 CreatePlaylistState.Error(error)
             )
-        }
-        if (!imgFilePath.isEmpty()) {
-            val error = saveImageToPrivateStorage(playlistName, Uri.parse(imgFilePath))
-            if (error != null) {
-                renderState(
-                    CreatePlaylistState.Error(error.toString())
-                )
-            }
-        }
-        viewModelScope.launch{
-            updatePlaylist.callOnUpdatePlaylist()
         }
         renderState(
             CreatePlaylistState.Success(playlistName)
@@ -61,24 +47,6 @@ class CreatePlaylistViewModel(
 
     private fun renderState(state: CreatePlaylistState) {
         stateLiveData.postValue(state)
-    }
-
-    private fun saveImageToPrivateStorage(playlistName: String, uri: Uri): Exception? {
-        try {
-            val filePath = File(activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "PlaylistMaker")
-            if (!filePath.exists()){
-                filePath.mkdirs()
-            }
-            val file = File(filePath, "${playlistName}.jpg")
-            val inputStream = activity.applicationContext.contentResolver.openInputStream(uri)
-            val outputStream = FileOutputStream(file)
-            BitmapFactory
-                .decodeStream(inputStream)
-                .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
-        } catch (e: Exception) {
-            return e
-        }
-        return null
     }
 
 }

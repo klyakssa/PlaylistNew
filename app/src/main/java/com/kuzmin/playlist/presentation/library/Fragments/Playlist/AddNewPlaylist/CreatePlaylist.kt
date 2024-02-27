@@ -1,7 +1,6 @@
 package com.kuzmin.playlist.presentation.library.Fragments.Playlist.AddNewPlaylist
 
 
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,23 +12,24 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
+import com.kuzmin.playlist.databinding.FragmentNewplaylistBinding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
 import com.kuzmin.playlist.R
-import com.kuzmin.playlist.databinding.FragmentNewplaylistBinding
-import com.kuzmin.playlist.di.viewModelModule
+import com.kuzmin.playlist.presentation.audioplayer.PlayerFragment
 import com.kuzmin.playlist.presentation.library.Fragments.Playlist.AddNewPlaylist.models.CreatePlaylistState
 import com.kuzmin.playlist.presentation.library.Fragments.Playlist.AddNewPlaylist.view_models.CreatePlaylistViewModel
-import com.kuzmin.playlist.presentation.library.Fragments.Playlist.PlaylistFragment
-import com.kuzmin.playlist.presentation.library.Fragments.Playlist.view_models.PlaylistViewModel
 import com.kuzmin.playlist.presentation.main.RootActivity
-import com.kuzmin.playlist.presentation.search.model.TracksState
+import com.kuzmin.playlist.presentation.mapper.ArtworkMapper.dpToPx
+import com.kuzmin.playlist.presentation.models.Track
 import com.kuzmin.playlist.presentation.utils.debounce
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 
 class CreatePlaylist: Fragment() {
@@ -44,9 +44,9 @@ class CreatePlaylist: Fragment() {
 
     private lateinit var onBackPlaylistDebounce: (RootActivity) -> Unit
 
-    private val createPlaylistViewModel by viewModel<CreatePlaylistViewModel>(){
-        parametersOf(requireActivity())
-    }
+    private val createPlaylistViewModel by viewModel<CreatePlaylistViewModel>()
+
+    private var fromWho: Int? = null
 
     private var controlPlaylist: ControlPlaylist = ControlPlaylist()
 
@@ -61,19 +61,25 @@ class CreatePlaylist: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fromWho = arguments?.getInt(FROM_WHO)
+
         onBackPlaylistDebounce = debounce<RootActivity>(CLICK_DEBOUNCE_DELAY, GlobalScope, Dispatchers.Main) { activity ->
             activity.animateBottomNavigationView(View.VISIBLE)
         }
         binding.back.setOnClickListener {
             when(controlPlaylist.needSave()){
                 0 -> {
-                    findNavController().navigateUp()
-                    onBackPlaylistDebounce(activity as RootActivity)
+                    if (fromWho == 1){
+                        findNavController().navigateUp()
+                    }else{
+                        findNavController().navigateUp()
+                        onBackPlaylistDebounce(activity as RootActivity)
+                    }
                 }
                 else -> {
                     MaterialAlertDialogBuilder(requireContext())
-                        .setTitle("Завершить создание плейлиста?")
-                        .setMessage("Все несохраненные данные будут потеряны")
+                        .setTitle(requireContext().getString(R.string.dialog_title))
+                        .setMessage(requireContext().getString(R.string.dialog_message))
                         .setNeutralButton("Отмена") { dialog, which ->
                             dialog.cancel()
                         }
@@ -122,11 +128,14 @@ class CreatePlaylist: Fragment() {
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
-                    binding.cover.setImageURI(uri)
+                    Glide.with(requireContext())
+                        .load(uri)
+                        .centerCrop()
+                        .transform(RoundedCorners(dpToPx(8f, requireContext())))
+                        .placeholder(R.drawable.ic_placeholder_playlist)
+                        .into(binding.cover)
                     controlPlaylist.imgPlaylist = 1
                     uriImg = uri.toString()
-                } else {
-                    Log.d("PhotoPicker", "No media selected")
                 }
             }
 
@@ -154,9 +163,13 @@ class CreatePlaylist: Fragment() {
                 Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
             }
             is CreatePlaylistState.Success -> {
-                Toast.makeText(context, "Плейлист ${state.playlistName} создан", Toast.LENGTH_SHORT).show()
-                findNavController().navigateUp()
-                onBackPlaylistDebounce(activity as RootActivity)
+                Toast.makeText(context, requireContext().getString(R.string.playlist_toast) + " "+ state.playlistName + " " + requireContext().getString(R.string.create_toast), Toast.LENGTH_SHORT).show()
+                if (fromWho == 1){
+                    findNavController().navigateUp()
+                }else{
+                    findNavController().navigateUp()
+                    onBackPlaylistDebounce(activity as RootActivity)
+                }
             }
         }
     }
@@ -167,11 +180,7 @@ class CreatePlaylist: Fragment() {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 100L
-        fun newInstance() =
-            PlaylistFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
+        private const val FROM_WHO = "from"
     }
 
     class ControlPlaylist(){

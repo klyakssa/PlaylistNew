@@ -15,6 +15,7 @@
         <item name="colorPlaceholderMessage">@color/YP_black</item>
         <item name="colorPlayListAndFavorite">@color/white</item>
         <item name="colorShapeEditText">@color/white</item>
+        <item name="colorPlayerBackground">@color/YP_black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

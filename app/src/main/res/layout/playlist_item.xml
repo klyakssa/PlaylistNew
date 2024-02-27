@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:id="@+id/playlist_item"
@@ -15,19 +16,16 @@
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:minHeight="160dp"
-            android:maxHeight="160dp"
-            android:scaleType="centerCrop"/>
+            android:layout_width="160dp"
+            android:layout_height="160dp"/>
         <TextView
             android:id="@+id/playlistName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ys_text_regular"
             android:textSize="@dimen/title_12sp"
-            android:text="BeSt SoNg EvEr!"
-            android:textColor="?attr/colorPrimaryVariant"/>
+            tools:text="BeSt SoNg EvEr!"
+            tools:textColor="?attr/colorPrimaryVariant"/>
 
         <TextView
             android:id="@+id/countTracks"

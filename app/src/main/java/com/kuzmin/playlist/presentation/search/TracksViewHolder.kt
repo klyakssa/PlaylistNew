@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.kuzmin.playlist.R
-import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.presentation.models.Track
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,7 +24,7 @@ class TracksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val sourceImage: ImageView = itemView.findViewById(R.id.sourceImage)
     private val dotImage: ImageView = itemView.findViewById(R.id.dotImage)
 
-    fun bind(track: TrackDto) {
+    fun bind(track: Track) {
         titleTrack.text = track.trackName
         artistName.text = track.artistName
         timeSong.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime.toLong())
