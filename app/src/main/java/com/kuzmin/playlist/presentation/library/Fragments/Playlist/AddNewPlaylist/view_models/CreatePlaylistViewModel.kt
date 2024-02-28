@@ -1,5 +1,6 @@
 package com.kuzmin.playlist.presentation.library.Fragments.Playlist.AddNewPlaylist.view_models
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -24,9 +25,9 @@ class CreatePlaylistViewModel(
     private val stateLiveData = MutableLiveData<CreatePlaylistState>()
     fun observeState(): LiveData<CreatePlaylistState> = stateLiveData
 
-    fun createPlaylist(playlistName: String, playlistDescribe: String, imgFilePath: String) {
+    fun createPlaylist(playlistName: String, playlistDescribe: String, imgFilePath: String, context: Context) {
         viewModelScope.launch {
-            playlistIterator.insertPlaylist(playlistName, playlistDescribe, imgFilePath)
+            playlistIterator.insertPlaylist(playlistName, playlistDescribe, imgFilePath, context)
                 .collect{ error ->
                     processResult(error, playlistName)
                 }

@@ -11,7 +11,7 @@ class PreferencesSearchHistoryInteractionImpl(
         return preferencesRepository.getHistory()
     }
 
-    override fun saveHistory(trackList: ArrayList<TrackDto>) {
+    override fun saveHistory(trackList: List<TrackDto>) {
         preferencesRepository.saveHistory(trackList)
     }
 

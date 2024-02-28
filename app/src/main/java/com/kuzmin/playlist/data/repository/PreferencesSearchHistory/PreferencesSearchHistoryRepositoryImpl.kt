@@ -17,7 +17,7 @@ class PreferencesSearchHistoryRepositoryImpl(
         return gson.fromJson<ArrayList<TrackDto>>(json, itemType)
     }
 
-    override fun saveHistory(trackList: ArrayList<TrackDto>) {
+    override fun saveHistory(trackList: List<TrackDto>) {
         sp.edit()
             .putString(Preferences.SEARCH_HISTORY_KEY.pref, gson.toJson(trackList))
             .apply()

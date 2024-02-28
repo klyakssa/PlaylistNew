@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.flow
 
 
 class PlaylistRepositoryImpl(
-    private val context: Context,
+    private val context2: Context,
     private val appDatabase: AppDatabase,
     private val playlistDbConverter: PlaylistDbConverter,
     private val trackDbConverter: TrackDbConverter,
@@ -31,23 +31,32 @@ class PlaylistRepositoryImpl(
     override suspend fun insertPlaylist(
         playlistName: String,
         playlistDescribe: String,
-        imgFilePath: String
+        imgFilePath: String,
+        context: Context
     ): Flow<Resource<Error?>> = flow {
-        val file = saveFiles.saveImageToPrivateStorage(playlistName, imgFilePath.toUri())
-        if (file != null) {
-            val id = appDatabase.playlistDao().insertPlaylist(
+        if (!imgFilePath.isNullOrEmpty()) {
+            val file = saveFiles.saveImageToPrivateStorage(playlistName, imgFilePath.toUri(), context)
+            if(file == null){
+                emit(Resource.Error("File is null"))
+            }else{
+                appDatabase.playlistDao().insertPlaylist(
+                    playlistDbConverter.map(
+                        playlistName,
+                        playlistDescribe,
+                        file.path
+                    )
+                )
+                emit(Resource.Success(null))
+            }
+        }else{
+            appDatabase.playlistDao().insertPlaylist(
                 playlistDbConverter.map(
                     playlistName,
                     playlistDescribe,
-                    file.path
+                    ""
                 )
             )
-            val playlistNew = appDatabase.playlistDao().getPlaylistById(id.toInt())
-            if (playlistNew == null) {
-                emit(Resource.Error("Playlist is not added"))
-            } else {
-                emit(Resource.Success(null))
-            }
+            emit(Resource.Success(null))
         }
     }
 
@@ -79,10 +88,11 @@ class PlaylistRepositoryImpl(
     }
 
     private fun convertFromPlaylistEntity(playlists: List<PlaylistEntity>): List<PlaylistDto> {
-        return playlists.map { playlist -> playlistDbConverter.map(playlist, context) }
+        return playlists.map { playlist -> playlistDbConverter.map(playlist, context2) }
     }
 
     private fun convertFromTrackDto(track: TrackDto): TrackEntity {
         return trackDbConverter.map(track)
     }
+
 }

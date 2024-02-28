@@ -16,8 +16,10 @@
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="160dp"
-            android:layout_height="160dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="160dp"
+            android:minWidth="160dp"/>
         <TextView
             android:id="@+id/playlistName"
             android:layout_width="match_parent"

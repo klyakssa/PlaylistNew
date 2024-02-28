@@ -85,6 +85,7 @@ class PlayerViewModel(
         }
     }
 
+
     private fun initPlayer() {
         workWithMediaPlayer.initPreparePlayer(
             previewUrl = url,
@@ -128,13 +129,6 @@ class PlayerViewModel(
         stateLiveData.postValue(state)
     }
 
-    fun pauseMediaPlayer() {
-        workWithMediaPlayer.pauseMediaPlayer()
-    }
-
-    fun releseMediaPlayer() {
-        workWithMediaPlayer.releseMediaPlayer()
-    }
 
     fun playStartControl() {
         workWithMediaPlayer.playStartControl()

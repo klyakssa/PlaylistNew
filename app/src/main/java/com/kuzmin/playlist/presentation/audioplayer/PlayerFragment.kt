@@ -1,12 +1,13 @@
 package com.kuzmin.playlist.presentation.audioplayer
 
-import android.annotation.SuppressLint
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,7 @@ import com.kuzmin.playlist.presentation.audioplayer.bottom_sheet.PlaylistAdapter
 import com.kuzmin.playlist.presentation.audioplayer.model.PlayerState
 import com.kuzmin.playlist.presentation.audioplayer.view_model.PlayerViewModel
 import com.kuzmin.playlist.presentation.main.RootActivity
+import com.kuzmin.playlist.presentation.main.models.OnBackButtonListener
 import com.kuzmin.playlist.presentation.mapper.ArtworkMapper
 import com.kuzmin.playlist.presentation.mapper.DateTimeMapper
 import com.kuzmin.playlist.presentation.models.Playlist
@@ -36,7 +38,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 
-class PlayerFragment : Fragment() {
+class PlayerFragment : Fragment(), OnBackButtonListener{
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var track: Track
 
@@ -48,6 +50,10 @@ class PlayerFragment : Fragment() {
     private lateinit var bottomSheetCallback: BottomSheetCallback
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
+
+    private val drawableMainBackground: Drawable by lazy {
+        binding.main.background
+    }
 
     private lateinit var onBackPlayerDebounce: (RootActivity) -> Unit
 
@@ -145,13 +151,10 @@ class PlayerFragment : Fragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
-                        binding.main.alpha = 1f
-                    }
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                        binding.main.alpha = 1f
+                        binding.bottomSheetBackground.visibility = View.GONE
                     }
                     else -> {
-                        binding.main.alpha = 0.5f
+                        binding.bottomSheetBackground.visibility = View.VISIBLE
                     }
                 }
             }
@@ -248,7 +251,6 @@ class PlayerFragment : Fragment() {
         }
     }
 
-
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
@@ -259,6 +261,12 @@ class PlayerFragment : Fragment() {
             }
         }
         return current
+    }
+
+    override fun onBackPressed(): Boolean {
+        findNavController().navigateUp()
+        onBackPlayerDebounce(activity as RootActivity)
+        return true
     }
 
 }

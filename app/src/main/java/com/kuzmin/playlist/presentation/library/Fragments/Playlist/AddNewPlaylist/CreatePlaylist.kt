@@ -24,6 +24,7 @@ import com.kuzmin.playlist.presentation.audioplayer.PlayerFragment
 import com.kuzmin.playlist.presentation.library.Fragments.Playlist.AddNewPlaylist.models.CreatePlaylistState
 import com.kuzmin.playlist.presentation.library.Fragments.Playlist.AddNewPlaylist.view_models.CreatePlaylistViewModel
 import com.kuzmin.playlist.presentation.main.RootActivity
+import com.kuzmin.playlist.presentation.main.models.OnBackButtonListener
 import com.kuzmin.playlist.presentation.mapper.ArtworkMapper.dpToPx
 import com.kuzmin.playlist.presentation.models.Track
 import com.kuzmin.playlist.presentation.utils.debounce
@@ -32,7 +33,7 @@ import kotlinx.coroutines.GlobalScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class CreatePlaylist: Fragment() {
+class CreatePlaylist: Fragment(), OnBackButtonListener{
 
     private lateinit var binding: FragmentNewplaylistBinding
 
@@ -42,11 +43,13 @@ class CreatePlaylist: Fragment() {
 
     private  var uriImg: String = ""
 
-    private lateinit var onBackPlaylistDebounce: (RootActivity) -> Unit
+    private val onBackPlaylistDebounce: (RootActivity) -> Unit = debounce<RootActivity>(CLICK_DEBOUNCE_DELAY, GlobalScope, Dispatchers.Main) { activity ->
+        activity.animateBottomNavigationView(View.VISIBLE)
+    }
 
     private val createPlaylistViewModel by viewModel<CreatePlaylistViewModel>()
 
-    private var fromWho: Int? = null
+    private var fromWho: Int = 0
 
     private var controlPlaylist: ControlPlaylist = ControlPlaylist()
 
@@ -61,11 +64,8 @@ class CreatePlaylist: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fromWho = arguments?.getInt(FROM_WHO)
+        fromWho = arguments?.getInt(FROM_WHO)!!
 
-        onBackPlaylistDebounce = debounce<RootActivity>(CLICK_DEBOUNCE_DELAY, GlobalScope, Dispatchers.Main) { activity ->
-            activity.animateBottomNavigationView(View.VISIBLE)
-        }
         binding.back.setOnClickListener {
             when(controlPlaylist.needSave()){
                 0 -> {
@@ -153,6 +153,7 @@ class CreatePlaylist: Fragment() {
                 playlistName = binding.inputEditTextName.text.toString(),
                 playlistDescribe = binding.inputEditTextDiscribe.text.toString(),
                 imgFilePath = uriImg,
+                requireContext()
             )
         }
     }
@@ -191,5 +192,22 @@ class CreatePlaylist: Fragment() {
         fun needSave(): Int{
             return imgPlaylist+namePlaylist+discribePlaylist
         }
+    }
+
+    override fun onBackPressed(): Boolean {
+        if (fromWho == 1){
+            findNavController().navigateUp()
+            return true
+        }else{
+            findNavController().navigateUp()
+            onBackPlaylistDebounce(activity as RootActivity)
+            return true
+        }
+//        val ad = arguments?.getInt(FROM_WHO)!!
+//        if (ad == 1){
+//            return onBackPressedState.createPlaylist(false)
+//        }else{
+//            return onBackPressedState.createPlaylist(true)
+//        }
     }
 }

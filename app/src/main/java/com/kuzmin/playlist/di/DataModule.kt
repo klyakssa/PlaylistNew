@@ -34,6 +34,6 @@ val dataModule = module {
     }
 
     single<SaveFiles> {
-        SaveFilesImpl(androidContext())
+        SaveFilesImpl()
     }
 }

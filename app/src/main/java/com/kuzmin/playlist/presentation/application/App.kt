@@ -33,8 +33,7 @@ class App : Application() {
         switchTheme(get<SharedPreferences>().getBoolean(Preferences.DARK_THEME_KEY.pref, false))
         PermissionRequester.initialize(applicationContext)
         val requester = PermissionRequester.instance()
-        runBlocking {
-            launch {
+        GlobalScope.launch {
                 requester.request(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -46,7 +45,6 @@ class App : Application() {
                         is PermissionResult.Granted -> return@collect
                     }
                 }
-            }
         }
     }
 

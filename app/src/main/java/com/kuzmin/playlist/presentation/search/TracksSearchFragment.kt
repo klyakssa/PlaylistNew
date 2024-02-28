@@ -259,10 +259,6 @@ class TracksSearchFragment : Fragment() {
         tracksAdapterHistory.notifyDataSetChanged()
     }
 
-    override fun onStop() {
-        viewModel.saveHistory()
-        super.onStop()
-    }
 
     override fun onDestroyView() {
         textWatcher.let { binding.inputEditText.removeTextChangedListener(it) }

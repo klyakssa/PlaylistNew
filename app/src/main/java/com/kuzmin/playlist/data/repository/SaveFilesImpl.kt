@@ -10,10 +10,8 @@ import com.kuzmin.playlist.data.model.SaveFiles
 import java.io.File
 import java.io.FileOutputStream
 
-class SaveFilesImpl(
-    private val context: Context,
-) : SaveFiles {
-    override fun saveImageToPrivateStorage(playlistName: String, uri: Uri): File? {
+class SaveFilesImpl() : SaveFiles {
+    override fun saveImageToPrivateStorage(playlistName: String, uri: Uri, context: Context): File? {
         try {
             val filePath =
                 File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), context.getString(R.string.PlaylistMaker))

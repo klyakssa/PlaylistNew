@@ -1,5 +1,6 @@
 package com.kuzmin.playlist.domain.db.impl
 
+import android.content.Context
 import com.kuzmin.playlist.domain.db.iterators.PlaylistIterator
 import com.kuzmin.playlist.domain.db.repository.PlaylistRepository
 import com.kuzmin.playlist.domain.model.IsTrackInPlaylist
@@ -17,9 +18,15 @@ class PlaylistIteratorImpl(
     override suspend fun insertPlaylist(
         playlistName: String,
         playlistDescribe: String,
-        imgFilePath: String
+        imgFilePath: String,
+        context: Context
     ): Flow<String?> {
-        return playlistRepository.insertPlaylist(playlistName, playlistDescribe, imgFilePath)
+        return playlistRepository.insertPlaylist(
+            playlistName,
+            playlistDescribe,
+            imgFilePath,
+            context
+        )
             .map { result ->
                 when (result) {
                     is Resource.Success -> {
@@ -31,9 +38,13 @@ class PlaylistIteratorImpl(
                     }
                 }
             }
-            .also {
-                listener.forEach {
-                    it.callOnupdate()
+            .also {result ->
+                when (result) {
+                    null -> {
+                        listener.forEach {
+                            it.callOnupdate()
+                        }
+                    }
                 }
             }
     }
@@ -42,7 +53,11 @@ class PlaylistIteratorImpl(
         playlist: PlaylistDto,
         trackDto: TrackDto
     ): Flow<IsTrackInPlaylist> {
-        return playlistRepository.updateTracksInPlaylist(playlist, trackDto)
+        val result = playlistRepository.updateTracksInPlaylist(playlist, trackDto)
+        listener.forEach {
+            it.callOnupdate()
+        }
+        return result
     }
 
     override fun getPlaylists(): Flow<List<PlaylistDto>> {

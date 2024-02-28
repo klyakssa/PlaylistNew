@@ -118,7 +118,7 @@ class TracksSearchViewModel(
     }
 
     fun showHistory(changedText: String, hasFocus: Boolean) {
-        if (changedText.isEmpty() && tracksListHistory.isNotEmpty() && hasFocus){
+        if (changedText.isEmpty() && tracksListHistory.isNotEmpty()){
             renderState(
                 TracksState.ShowHistory(tracksListHistory)
             )
@@ -138,10 +138,11 @@ class TracksSearchViewModel(
         )
     }
     fun saveHistory(){
-        searchHistory.saveHistory(ArrayList<TrackDto>().apply { tracksListHistory.map { track ->
-            TrackMapper.map(track)
-        }})
+        searchHistory.saveHistory(tracksListHistory.map {
+            TrackMapper.map(it)
+        })
     }
+
     fun clearHistory() {
         searchHistory.clearHistory()
         renderState(
@@ -157,6 +158,7 @@ class TracksSearchViewModel(
         if (tracksListHistory.size > 10) {
             tracksListHistory.subList(10, tracksListHistory.size).clear()
         }
+        saveHistory()
     }
 
     fun clickOnHistoryTrack(track: Track){
