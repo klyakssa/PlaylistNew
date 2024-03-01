@@ -195,19 +195,31 @@ class CreatePlaylist: Fragment(), OnBackButtonListener{
     }
 
     override fun onBackPressed(): Boolean {
-        if (fromWho == 1){
-            findNavController().navigateUp()
-            return true
-        }else{
-            findNavController().navigateUp()
-            onBackPlaylistDebounce(activity as RootActivity)
-            return true
-        }
-//        val ad = arguments?.getInt(FROM_WHO)!!
-//        if (ad == 1){
-//            return onBackPressedState.createPlaylist(false)
-//        }else{
-//            return onBackPressedState.createPlaylist(true)
-//        }
+       when(controlPlaylist.needSave()){
+                0 -> {
+                    if (fromWho == 1){
+                        findNavController().navigateUp()
+                        return true
+                    }else{
+                        findNavController().navigateUp()
+                        onBackPlaylistDebounce(activity as RootActivity)
+                        return true
+                    }
+                }
+                else -> {
+                    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+                        .setTitle(requireContext().getString(R.string.dialog_title))
+                        .setMessage(requireContext().getString(R.string.dialog_message))
+                        .setNeutralButton("Отмена") { dialog, which ->
+                            dialog.cancel()
+                        }
+                        .setPositiveButton("Завершить") { dialog, which ->
+                            findNavController().navigateUp()
+                            onBackPlaylistDebounce(activity as RootActivity)
+                        }
+                        .show()
+                    return true
+                }
+            }
     }
 }

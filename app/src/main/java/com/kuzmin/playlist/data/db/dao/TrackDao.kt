@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.kuzmin.playlist.data.db.entity.TrackEntity
-import com.kuzmin.playlist.domain.model.TrackDto
 
 
 @Dao

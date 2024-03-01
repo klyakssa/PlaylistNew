@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/YP_black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/white</item>
         <item name="colorSecondaryVariant">@color/white</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorTitleTrack">@color/white</item>
@@ -16,6 +16,7 @@
         <item name="colorPlayListAndFavorite">@color/white</item>
         <item name="colorShapeEditText">@color/white</item>
         <item name="colorPlayerBackground">@color/YP_black</item>
+        <item name="colorPrimaryDark">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

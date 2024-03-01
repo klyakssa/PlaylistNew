@@ -2,8 +2,7 @@ package com.kuzmin.playlist.domain.db.impl
 
 import com.kuzmin.playlist.domain.db.iterators.FavoriteIterator
 import com.kuzmin.playlist.domain.db.repository.FavoriteRepository
-import com.kuzmin.playlist.domain.mediaplayer.repository.MediaPlayerRepository
-import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.data.model.TrackDto
 import kotlinx.coroutines.flow.Flow
 
 class FavoriteIteratorImpl(

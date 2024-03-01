@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Environment
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.data.db.entity.PlaylistEntity
-import com.kuzmin.playlist.domain.model.PlaylistDto
+import com.kuzmin.playlist.data.model.PlaylistDto
 import java.io.File
 
 class PlaylistDbConverter {

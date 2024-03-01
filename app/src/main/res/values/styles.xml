@@ -78,4 +78,7 @@
     <style name="MyEditTextPlaylist" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/YP_blue</item>
     </style>
+    <style name="AlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorPrimary">@color/YP_black</item>
+    </style>
 </resources> 

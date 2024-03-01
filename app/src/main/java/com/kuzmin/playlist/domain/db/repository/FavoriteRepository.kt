@@ -1,6 +1,6 @@
 package com.kuzmin.playlist.domain.db.repository
 
-import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.data.model.TrackDto
 import kotlinx.coroutines.flow.Flow
 
 interface FavoriteRepository {

@@ -1,7 +1,7 @@
 package com.kuzmin.playlist.presentation.mapper
 
 
-import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.data.model.TrackDto
 import com.kuzmin.playlist.presentation.models.Track
 
 object TrackMapper {

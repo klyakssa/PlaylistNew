@@ -14,7 +14,7 @@
         <item name="colorPrimaryVariant">@color/YP_black</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/white</item>
         <item name="colorSecondaryVariant">@color/YP_text_gray</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="colorTitleTrack">@color/black</item>
@@ -24,6 +24,7 @@
         <item name="colorPlayListAndFavorite">@color/YP_black</item>
         <item name="colorShapeEditText">@color/YP_light_gray</item>
         <item name="colorPlayerBackground">@color/white</item>
+        <item name="colorPrimaryDark">@color/blue_back</item>
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>

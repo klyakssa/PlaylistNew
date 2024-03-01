@@ -3,8 +3,8 @@ package com.kuzmin.playlist.domain.db.iterators
 
 import android.content.Context
 import com.kuzmin.playlist.domain.model.IsTrackInPlaylist
-import com.kuzmin.playlist.domain.model.PlaylistDto
-import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.data.model.PlaylistDto
+import com.kuzmin.playlist.data.model.TrackDto
 import kotlinx.coroutines.flow.Flow
 
 interface PlaylistIterator {

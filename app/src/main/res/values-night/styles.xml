@@ -8,4 +8,7 @@
         <item name="android:textColorHint">@color/YP_black</item>
         <item name="android:drawableStart">@drawable/ic__search_24_night</item>
     </style>
+    <style name="AlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorPrimary">@color/white</item>
+    </style>
 </resources>

@@ -4,7 +4,7 @@ import com.kuzmin.playlist.data.db.AppDatabase
 import com.kuzmin.playlist.data.db.converters.TrackDbConverter
 import com.kuzmin.playlist.data.db.entity.TrackEntity
 import com.kuzmin.playlist.domain.db.repository.FavoriteRepository
-import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.data.model.TrackDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

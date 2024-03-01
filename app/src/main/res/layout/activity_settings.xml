@@ -55,7 +55,7 @@
             android:id="@+id/switch1"
             android:layout_width="@dimen/layout_width"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="10"
             android:backgroundTint="?attr/colorSecondaryVariant"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
@@ -66,23 +66,23 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_set_61dp"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/margin_main16"
-        android:paddingEnd="@dimen/padding_end12">
+        android:paddingStart="@dimen/margin_main16">
 
         <TextView
             android:id="@+id/shareText"
             android:layout_width="@dimen/layout_width"
             android:layout_height="match_parent"
-            android:layout_weight="32"
+            android:layout_weight="15"
             android:text="@string/share"
             style="@style/Settings"/>
 
         <TextView
-            android:layout_width="@dimen/layout_width"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="10"
             android:backgroundTint="?attr/colorSecondaryVariant"
-            android:drawableLeft="@drawable/ic_share" />
+            android:paddingEnd="@dimen/padding_end12"
+            android:drawableRight="@drawable/ic_share" />
 
     </LinearLayout>
 
@@ -91,23 +91,23 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_set_61dp"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/margin_main16"
-        android:paddingEnd="@dimen/padding_end12">
+        android:paddingStart="@dimen/margin_main16">
 
         <TextView
             android:id="@+id/supportText"
             android:layout_width="@dimen/layout_width"
             android:layout_height="match_parent"
-            android:layout_weight="32"
+            android:layout_weight="15"
             android:text="@string/support"
             style="@style/Settings"/>
 
         <TextView
             android:layout_width="@dimen/layout_width"
-            android:layout_weight="2"
+            android:layout_weight="10"
             android:layout_height="match_parent"
             android:backgroundTint="@color/YP_text_gray"
-            android:drawableLeft="@drawable/ic_group"
+            android:drawableRight="@drawable/ic_group"
+            android:paddingEnd="@dimen/padding_end12"
             />
 
     </LinearLayout>
@@ -117,23 +117,23 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_set_61dp"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/margin_main16"
-        android:paddingEnd="@dimen/padding_end12">
+        android:paddingStart="@dimen/margin_main16">
 
         <TextView
             android:id="@+id/termsText"
             android:layout_width="@dimen/layout_width"
             android:layout_height="match_parent"
-            android:layout_weight="32"
+            android:layout_weight="30"
             android:text="@string/terms"
             style="@style/Settings"/>
 
         <TextView
             android:layout_width="@dimen/layout_width"
-            android:layout_weight="2"
+            android:layout_weight="10"
             android:layout_height="match_parent"
             android:backgroundTint="@color/YP_text_gray"
-            app:drawableLeftCompat="@drawable/ic_arrow_forward" />
+            android:drawableRight="@drawable/ic_arrow_forward"
+            android:paddingEnd="@dimen/padding_end12"/>
 
     </LinearLayout>
 

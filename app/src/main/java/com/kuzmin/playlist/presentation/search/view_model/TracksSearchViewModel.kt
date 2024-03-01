@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.playlist.R
-import com.kuzmin.playlist.domain.model.TrackDto
 import com.kuzmin.playlist.domain.preferencesSearchHistory.iteractors.PreferencesSearchHistoryIteractor
 import com.kuzmin.playlist.domain.searchTracksByName.api.GetTracksUseCase
 import com.kuzmin.playlist.presentation.mapper.TrackMapper

@@ -99,6 +99,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/shape_img_playlist"
+            android:scaleType="fitXY"
             android:layout_marginTop="16dp"
             app:layout_constraintDimensionRatio="H, 1:1"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline24dp"

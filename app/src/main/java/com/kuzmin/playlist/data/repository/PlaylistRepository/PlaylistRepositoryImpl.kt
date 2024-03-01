@@ -1,10 +1,7 @@
 package com.kuzmin.playlist.data.repository.PlaylistRepository
 
 import android.content.Context
-import android.widget.ArrayAdapter
 import androidx.core.net.toUri
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.kuzmin.playlist.data.db.AppDatabase
 import com.kuzmin.playlist.data.db.converters.PlaylistDbConverter
 import com.kuzmin.playlist.data.db.converters.TrackDbConverter
@@ -14,9 +11,9 @@ import com.kuzmin.playlist.data.db.entity.TrackEntity
 import com.kuzmin.playlist.data.model.SaveFiles
 import com.kuzmin.playlist.domain.db.repository.PlaylistRepository
 import com.kuzmin.playlist.domain.model.IsTrackInPlaylist
-import com.kuzmin.playlist.domain.model.PlaylistDto
+import com.kuzmin.playlist.data.model.PlaylistDto
 import com.kuzmin.playlist.domain.model.Resource
-import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.data.model.TrackDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

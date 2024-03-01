@@ -239,6 +239,7 @@ class PlayerFragment : Fragment(), OnBackButtonListener{
                     "Добавлено в плейлист ${state.playlistName}",
                     Toast.LENGTH_SHORT
                 ).show()
+                viewModel.getPlaylists()
             }
 
             is PlayerState.isInPlaylist -> {

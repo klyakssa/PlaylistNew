@@ -32,7 +32,7 @@ class PlayerViewModel(
 
     init {
         initPlayer()
-        initUpdate()
+        //initUpdate()
     }
 
     private fun initUpdate() {
@@ -64,9 +64,10 @@ class PlayerViewModel(
             playlistIterator
                 .getPlaylists()
                 .collect { playlists ->
-                    processResult(playlists.map {
+                    val result = playlists.map {
                         PlaylistMapper.map(it)
-                    })
+                    }
+                    processResult(result)
                 }
         }
     }

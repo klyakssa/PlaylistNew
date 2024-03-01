@@ -1,6 +1,6 @@
 package com.kuzmin.playlist.domain.preferencesSearchHistory.iteractors
 
-import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.data.model.TrackDto
 
 interface PreferencesSearchHistoryIteractor {
     fun getHistory(): ArrayList<TrackDto>

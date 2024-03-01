@@ -1,4 +1,4 @@
-package com.kuzmin.playlist.domain.model
+package com.kuzmin.playlist.data.model
 
 import com.google.gson.annotations.SerializedName
 import java.util.Date

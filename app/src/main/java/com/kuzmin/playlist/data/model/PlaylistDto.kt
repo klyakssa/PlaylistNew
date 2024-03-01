@@ -1,4 +1,4 @@
-package com.kuzmin.playlist.domain.model
+package com.kuzmin.playlist.data.model
 
 import java.io.File
 

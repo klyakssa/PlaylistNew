@@ -1,8 +1,7 @@
 package com.kuzmin.playlist.data.db.converters
 
 import com.kuzmin.playlist.data.db.entity.TrackEntity
-import com.kuzmin.playlist.domain.model.TrackDto
-import java.text.SimpleDateFormat
+import com.kuzmin.playlist.data.model.TrackDto
 
 class TrackDbConverter {
     fun map(track: TrackDto): TrackEntity {
