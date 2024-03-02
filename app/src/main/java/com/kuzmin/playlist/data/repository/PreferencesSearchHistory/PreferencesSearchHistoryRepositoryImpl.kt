@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.kuzmin.playlist.data.model.Preferences
-import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.data.model.TrackDto
 import com.kuzmin.playlist.domain.preferencesSearchHistory.repository.PreferencesSearchHistoryRepository
 
 class PreferencesSearchHistoryRepositoryImpl(
@@ -17,7 +17,7 @@ class PreferencesSearchHistoryRepositoryImpl(
         return gson.fromJson<ArrayList<TrackDto>>(json, itemType)
     }
 
-    override fun saveHistory(trackList: ArrayList<TrackDto>) {
+    override fun saveHistory(trackList: List<TrackDto>) {
         sp.edit()
             .putString(Preferences.SEARCH_HISTORY_KEY.pref, gson.toJson(trackList))
             .apply()

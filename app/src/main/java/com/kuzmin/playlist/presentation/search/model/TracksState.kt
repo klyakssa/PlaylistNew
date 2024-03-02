@@ -1,6 +1,7 @@
 package com.kuzmin.playlist.presentation.search.model
 
-import com.kuzmin.playlist.domain.model.TrackDto
+
+import com.kuzmin.playlist.presentation.models.Track
 
 sealed interface TracksState {
 
@@ -9,7 +10,7 @@ sealed interface TracksState {
     object Start : TracksState
 
     data class Content(
-        val tracks: List<TrackDto>
+        val tracks: List<Track>
     ) : TracksState
 
     data class Error(
@@ -21,7 +22,7 @@ sealed interface TracksState {
     ) : TracksState
 
     data class ShowHistory(
-        val tracks: ArrayList<TrackDto>
+        val tracks: ArrayList<Track>
     ) : TracksState
 
 }

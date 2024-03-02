@@ -1,18 +1,20 @@
 package com.kuzmin.playlist.di
 
 import android.app.Application
-import android.content.Context
 import android.content.SharedPreferences
 import android.media.MediaPlayer
 import com.google.gson.Gson
+import com.kuzmin.playlist.data.db.converters.PlaylistDbConverter
 import com.kuzmin.playlist.data.db.converters.TrackDbConverter
 import com.kuzmin.playlist.data.repository.FavoriteRepository.FavoriteRepositoryImpl
 import com.kuzmin.playlist.data.repository.MediaPlayer.MediaPlayerRepositoryImpl
+import com.kuzmin.playlist.data.repository.PlaylistRepository.PlaylistRepositoryImpl
 import com.kuzmin.playlist.data.repository.PreferencesSearchHistory.PreferencesSearchHistoryRepositoryImpl
 import com.kuzmin.playlist.data.repository.PreferencesTheme.PreferencesThemeRepositoryImpl
 import com.kuzmin.playlist.data.repository.TrackListRepository.TrackListRepositoryImpl
 import com.kuzmin.playlist.data.repository.share.ExternalNavigatorImpl
 import com.kuzmin.playlist.domain.db.repository.FavoriteRepository
+import com.kuzmin.playlist.domain.db.repository.PlaylistRepository
 import com.kuzmin.playlist.domain.mediaplayer.repository.MediaPlayerRepository
 import com.kuzmin.playlist.domain.preferencesSearchHistory.repository.PreferencesSearchHistoryRepository
 import com.kuzmin.playlist.domain.preferencesTheme.repository.PreferencesThemeRepository
@@ -32,6 +34,8 @@ val repositoryModule = module {
     }
 
     factory { TrackDbConverter() }
+
+    factory { PlaylistDbConverter() }
 
     single<SharedPreferences>{
         androidContext()
@@ -62,5 +66,9 @@ val repositoryModule = module {
 
     single<FavoriteRepository> {
         FavoriteRepositoryImpl(get(), get())
+    }
+
+    single<PlaylistRepository> {
+        PlaylistRepositoryImpl(get(), get(), get(), get(), get())
     }
 }

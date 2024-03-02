@@ -1,6 +1,6 @@
 package com.kuzmin.playlist.domain.preferencesSearchHistory.impl
 
-import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.data.model.TrackDto
 import com.kuzmin.playlist.domain.preferencesSearchHistory.iteractors.PreferencesSearchHistoryIteractor
 import com.kuzmin.playlist.domain.preferencesSearchHistory.repository.PreferencesSearchHistoryRepository
 
@@ -11,7 +11,7 @@ class PreferencesSearchHistoryInteractionImpl(
         return preferencesRepository.getHistory()
     }
 
-    override fun saveHistory(trackList: ArrayList<TrackDto>) {
+    override fun saveHistory(trackList: List<TrackDto>) {
         preferencesRepository.saveHistory(trackList)
     }
 

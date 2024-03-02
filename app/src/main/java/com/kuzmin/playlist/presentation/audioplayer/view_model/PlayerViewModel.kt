@@ -5,36 +5,52 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.playlist.domain.db.iterators.FavoriteIterator
+import com.kuzmin.playlist.domain.db.iterators.PlaylistIterator
 import com.kuzmin.playlist.domain.mediaplayer.iterators.MediaPlayerIteractor
 import com.kuzmin.playlist.domain.mediaplayer.repository.MediaPlayerRepository
-import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.domain.model.IsTrackInPlaylist
 import com.kuzmin.playlist.presentation.audioplayer.model.PlayerState
-import com.kuzmin.playlist.presentation.audioplayer.model.UpdateLibrary
+import com.kuzmin.playlist.presentation.mapper.PlaylistMapper
+import com.kuzmin.playlist.presentation.mapper.TrackMapper
+import com.kuzmin.playlist.presentation.models.Playlist
+import com.kuzmin.playlist.presentation.models.Track
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val url: String,
     private val workWithMediaPlayer: MediaPlayerIteractor,
     private val favoriteIterator: FavoriteIterator,
-    private val updateLibrary: UpdateLibrary,
-): ViewModel() {
+    private val playlistIterator: PlaylistIterator,
+) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<PlayerState>()
     fun observeState(): LiveData<PlayerState> = stateLiveData
+
 
     private var clickedLike: Boolean = false
 
     init {
         initPlayer()
+        //initUpdate()
+    }
+
+    private fun initUpdate() {
+        playlistIterator.initListenerOnUpdate(
+            object : PlaylistIterator.PlaylistListener {
+                override fun callOnupdate() {
+                    getPlaylists()
+                }
+            }
+        )
     }
 
     fun initFav(trackId: String) {
         viewModelScope.launch {
-            favoriteIterator.
-                    existTrack(trackId)
-                    .collect{like ->
-                        processResult(like)
-                    }
+            favoriteIterator.existTrack(trackId)
+                .collect { like ->
+                    processResult(like)
+                }
         }
     }
 
@@ -43,7 +59,35 @@ class PlayerViewModel(
         renderState(if (like) PlayerState.Liked else PlayerState.NotLiked)
     }
 
-    private fun initPlayer(){
+    fun getPlaylists() {
+        viewModelScope.launch {
+            playlistIterator
+                .getPlaylists()
+                .collect { playlists ->
+                    val result = playlists.map {
+                        PlaylistMapper.map(it)
+                    }
+                    processResult(result)
+                }
+        }
+    }
+
+    private fun processResult(playlists: List<Playlist>) {
+        if (playlists.isNullOrEmpty()) {
+            renderState(
+                PlayerState.isNotPlaylist
+            )
+        } else {
+            renderState(
+                PlayerState.isPlaylist(
+                    playlists
+                )
+            )
+        }
+    }
+
+
+    private fun initPlayer() {
         workWithMediaPlayer.initPreparePlayer(
             previewUrl = url,
             listener = object : MediaPlayerRepository.MediaPlayerListener {
@@ -52,21 +96,25 @@ class PlayerViewModel(
                         PlayerState.Prepared
                     )
                 }
+
                 override fun completionPlayer() {
                     renderState(
                         PlayerState.Completion
                     )
                 }
+
                 override fun startPlayer() {
                     renderState(
                         PlayerState.Start
                     )
                 }
+
                 override fun pausePlayer() {
                     renderState(
                         PlayerState.Pause
                     )
                 }
+
                 override fun currentTimeMusic(timeInt: Int) {
                     renderState(
                         PlayerState.CurrentTime(
@@ -82,36 +130,58 @@ class PlayerViewModel(
         stateLiveData.postValue(state)
     }
 
-    fun pauseMediaPlayer() {
-        workWithMediaPlayer.pauseMediaPlayer()
-    }
 
-    fun releseMediaPlayer(){
-        workWithMediaPlayer.releseMediaPlayer()
-    }
-
-    fun playStartControl(){
+    fun playStartControl() {
         workWithMediaPlayer.playStartControl()
     }
 
-    fun addOrDelTrack(track: TrackDto){
-        if (clickedLike){
+    fun addOrDelTrack(track: Track) {
+        if (clickedLike) {
             clickedLike = false
             viewModelScope.launch {
-                favoriteIterator.deleteTrack(track)
+                favoriteIterator.deleteTrack(TrackMapper.map(track))
             }
             renderState(
                 PlayerState.NotLiked
             )
-        }else{
+        } else {
             clickedLike = true
             viewModelScope.launch {
-                favoriteIterator.insertTrack(track)
+                favoriteIterator.insertTrack(TrackMapper.map(track))
             }
             renderState(
                 PlayerState.Liked
             )
         }
+    }
 
+    fun addTrackInPlaylist(playlist: Playlist, track: Track) {
+        viewModelScope.launch(Dispatchers.IO) {
+            playlistIterator
+                .updateTracksInPlaylist(PlaylistMapper.map(playlist), TrackMapper.map(track))
+                .collect {
+                    processResult(it)
+                }
+        }
+    }
+
+    private fun processResult(it: IsTrackInPlaylist) {
+        when (it) {
+            is IsTrackInPlaylist.isInPlaylist -> {
+                renderState(
+                    PlayerState.isInPlaylist(
+                        it.playlistName
+                    )
+                )
+            }
+
+            is IsTrackInPlaylist.notInPlaylist -> {
+                renderState(
+                    PlayerState.notInPlaylist(
+                        it.playlistName
+                    )
+                )
+            }
+        }
     }
 }

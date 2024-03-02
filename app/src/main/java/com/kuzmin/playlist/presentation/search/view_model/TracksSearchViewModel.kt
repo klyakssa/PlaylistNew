@@ -6,10 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuzmin.playlist.R
-import com.kuzmin.playlist.domain.model.TrackDto
 import com.kuzmin.playlist.domain.preferencesSearchHistory.iteractors.PreferencesSearchHistoryIteractor
 import com.kuzmin.playlist.domain.searchTracksByName.api.GetTracksUseCase
-import com.kuzmin.playlist.domain.searchTracksByName.consumer.Consumer
+import com.kuzmin.playlist.presentation.mapper.TrackMapper
+import com.kuzmin.playlist.presentation.models.Track
 import com.kuzmin.playlist.presentation.search.model.TracksState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -23,12 +23,15 @@ class TracksSearchViewModel(
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
 
     private var searchJob: Job? = null
 
-    private val tracksListHistory = ArrayList<TrackDto>()
+    private var isClickAllowed = true
+
+    private val tracksListHistory = ArrayList<Track>()
 
     private val stateLiveData = MutableLiveData<TracksState>()
     fun observeState(): LiveData<TracksState> = stateLiveData
@@ -64,14 +67,18 @@ class TracksSearchViewModel(
                 tracksInteractor
                     .execute(newSearchText)
                     .collect { pair ->
-                        processResult(pair.first, pair.second)
+                        pair.first?.let {
+                            processResult(it.map {
+                                TrackMapper.map(it)
+                            }, pair.second)
+                        }
                     }
             }
         }
     }
 
-    private fun processResult(foundNames: ArrayList<TrackDto>?, errorMessage: String?) {
-        val tracks = mutableListOf<TrackDto>()
+    private fun processResult(foundNames: List<Track>, errorMessage: String?) {
+        val tracks = mutableListOf<Track>()
 
         if (foundNames != null) {
             tracks.addAll(foundNames)
@@ -110,7 +117,7 @@ class TracksSearchViewModel(
     }
 
     fun showHistory(changedText: String, hasFocus: Boolean) {
-        if (changedText.isEmpty() && tracksListHistory.isNotEmpty() && hasFocus){
+        if (changedText.isEmpty() && tracksListHistory.isNotEmpty()){
             renderState(
                 TracksState.ShowHistory(tracksListHistory)
             )
@@ -122,14 +129,19 @@ class TracksSearchViewModel(
     }
 
     private fun getHistory(){
-        tracksListHistory.addAll(searchHistory.getHistory())
+        tracksListHistory.addAll(searchHistory.getHistory().map { trackDto ->
+            TrackMapper.map(trackDto)
+        })
         renderState(
             TracksState.Start
         )
     }
     fun saveHistory(){
-        searchHistory.saveHistory(tracksListHistory)
+        searchHistory.saveHistory(tracksListHistory.map {
+            TrackMapper.map(it)
+        })
     }
+
     fun clearHistory() {
         searchHistory.clearHistory()
         renderState(
@@ -139,20 +151,34 @@ class TracksSearchViewModel(
 
 
 
-    fun clickOnMainTrack(track: TrackDto){
+    fun clickOnMainTrack(track: Track){
         tracksListHistory.remove(track)
         tracksListHistory.add(0, track)
         if (tracksListHistory.size > 10) {
             tracksListHistory.subList(10, tracksListHistory.size).clear()
         }
+        saveHistory()
     }
 
-    fun clickOnHistoryTrack(track: TrackDto){
+    fun clickOnHistoryTrack(track: Track){
         tracksListHistory.remove(track)
         tracksListHistory.add(0, track)
         renderState(
             TracksState.ShowHistory(tracksListHistory)
         )
     }
+
+    fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
+
 
 }

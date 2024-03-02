@@ -12,24 +12,53 @@
         tools:layout="@layout/activity_library" >
         <action
             android:id="@+id/action_libraryFragment_to_playerActivity"
-            app:destination="@id/playerActivity" />
-        <argument
-            android:name="track"
-            app:argType="string" />
+            app:destination="@id/playerActivity">
+            <argument
+                android:name="track"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_libraryFragment_to_addPlaylist"
+            app:destination="@id/addPlaylist">
+            <argument
+                android:name="from"
+                app:argType="integer" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.kuzmin.playlist.presentation.search.TracksSearchFragment"
         android:label="activity_search"
-        tools:layout="@layout/activity_search" />
+        tools:layout="@layout/activity_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_playerActivity"
+            app:destination="@id/playerActivity">
+            <argument
+                android:name="track"
+                app:argType="string" />
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.kuzmin.playlist.presentation.settings.activity.SettingsFragment"
         android:label="activity_settings"
         tools:layout="@layout/activity_settings" />
-    <activity
+    <fragment
         android:id="@+id/playerActivity"
-        android:name="com.kuzmin.playlist.presentation.audioplayer.PlayerActivity"
+        android:name="com.kuzmin.playlist.presentation.audioplayer.PlayerFragment"
         android:label="activity_player"
-        tools:layout="@layout/activity_player" />
+        tools:layout="@layout/activity_player" >
+        <action
+            android:id="@+id/action_playerActivity_to_addPlaylist2"
+            app:destination="@id/addPlaylist">
+            <argument
+                android:name="from"
+                app:argType="integer" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/addPlaylist"
+        android:name="com.kuzmin.playlist.presentation.library.Fragments.Playlist.AddNewPlaylist.CreatePlaylist"
+        android:label="fragment_newplaylist"
+        tools:layout="@layout/fragment_newplaylist" />
 </navigation>

@@ -1,6 +1,6 @@
 package com.kuzmin.playlist.domain.db.iterators
 
-import com.kuzmin.playlist.domain.model.TrackDto
+import com.kuzmin.playlist.data.model.TrackDto
 import kotlinx.coroutines.flow.Flow
 
 interface FavoriteIterator {
@@ -11,4 +11,10 @@ interface FavoriteIterator {
     fun getTracks(): Flow<List<TrackDto>>
 
     suspend fun existTrack(trackId: String): Flow<Boolean>
+
+    fun initListenerOnUpdate(favoriteListener: FavoriteListener)
+
+    interface FavoriteListener {
+        fun callOnupdate()
+    }
 }

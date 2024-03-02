@@ -1,10 +1,7 @@
 package com.kuzmin.playlist.presentation.search
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -12,19 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.core.view.isNotEmpty
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
-import com.kuzmin.playlist.presentation.audioplayer.PlayerActivity
 import com.kuzmin.playlist.R
-import com.kuzmin.playlist.domain.model.TrackDto
 import com.kuzmin.playlist.databinding.ActivitySearchBinding
+import com.kuzmin.playlist.presentation.main.RootActivity
+import com.kuzmin.playlist.presentation.models.Track
 import com.kuzmin.playlist.presentation.search.model.TracksState
 import com.kuzmin.playlist.presentation.search.view_model.TracksSearchViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.kuzmin.playlist.presentation.utils.debounce
+import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.collections.ArrayList
 
@@ -37,26 +36,24 @@ class TracksSearchFragment : Fragment() {
 
     private lateinit var textWatcher: TextWatcher
 
-    private var isClickAllowed = true
+    private lateinit var onPlayerDebounce: (Track) -> Unit
 
 
-    private val tracksList = ArrayList<TrackDto>()
+    private val tracksList = ArrayList<Track>()
     private val tracksAdapter = TracksListAdapter{_,it ->
-        if (clickDebounce()) {
+        if (viewModel.clickDebounce()) {
             viewModel.clickOnMainTrack(it)
-            val playerIntent = Intent(requireContext(), PlayerActivity::class.java)
-            playerIntent.putExtra(TRACK_TO_ARRIVE, Gson().toJson(it));
-            startActivity(playerIntent)
+            (activity as RootActivity).animateBottomNavigationView(View.GONE)
+            onPlayerDebounce(it)
         }
     }
 
-    private val tracksListHistory = ArrayList<TrackDto>()
+    private val tracksListHistory = ArrayList<Track>()
     private val tracksAdapterHistory = TracksListAdapter{ adapter, it ->
-        if (clickDebounce()) {
+        if (viewModel.clickDebounce()) {
             viewModel.clickOnHistoryTrack(it)
-            val playerIntent = Intent(requireContext(), PlayerActivity::class.java)
-            playerIntent.putExtra(TRACK_TO_ARRIVE, Gson().toJson(it));
-            startActivity(playerIntent)
+            (activity as RootActivity).animateBottomNavigationView(View.GONE)
+            onPlayerDebounce(it)
         }
     }
 
@@ -72,6 +69,11 @@ class TracksSearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        onPlayerDebounce = debounce<Track>(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope,  Dispatchers.Main) { track ->
+            findNavController().navigate(R.id.action_searchFragment_to_playerActivity, bundleOf(
+                TRACK_TO_ARRIVE to Gson().toJson(track)))
+        }
 
         tracksAdapter.data = tracksList
         binding.tracksList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -219,7 +221,7 @@ class TracksSearchFragment : Fragment() {
         tracksAdapter.notifyDataSetChanged()
     }
 
-    private fun showContent(tracks: List<TrackDto>) {
+    private fun showContent(tracks: List<Track>) {
         with(binding){
             tracksList.visibility = View.VISIBLE
             tracksListHistory.visibility = View.GONE
@@ -235,7 +237,7 @@ class TracksSearchFragment : Fragment() {
         tracksAdapter.notifyDataSetChanged()
     }
 
-    private fun showHistoryContent(tracks: List<TrackDto>) {
+    private fun showHistoryContent(tracks: List<Track>) {
         with(binding){
             tracksListHistory.visibility = View.VISIBLE
             tracksList.visibility =View.GONE
@@ -257,22 +259,6 @@ class TracksSearchFragment : Fragment() {
         tracksAdapterHistory.notifyDataSetChanged()
     }
 
-    private fun clickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            viewLifecycleOwner.lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
-                isClickAllowed = true
-            }
-        }
-        return current
-    }
-
-    override fun onStop() {
-        viewModel.saveHistory()
-        super.onStop()
-    }
 
     override fun onDestroyView() {
         textWatcher.let { binding.inputEditText.removeTextChangedListener(it) }
@@ -294,7 +280,7 @@ class TracksSearchFragment : Fragment() {
 
     private companion object {
         const val SEARCH = "SEARCH"
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY = 300L
         const val TRACK_TO_ARRIVE = "track"
     }
 }

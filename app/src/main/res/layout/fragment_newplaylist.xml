@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".presentation.library.Fragments.Playlist.AddNewPlaylist.CreatePlaylist">
+
+    <LinearLayout
+        android:id="@+id/newPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingEnd="52dp">
+
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="?attr/colorPrimaryVariant"
+            android:drawableLeft="@drawable/ic_arrow_back"
+            android:padding="@dimen/padding"
+            android:textColor="?attr/colorPrimaryVariant" />
+
+        <TextView
+            android:layout_width="@dimen/layout_width"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text="@string/playlist"
+            android:textColor="?attr/colorOnSecondary"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_left12"
+            android:paddingBottom="@dimen/padding_left12"
+            android:paddingTop="@dimen/margin_10dp"
+            android:textSize="@dimen/title22"
+            android:layout_marginEnd="@dimen/margin_end_head52"
+            android:fontFamily="@font/ys_display_medium"
+            android:textFontWeight="500"/>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/textsBarrier4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_main16"
+        app:constraint_referenced_ids="newPlaylist"
+        app:barrierDirection="bottom"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textsBarrier4">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/back_guideline16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/margin_main16" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/left_guideline24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_24dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/right_guideline24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_24dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/left_guideline16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_main16" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/right_guideline16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_main16" />
+
+        <ImageView
+            android:id="@+id/cover"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_img_playlist"
+            android:scaleType="fitXY"
+            android:layout_marginTop="16dp"
+            app:layout_constraintDimensionRatio="H, 1:1"
+            app:layout_constraintEnd_toStartOf="@+id/right_guideline24dp"
+            app:layout_constraintStart_toStartOf="@+id/left_guideline24dp"
+            app:layout_constraintTop_toTopOf="@id/back_guideline16dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_playlist"
+            style="@style/MyEditTextPlaylist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_24dp"
+            android:textColorHint="?attr/colorPlayListAndFavorite"
+            app:layout_constraintTop_toBottomOf="@id/cover"
+            app:layout_constraintStart_toEndOf="@id/left_guideline16dp"
+            app:layout_constraintEnd_toStartOf="@id/right_guideline16dp"
+            app:hintTextColor="@color/YP_blue"
+            app:boxStrokeColor="@color/YP_blue">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputEditTextName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:fontFamily="@font/ys_text_regular"
+                android:hint="Название*"
+                android:textSize="@dimen/title_16sp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/discribe"
+            style="@style/MyEditTextPlaylist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_24dp"
+            android:textColorHint="?attr/colorPlayListAndFavorite"
+            app:layout_constraintTop_toBottomOf="@id/name_playlist"
+            app:layout_constraintStart_toEndOf="@id/left_guideline16dp"
+            app:layout_constraintEnd_toStartOf="@id/right_guideline16dp"
+            app:hintTextColor="@color/YP_blue"
+            app:boxStrokeColor="@color/YP_blue"
+            android:hint="Описание" >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputEditTextDiscribe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/ys_text_regular"
+                android:textColor="?attr/colorPlayListAndFavorite"
+                android:textColorHint="?attr/colorPlayListAndFavorite"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="@dimen/title_16sp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/create_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/left_guideline16dp"
+            app:layout_constraintEnd_toStartOf="@id/right_guideline16dp"
+            android:layout_marginBottom="@dimen/margin_main16"
+            android:background="@drawable/create_playlist_button"
+            android:textSize="@dimen/title_16sp"
+            android:fontFamily="@font/ys_text_medium"
+            android:textColor="@color/white"
+            android:enabled="false"
+            android:textAllCaps="false"
+            android:text="@string/create"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

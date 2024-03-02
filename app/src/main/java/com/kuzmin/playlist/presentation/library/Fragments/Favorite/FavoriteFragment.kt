@@ -1,7 +1,5 @@
 package com.kuzmin.playlist.presentation.library.Fragments.Favorite
 
-import android.content.Intent
-import android.graphics.Path.Direction
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,21 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.kuzmin.playlist.R
 import com.kuzmin.playlist.databinding.FragmentFavoriteBinding
-import com.kuzmin.playlist.domain.model.TrackDto
-import com.kuzmin.playlist.presentation.audioplayer.PlayerActivity
 import com.kuzmin.playlist.presentation.library.Fragments.model.FavoriteState
 import com.kuzmin.playlist.presentation.library.Fragments.Favorite.view_models.FavoriteViewModel
-import com.kuzmin.playlist.presentation.library.LibraryFragment
+import com.kuzmin.playlist.presentation.main.RootActivity
+import com.kuzmin.playlist.presentation.models.Track
 import com.kuzmin.playlist.presentation.search.TracksListAdapter
-import com.kuzmin.playlist.presentation.search.TracksSearchFragment
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.kuzmin.playlist.presentation.utils.debounce
+import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteFragment : Fragment() {
@@ -32,15 +27,14 @@ class FavoriteFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoriteBinding
 
-    private lateinit var navController: NavController
+    private lateinit var onPlayerDebounce: (Track) -> Unit
 
 
-    private var isClickAllowed = true
-
-    private val tracksList = ArrayList<TrackDto>()
+    private val tracksList = ArrayList<Track>()
     private val tracksAdapter = TracksListAdapter{_,it ->
-        if (clickDebounce()) {
-            navController.navigate(R.id.action_libraryFragment_to_playerActivity, bundleOf("track" to Gson().toJson(it)))
+        if (favoriteViewModel.clickDebounce()) {
+            (activity as RootActivity).animateBottomNavigationView(View.GONE)
+            onPlayerDebounce(it)
         }
     }
 
@@ -49,8 +43,6 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFavoriteBinding.inflate(inflater, container, false)
-        val navHostFragment = parentFragmentManager.findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
-        navController = navHostFragment.navController
         return binding.root
     }
 
@@ -59,6 +51,11 @@ class FavoriteFragment : Fragment() {
         tracksAdapter.data = tracksList
         binding.tracksList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.tracksList.adapter = tracksAdapter
+
+        onPlayerDebounce = debounce<Track>(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope,  Dispatchers.Main) { track ->
+            findNavController().navigate(R.id.action_libraryFragment_to_playerActivity, bundleOf(
+                TRACK_TO_ARRIVE to Gson().toJson(track)))
+        }
 
         binding.nothing.setImageResource(R.drawable.ic_nothing)
         binding.favoriteText.text = getString(R.string.favoriteText)
@@ -90,25 +87,13 @@ class FavoriteFragment : Fragment() {
         }
     }
 
-    private fun clickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            viewLifecycleOwner.lifecycleScope.launch {
-                delay(FavoriteFragment.CLICK_DEBOUNCE_DELAY)
-                isClickAllowed = true
-            }
-        }
-        return current
-    }
-
     companion object {
         fun newInstance() =
             FavoriteFragment().apply {
                 arguments = bundleOf()
                 tag
             }
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY = 300L
         const val TRACK_TO_ARRIVE = "track"
     }
 }

@@ -1,10 +1,10 @@
-package com.kuzmin.playlist.domain.model
+package com.kuzmin.playlist.presentation.models
 
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 import kotlin.String
 
-data class TrackDto(@SerializedName("trackId")val trackId: String,
+data class Track(@SerializedName("trackId")val trackId: String,
                     @SerializedName("trackName")val trackName: String, // Название композиции
                     @SerializedName("artistName")val artistName: String, // Имя исполнителя
                     @SerializedName("trackTimeMillis")val trackTime: String, // Продолжительность трека
